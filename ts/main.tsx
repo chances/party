@@ -5,7 +5,7 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { persistStore } from 'redux-persist'
 
 import * as api from './api'
-import { middleware, partyApp, persistTransform } from './redux'
+import { middleware, partyApp, persistTransform } from './state'
 import * as util from './util'
 
 import Party from './containers/party'

@@ -4,12 +4,12 @@ import { connect } from 'preact-redux'
 import { Dispatch } from 'redux'
 
 import { Request } from '../api'
-import { Actions, State } from '../redux'
+import { Actions, State } from '../state'
 
 import JoinForm from '../components/join-form'
 
 type SplashProps = SplashStateProps & SplashDispatchProps
-interface SplashStateProps {
+interface SplashStateProps extends State {
   firstLaunch: boolean
   partyCode: Maybe<string>
   isJoining: boolean

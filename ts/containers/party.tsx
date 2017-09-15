@@ -4,7 +4,7 @@ import { connect } from 'preact-redux'
 import { Dispatch } from 'redux'
 
 import * as api from '../api'
-import { Actions, State } from '../redux'
+import { State } from '../state'
 
 import header from '../components/logo'
 import NowPlaying from '../components/now-playing'
