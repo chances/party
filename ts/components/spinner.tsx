@@ -1,45 +1,43 @@
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
 
-interface Props {
-  hidden?: boolean
-  color?: string
-  size?: number
-}
+export default class Spinner {
+  pHidden?: boolean
+  pColor?: string
+  pSize?: number
 
-export default class Spinner extends Component<Props, {}> {
   get hidden() {
-    return this.props.hidden != null
-      ? this.props.hidden
+    return this.pHidden != null
+      ? this.pHidden
       : true
   }
 
   get color() {
-    return this.props.color != null
-      ? this.props.color
+    return this.pColor != null
+      ? this.pColor
       : '#FCFCFC'
   }
 
   get size() {
-    return this.props.size != null
-      ? this.props.size
+    return this.pSize != null
+      ? this.pSize
       : 40
   }
 
-  render(props: Props, {}) {
+  render() {
     const dur = '0.7s'
 
     return (
-      <span class={'spinner' + (this.hidden ? ' hiding' : '')}>
+      <span class={{ spinner: true, hiding: this.hidden }}>
         <svg
           x="0px"
           y="0px"
           width={this.size + 'px'}
           height={this.size + 'px'}
           viewBox="0 0 50 50"
-          style="enable-background: new 0 0 50 50"
+          style={{ 'enable-background': 'new 0 0 50 50' }}
         >
           <path
-            class="spinner"
+            class={{ spinner: true }}
             fill={this.color}
             // tslint:disable-next-line:max-line-length
             d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"

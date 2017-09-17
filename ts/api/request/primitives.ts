@@ -1,5 +1,5 @@
-import { Either, Maybe } from 'monet'
 import Promise = require('bluebird')
+import { Either, Maybe } from 'monet'
 
 import Errors from './errors'
 import { Error, nullErrorToNothing } from './errors'

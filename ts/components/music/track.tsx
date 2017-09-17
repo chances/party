@@ -1,39 +1,49 @@
 import { Maybe } from 'monet'
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
+import { VNodeData } from 'snabbdom/vnode'
 
-import * as api from '../../api/track'
+import * as models from '../../models'
+import { firstArtistName, largestImage } from '../../models'
 import { TabProps } from '../tab'
 
 interface TrackProps {
-  value: api.Track
-  type: 'div' | 'li'
+  value: models.Track
+  elemType: 'div' | 'li'
 }
 
 type Props = TrackProps & TabProps
 
-export function listItem(track: api.Track) {
+export function listItem(track: models.Track) {
   return <Track type="li" value={track} />
 }
 
-export function block(id: string, name: string, track: api.Track) {
+export function block(id: string, name: string, track: models.Track) {
   const heading = <h2>{name}</h2>
   return <Track type="div" value={track} id={id} heading={heading} />
 }
 
-export default class Track extends Component<Props, void> {
+export default class Track {
+  props: Props
+
+  constructor(props: Props) {
+    this.props = props
+  }
+
   render({id, heading}: Props) {
-    const {images, name, artists, contributor} = this.props.value
-    const image = api.largestImage(images)
+    const track = this.props.value
+    const {images, name, artists, contributor} = track
+    const image = largestImage(images)
 
     const requestedBy = contributor
-        ? <span class="requested-by">Added by {contributor}</span>
+        ? <span class={{ 'requested-by': true }}>Added by {contributor}</span>
         : null
 
     const content = [
-      <div class="song-info">
-        <span class="title">{name}</span>
-        <span class="artist">{api.firstArtistName(artists)}</span>
-        {requestedBy}
+      // tslint:disable-next-line:jsx-key
+      <div class={{'song-info': true }}>
+        <span class={{ title: true }}>{name}</span>
+        <span class={{ artist: true }}>{firstArtistName(artists)}</span>
+        { requestedBy }
       </div>,
     ]
 
@@ -47,11 +57,15 @@ export default class Track extends Component<Props, void> {
       content.unshift(heading)
     }
 
-    // Hacky props merging with TabProps
-    const props: JSX.HTMLAttributes & TabProps = { class: 'track' }
-    if (id) {
-      props.id = id
+    const trackElemProps: VNodeData = {
+      class: { track: true },
     }
-    return h(this.props.type, props, content)
+    if (id) {
+      trackElemProps.id = id
+    }
+    if (this.props.elemType === 'li') {
+      trackElemProps.key = track.id
+    }
+    return Snabbdom.createElement(this.props.elemType, trackElemProps, content)
   }
 }

@@ -1,5 +1,5 @@
 import { Maybe } from 'monet'
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
 
 import header from './logo'
 import Spinner from './spinner'
@@ -22,25 +22,26 @@ function stripNonAlphaNumeric(s: string) {
   return result
 }
 
-export default class JoinForm extends Component<Props, {}> {
+export default class JoinForm {
+  private props: Props
   private partyCode: HTMLInputElement
   private submitButton: HTMLInputElement
 
-  render(props: Props, {}) {
-    const submitHidingClass = props.isJoining
-      ? 'hiding'
-      : props.partyCode.cata(
-        () => 'hiding',
-        partyCode => partyCode.length ? '' : 'hiding',
-      )
+  render(props: Props) {
+    this.props = props
+
+    const isSubmitHiding = props.isJoining || props.partyCode.cata(
+      () => true,
+      partyCode => partyCode.length === 0,
+    )
 
     return (
       <form id="join" onSubmit={this.onJoinSubmitted}>
         <h1>Join a Party</h1>
         <p>Help mix things up and join the fun!</p>
-        <div class="form-group">
+        <div class={{ 'form-group': true }}>
           <label for="partyCode">Party code:</label>
-          <div class="pill-group">
+          <div class={{ 'pill-group': true }}>
             <input
               ref={this.refPartyCode}
               id="partyCode"
@@ -57,7 +58,7 @@ export default class JoinForm extends Component<Props, {}> {
             />
             <input
               ref={this.refSubmitButton}
-              class={submitHidingClass}
+              class={{ hiding: isSubmitHiding }}
               type="submit"
               value="Join"
               title="Join the party"
@@ -67,7 +68,7 @@ export default class JoinForm extends Component<Props, {}> {
           </div>
           <Spinner hidden={!props.isJoining} />
         </div>
-        <p class="error">{props.error.cata(() => '', errStr => errStr)}</p>
+        <p class={{ error: true }}>{props.error.cata(() => '', errStr => errStr)}</p>
       </form>
     )
   }

@@ -1,13 +1,13 @@
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
 
-import * as api from '../../api/track'
-import * as track from './track'
+import * as models from '../../models'
+import * as Track from './track'
 
 interface State {
-  track: api.Track
+  track: models.Track
 }
 
-export default class CurrentTrack extends Component<{}, State> {
+export class CurrentTrack {
   state = {
     track: {
       id: '',
@@ -26,7 +26,10 @@ export default class CurrentTrack extends Component<{}, State> {
     },
   }
 
-  render({}, state: State) {
-    return track.block('nowPlaying', 'Now Playing', state.track)
+  render() {
+    return Track.block('nowPlaying', 'Now Playing', this.state.track)
   }
 }
+
+const currentTrack = new CurrentTrack()
+export default currentTrack

@@ -1,16 +1,17 @@
-TSC = ../../node_modules/.bin/tsc
-BROWSERIFY = ../../node_modules/.bin/browserify
-UGLIFY = ../../node_modules/.bin/uglifyjs
-BROWSER_SYNC = ../../node_modules/.bin/browser-sync
-TS_LINT = ../../node_modules/.bin/tslint
-TS_NODE = ../../node_modules/.bin/ts-node
-TAPE = ../../node_modules/.bin/tape
-FAUCET = ../../node_modules/.bin/faucet
-TAP_DOT = ../../node_modules/.bin/tap-dot
-NYC = ../../node_modules/.bin/nyc
-CODECOV = ../../node_modules/.bin/codecov
-SANE = ../../node_modules/.bin/sane
-CONCURRENTLY = ../../node_modules/.bin/concurrently
+TSC = ./node_modules/.bin/tsc
+WEBPACK = ./node_modules/.bin/webpack
+BROWSERIFY = ./node_modules/.bin/browserify
+UGLIFY = ./node_modules/.bin/uglifyjs
+BROWSER_SYNC = ./node_modules/.bin/browser-sync
+TS_LINT = ./node_modules/.bin/tslint
+TS_NODE = ./node_modules/.bin/ts-node
+TAPE = ./node_modules/.bin/tape
+FAUCET = ./node_modules/.bin/faucet
+TAP_DOT = ./node_modules/.bin/tap-dot
+NYC = ./node_modules/.bin/nyc
+CODECOV = ./node_modules/.bin/codecov
+SANE = ./node_modules/.bin/sane
+CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.tsx
 JS_ENTRY_POINT := ./js/main.js
@@ -76,11 +77,7 @@ watch-scss:
 
 watch-js:
 	@export PARTY_API="http://app.local:3005"
-	@${SANE} \
-		"${BROWSERIFY} --debug -t \
-			[ envify --NODE_ENV development --PARTY_API http://app.local:3005 ] \
-			${JS_ENTRY_POINT} -o ${BROWSERIFY_TARGET}" \
-		./js --wait=2
+	@${WEBPACK} --watch
 .PHONY: watch-js
 
 watch-tests: test

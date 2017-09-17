@@ -1,14 +1,41 @@
-import AllActions from './redux/actions'
-import allMiddleware from './redux/middleware'
-import mainReducer from './redux/reducers'
-import IState from './redux/state'
+import { action, observable, useStrict } from 'mobx'
+import { Either, Maybe } from 'monet'
 
-export { persistTransform } from './redux/state'
-export { Action } from './redux/actions'
-export { Reducer } from './redux/reducers'
+import { JoinParty, joinParty, Party } from './models/party'
 
-export const middleware = allMiddleware
+useStrict(true)
 
-export type State = IState
-export const Actions = AllActions
-export const partyApp = mainReducer
+export class State {
+  firstLaunch: boolean
+  @observable tvMode: boolean
+  @observable joining: Maybe<JoinParty>
+  @observable party: Maybe<Party>
+
+  constructor() {
+    this.firstLaunch = true
+    this.tvMode = false
+    this.joining = Maybe.Nothing()
+    this.party = Maybe.Nothing()
+  }
+
+  @action joinParty(partyCode: string) {
+    const joinPartyRequest = new JoinParty(partyCode)
+    joinParty(joinPartyRequest)
+    this.joining = Maybe.Just(joinPartyRequest)
+  }
+
+  @action showParty(party: Maybe<Party>) {
+    this.party = party
+  }
+}
+
+const state = new State()
+export default state
+
+/*
+
+const Actions = {
+  Rehydrate: createAction<State>(REHYDRATE),
+}
+
+*/

@@ -1,6 +1,6 @@
 import { expect, test, that } from './lib/expect'
 
-import { firstArtistName, largestImage, Track } from '../api/track'
+import { firstArtistName, largestImage, Track } from '../models/track'
 
 test('firstArtistName returns empty string with zero artists', t => {
   expect(that(firstArtistName([])).equals(''))

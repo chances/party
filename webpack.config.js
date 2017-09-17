@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = {
   devtool: 'inline-source-map',
   entry: './ts/main.tsx',
@@ -12,5 +14,11 @@ module.exports = {
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
       { test: /\.tsx?$/, loader: 'ts-loader' }
     ]
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      PARTY_API: 'http://app.local:3005'
+    })
+  ]
 }

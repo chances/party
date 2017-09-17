@@ -1,23 +1,25 @@
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
+
+import State from '../state'
 
 import header from './logo'
 
 import CurrentTrack from './music/current-track'
 import TrackList from './music/track-list'
 
-interface State {
-  tvMode: boolean
-}
-
-export default class NowPlaying extends Component<{}, State> {
+export class NowPlaying {
   state = {
     tvMode: false,
   }
 
-  render({}, {tvMode}: State) {
+  render() {
+    const tvMode = State.tvMode
     return <div id="content">
-      <CurrentTrack />
+      { CurrentTrack.render() }
       <TrackList id="upNext" name="Up Next" />
     </div>
   }
 }
+
+const nowPlaying = new NowPlaying()
+export default nowPlaying

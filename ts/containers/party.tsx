@@ -1,85 +1,61 @@
 import { Maybe } from 'monet'
-import { Component, h } from 'preact'
-import { connect } from 'preact-redux'
-import { Dispatch } from 'redux'
+import * as Snabbdom from 'snabbdom-pragma'
 
 import * as api from '../api'
-import { State } from '../state'
+import State from '../state'
 
 import header from '../components/logo'
 import NowPlaying from '../components/now-playing'
 import Splash from './splash'
 
-type PartyProps = PartyStateProps & PartyDispatchProps
-interface PartyStateProps {
-  firstLaunch: boolean
-  tvMode: boolean
-  party: Maybe<api.Party>
-}
-interface PartyDispatchProps {
-  // TODO: Party dispatch properties
-  joinParty(partyCode: string): void
-}
+/* tslint:disable:jsx-key */
+export class Party {
 
-export class Party extends Component<PartyProps, {}> {
-  render(props: PartyProps, {}) {
-    return h('main', {}, header(props.party.isNothing(), props.tvMode).concat(
-      props.party.cata(
+  render() {
+    return Snabbdom.createElement('main', {}, header(State.party.isNothing(), State.tvMode).concat(
+      State.party.cata(
         () => [
           <div id="content">
-            <Splash />
+            { Splash.render() }
           </div>,
           <div>
             <p>Made with love in PDX.</p>
           </div>,
         ],
-        party => [
-          <nav id="musicMenu" class="menu secondary">
-            <ul>
-              <li class="selected"><a href="#nowPlaying">Now Playing</a></li>
-              <li><a href="#history">History</a></li>
-              <li id="upNextMenuItem"><a href="#upNext">Up Next</a></li>
-              <li><a href="#contribute">Contribute</a></li>
-            </ul>
-          </nav>,
-          <NowPlaying />,
-          <nav id="mainMenu" class="menu">
-            <ul>
-              <li><a href="#games">Games</a></li>
-              <li class="selected"><a href="#music">Music</a></li>
-              <li><a href="#guests">Guests</a></li>
-            </ul>
-          </nav>,
+        _ => [
+          musicMenu(),
+          NowPlaying.render(),
+          mainMenu(),
         ],
       ),
     ))
   }
 }
 
-function stateProps(state: State): PartyStateProps {
-  const isJoining = state.joining.cata(() => false, request => request.isLoading)
-  const maybeError = state.joining
-    .flatMap(request => request.error)
-    .map(err => err.detail)
+const party = new Party()
+export default party
 
-  return {
-    firstLaunch: state.firstLaunch,
-    tvMode: state.tvMode,
-    party: state.party,
-  }
+function musicMenu() {
+  return menu('musicMenu', true, [
+    <li class={{selected: true}}><a href="#nowPlaying">Now Playing</a></li>,
+    <li><a href="#history">History</a></li>,
+    <li id="upNextMenuItem"><a href="#upNext">Up Next</a></li>,
+    <li><a href="#contribute">Contribute</a></li>,
+  ])
 }
 
-type JoinParty = typeof Actions.JoinParty.payload
-
-function dispatchProps(dispatch: Dispatch<any>): PartyDispatchProps {
-  return {
-    joinParty: partyCode => {
-      // TODO: Party dispatch properties
-    },
-  }
+function mainMenu() {
+  return menu('mainMenu', false, [
+    <li><a href="#games">Games</a></li>,
+    <li class={{selected: true}}><a href="#music">Music</a></li>,
+    <li><a href="#guests">Guests</a></li>,
+  ])
 }
 
-const PartyContainer =
-  connect<PartyStateProps, PartyDispatchProps, {}>(stateProps, dispatchProps)(Party)
-
-export default PartyContainer
+function menu(id: string, secondary: boolean, items: JSX.Element[]) {
+  return <nav id={id} class={{ menu: true, secondary }} >
+    <ul>
+      { items }
+    </ul>
+  </nav>
+}

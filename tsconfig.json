@@ -17,8 +17,10 @@
         "dom"
       ],
 
-      "jsx": "React",
-      "jsxFactory": "h"
+      "jsx": "react",
+      "jsxFactory": "Snabbdom.createElement",
+
+      "experimentalDecorators": true
   },
   "include": [
       "ts/**/*"

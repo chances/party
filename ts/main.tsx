@@ -1,60 +1,48 @@
-import localForage = require('localforage')
-import { h, render } from 'preact'
-import { Provider } from 'preact-redux'
-import { applyMiddleware, compose, createStore } from 'redux'
-import { persistStore } from 'redux-persist'
+// import localForage = require('localforage')
+import { autorun } from 'mobx'
+import * as snabbdom from 'snabbdom'
+import * as Snabbdom from 'snabbdom-pragma'
+import snabbdomClass from 'snabbdom/modules/class'
+import snabbdomProps from 'snabbdom/modules/props'
+import snabbdomStyle from 'snabbdom/modules/style'
+// import { persistStore } from 'redux-persist'
 
 import * as api from './api'
-import { middleware, partyApp, persistTransform } from './state'
 import * as util from './util'
 
 import Party from './containers/party'
 
-declare var window: {
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose,
-}
+/* tslint:disable:no-submodule-imports no-var-requires */
 
-import 'preact/devtools'
-const composeEnhancers = process.env.NODE_ENV === 'development'
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-  : compose
+// const augmentedMiddleware = process.env.NODE_ENV === 'development'
+//   ? //do this
+//   : //or that=
 
-const augmentedMiddleware = process.env.NODE_ENV === 'development'
-  // tslint:disable-next-line:no-var-requires
-  ? [require('redux-immutable-state-invariant').default({
-    ignore: [
-      'joining.val.error',
-    ],
-  }), ...middleware]
-  : [...middleware]
-
-const store = createStore(
-  partyApp,
-  composeEnhancers(
-    applyMiddleware(...augmentedMiddleware),
-  ),
-)
-
-persistStore(store, {
-  storage: localForage,
-  transforms: [persistTransform],
-})
+// persistStore(store, {
+//   storage: localForage,
+//   transforms: [persistTransform],
+// })
 
 const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
 api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
+
+const patch = snabbdom.init([
+  snabbdomClass,
+  snabbdomProps,
+  snabbdomStyle,
+])
 
 const main = document.querySelector('main')
 if (main !== null) {
   main.classList.add('hiding')
 
-  setTimeout(() => {
-    main.remove()
+  setTimeout(bootstrap, 300)
+}
 
-    render(
-      <Provider store={store}>
-        <Party />
-      </Provider>,
-      document.body,
-    )
-  }, 300)
+function bootstrap() {
+  let vdom = patch(main as Element, Party.render())
+
+  autorun(() => {
+    vdom = patch(vdom, Party.render())
+  })
 }

@@ -1,15 +1,12 @@
-import { Component, h } from 'preact'
+import * as Snabbdom from 'snabbdom-pragma'
 
-import * as api from '../../api/track'
-import * as track from './track'
+import * as models from '../../models'
+import * as Track from './track'
 
-interface TrackListParams {
-  id: string
-  name: string
-}
+export default class TrackList {
+  tracks: models.Track[]
 
-export default class TrackList extends Component<TrackListParams, api.Track[]> {
-  state = [
+  private placeholderTracks = [
     {
       id: '',
       name: 'Awakening',
@@ -59,13 +56,17 @@ export default class TrackList extends Component<TrackListParams, api.Track[]> {
     },
   ]
 
-  render({id, name}: TrackListParams, tracks: api.Track[]) {
-    const trackListItems = tracks.map(t => track.listItem(t))
+  constructor(private id: string, private name: string) {
+    this.tracks = this.placeholderTracks
+  }
+
+  render() {
+    const trackListItems = this.tracks.map(t => Track.listItem(t))
 
     return (
-      <div id={id}>
+      <div id={this.id}>
         <h2>{name}</h2>
-        <ul class="tracks">
+        <ul class={{ tracks: true}}>
           {trackListItems}
         </ul>
       </div>
