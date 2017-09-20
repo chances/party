@@ -1,15 +1,12 @@
-import { action, observable, useStrict } from 'mobx'
 import { Either, Maybe } from 'monet'
 
 import { JoinParty, joinParty, Party } from './models/party'
 
-useStrict(true)
-
 export class State {
   firstLaunch: boolean
-  @observable tvMode: boolean
-  @observable joining: Maybe<JoinParty>
-  @observable party: Maybe<Party>
+  tvMode: boolean
+  joining: Maybe<JoinParty>
+  party: Maybe<Party>
 
   constructor() {
     this.firstLaunch = true
@@ -18,13 +15,13 @@ export class State {
     this.party = Maybe.Nothing()
   }
 
-  @action joinParty(partyCode: string) {
+  joinParty(partyCode: string) {
     const joinPartyRequest = new JoinParty(partyCode)
     joinParty(joinPartyRequest)
     this.joining = Maybe.Just(joinPartyRequest)
   }
 
-  @action showParty(party: Maybe<Party>) {
+  showParty(party: Maybe<Party>) {
     this.party = party
   }
 }

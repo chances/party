@@ -1,4 +1,4 @@
-import * as Snabbdom from 'snabbdom-pragma'
+import { div } from '@cycle/dom'
 
 import State from '../state'
 
@@ -14,10 +14,10 @@ export class NowPlaying {
 
   render() {
     const tvMode = State.tvMode
-    return <div id="content">
-      { CurrentTrack.render() }
-      <TrackList id="upNext" name="Up Next" />
-    </div>
+    return div('#content', [
+      CurrentTrack.render(),
+      new TrackList('upNext', 'Up Next').render(),
+    ])
   }
 }
 

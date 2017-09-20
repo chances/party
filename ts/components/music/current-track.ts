@@ -1,5 +1,3 @@
-import * as Snabbdom from 'snabbdom-pragma'
-
 import * as models from '../../models'
 import * as Track from './track'
 

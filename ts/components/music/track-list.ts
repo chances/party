@@ -1,4 +1,4 @@
-import * as Snabbdom from 'snabbdom-pragma'
+import { div, h2, ul } from '@cycle/dom'
 
 import * as models from '../../models'
 import * as Track from './track'
@@ -63,13 +63,9 @@ export default class TrackList {
   render() {
     const trackListItems = this.tracks.map(t => Track.listItem(t))
 
-    return (
-      <div id={this.id}>
-        <h2>{name}</h2>
-        <ul class={{ tracks: true}}>
-          {trackListItems}
-        </ul>
-      </div>
-    )
+    return div({ attrs: { id: this.id } }, [
+      h2(name),
+      ul('.tracks', trackListItems),
+    ])
   }
 }

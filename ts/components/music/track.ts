@@ -1,6 +1,5 @@
+import { div, h, h2, img, span, VNodeData } from '@cycle/dom'
 import { Maybe } from 'monet'
-import * as Snabbdom from 'snabbdom-pragma'
-import { VNodeData } from 'snabbdom/vnode'
 
 import * as models from '../../models'
 import { firstArtistName, largestImage } from '../../models'
@@ -14,12 +13,12 @@ interface TrackProps {
 type Props = TrackProps & TabProps
 
 export function listItem(track: models.Track) {
-  return <Track type="li" value={track} />
+  return new Track({ elemType: 'li', value: track }).render()
 }
 
 export function block(id: string, name: string, track: models.Track) {
-  const heading = <h2>{name}</h2>
-  return <Track type="div" value={track} id={id} heading={heading} />
+  const heading = h2(name)
+  return new Track({ elemType: 'div', value: track, id, heading }).render()
 }
 
 export default class Track {
@@ -29,29 +28,29 @@ export default class Track {
     this.props = props
   }
 
-  render({id, heading}: Props) {
+  render() {
+    const { id, heading } = this.props
     const track = this.props.value
     const {images, name, artists, contributor} = track
     const image = largestImage(images)
 
     const requestedBy = contributor
-        ? <span class={{ 'requested-by': true }}>Added by {contributor}</span>
+        ? span('.requested-by', 'Added by' + contributor)
         : null
 
     const content = [
-      // tslint:disable-next-line:jsx-key
-      <div class={{'song-info': true }}>
-        <span class={{ title: true }}>{name}</span>
-        <span class={{ artist: true }}>{firstArtistName(artists)}</span>
-        { requestedBy }
-      </div>,
+      div('.song-info', [
+        span('.title', name),
+        span('.artist', firstArtistName(artists)),
+        requestedBy,
+      ]),
     ]
 
     if (image.isJust()) {
       content.unshift(
-        <img src={image.just().url} />,
+        img({ attrs: { src: image.just().url } }),
       )
-    }
+    } // TODO: "Blank" album art if image is nothing
 
     if (heading) {
       content.unshift(heading)
@@ -66,6 +65,6 @@ export default class Track {
     if (this.props.elemType === 'li') {
       trackElemProps.key = track.id
     }
-    return Snabbdom.createElement(this.props.elemType, trackElemProps, content)
+    return h(this.props.elemType, trackElemProps, content)
   }
 }
