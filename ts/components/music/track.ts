@@ -27,7 +27,7 @@ export default function track(type: 'div' | 'li', t: models.Track, id?: string, 
   const image = largestImage(images)
 
   const requestedBy = contributor
-      ? span({ class: { 'requested-by': true } }, [ 'Added by', contributor ])
+      ? span({ class: { 'requested-by': true } }, [ 'Added by ', contributor ])
       : null
 
   const content: VNode[] = [
@@ -52,7 +52,9 @@ export default function track(type: 'div' | 'li', t: models.Track, id?: string, 
     class: { track: true },
   }
   if (id) {
-    trackElemProps.id = id
+    trackElemProps.attrs = {
+      id,
+    }
   }
   if (type === 'li') {
     trackElemProps.key = t.id

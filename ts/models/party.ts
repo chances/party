@@ -37,6 +37,7 @@ export function joinParty(payload: JoinParty) {
 
   joinPartyPromise = getParty(payload.partyCode)
   joinPartyPromise.then(eitherParty => {
+    // TODO: Only show party if party response is not ended
     State.showParty(new JoinParty(
       payload.partyCode,
       eitherParty.leftMap(errors => {

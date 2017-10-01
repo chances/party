@@ -12,7 +12,7 @@ export default function render() {
   const tvMode = State.tvMode
   const track = State.party.flatMap(party => Maybe.fromNull<Track>(party.current_track))
 
-  return div({ id: 'content' }, [
+  return div({ attrs: { id: 'content' } }, [
     currentTrack(track),
     trackList('upNext', 'Up Next', null),
   ])

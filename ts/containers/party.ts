@@ -44,13 +44,13 @@ function mainMenu() {
 }
 
 function menu(id: string, secondary: boolean, items: VNode[]) {
-  return nav({ id, class: { menu: true, secondary } }, [
+  return nav({ key: id, attrs: { id }, class: { menu: true, secondary } }, [
     ul(items),
   ])
 }
 
 function menuItem(hash: string, label: string, selected: boolean = false) {
-  return li({ id: hash + 'MenuItem', class: { selected } }, [
+  return li({ attrs: { id: hash + 'MenuItem' }, class: { selected } }, [
     a({ attrs: { href: '#' + hash } }, label),
   ])
 }

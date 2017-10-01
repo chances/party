@@ -57,7 +57,7 @@ export default function render(id: string, heading: string, tracks: models.Track
   tracks = tracks || placeholderTracks
   const trackListItems = tracks.map(t => Track.listItem(t))
 
-  return div({ id }, [
+  return div({ attrs: { id } }, [
     h2(heading),
     ul({ class: { tracks: true } }, trackListItems),
   ])
