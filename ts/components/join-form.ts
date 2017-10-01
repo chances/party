@@ -64,16 +64,23 @@ export default function render(props: Props) {
 }
 
 let partyCode = ''
-let submitVisible = false
 function partyCodeInputChange(e: Event) {
   const input = e.currentTarget as HTMLInputElement
+  const submit = input.nextSibling as HTMLInputElement
+  const pillGroup = input.parentElement as HTMLElement
   const value = stripNonAlphaNumeric(
     input.value.trim().replace(whitespace, ''),
   )
   input.value = value
   partyCode = value
 
-  submitVisible = value.length > 0
+  const submitVisible = value.length > 0
+
+  if (submitVisible) {
+    submit.classList.remove('hiding')
+  } else {
+    submit.classList.add('hiding')
+  }
 }
 
 const whitespace = /[\s\\\^\[\]`]/g
@@ -102,9 +109,8 @@ function onJoinSubmitted(e: Event) {
   e.preventDefault()
 
   if (partyCode && partyCode.trim()) {
-    // TODO: Blur the form
-    // this.partyCode.blur()
-    // this.submitButton.blur()
+    const joinForm = e.currentTarget as HTMLFormElement
+    joinForm.blur()
 
     State.joinParty(partyCode)
   }
