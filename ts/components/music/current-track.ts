@@ -1,3 +1,5 @@
+import { Maybe } from 'monet'
+
 import * as models from '../../models'
 import * as Track from './track'
 
@@ -23,6 +25,6 @@ const defaultState = {
   },
 }
 
-export default function render(track: models.Track | null) {
-  return Track.block('nowPlaying', 'Now Playing', track || defaultState.track)
+export default function render(track: Maybe<models.Track>) {
+  return Track.block('nowPlaying', 'Now Playing', track.orJust(defaultState.track))
 }
