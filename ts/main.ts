@@ -42,6 +42,11 @@ if (main !== null) {
 }
 
 function bootstrap() {
+  if (main != null) {
+    main.classList.remove('splash')
+    main.classList.remove('hiding')
+  }
+
   let vdom = patch(elementToVNode(main as Element), party())
 
   autorun(() => {
