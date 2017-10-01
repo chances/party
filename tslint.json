@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:latest", "tslint-react"],
+  "extends": ["tslint:latest"],
   "rules": {
     "max-line-length": [true, 100],
     "quotemark": [

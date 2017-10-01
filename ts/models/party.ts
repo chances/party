@@ -39,21 +39,19 @@ export function joinParty(payload: JoinParty) {
 
       joinPartyPromise = getParty(payload.partyCode)
       joinPartyPromise.then(eitherParty => {
-        State.joining = Maybe.Just(
-          new JoinParty(
-            payload.partyCode,
-            eitherParty.leftMap(errors => {
-              // Friendly Party not found error message
-              if (errors.responseStatus === 404) {
-                errors.errors = [Errors.create(
-                  'Not Found',
-                  `Party ${payload.partyCode} not found`,
-                )]
-              }
-              return errors
-            }),
-          ),
-        )
+        State.joinPartyResponse(new JoinParty(
+          payload.partyCode,
+          eitherParty.leftMap(errors => {
+            // Friendly Party not found error message
+            if (errors.responseStatus === 404) {
+              errors.errors = [Errors.create(
+                'Not Found',
+                `Party ${payload.partyCode} not found`,
+              )]
+            }
+            return errors
+          }),
+        ))
       })
     },
     eitherParty => {

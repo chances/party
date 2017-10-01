@@ -1,16 +1,17 @@
 // import localForage = require('localforage')
 import { autorun } from 'mobx'
-import * as snabbdom from 'snabbdom'
-import * as Snabbdom from 'snabbdom-pragma'
-import snabbdomClass from 'snabbdom/modules/class'
-import snabbdomProps from 'snabbdom/modules/props'
-import snabbdomStyle from 'snabbdom/modules/style'
+import {
+  createAttributesModule,
+  createClassModule,
+  createEventsModule,
+  createStylesModule,
+  elementToVNode, h, init } from 'mostly-dom'
 // import { persistStore } from 'redux-persist'
 
 import * as api from './api'
 import * as util from './util'
 
-import Party from './containers/party'
+import party from './containers/party'
 
 /* tslint:disable:no-submodule-imports no-var-requires */
 
@@ -26,10 +27,11 @@ import Party from './containers/party'
 const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
 api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
 
-const patch = snabbdom.init([
-  snabbdomClass,
-  snabbdomProps,
-  snabbdomStyle,
+const patch = init([
+  createAttributesModule(),
+  createClassModule(),
+  createEventsModule(),
+  createStylesModule(),
 ])
 
 const main = document.querySelector('main')
@@ -40,9 +42,9 @@ if (main !== null) {
 }
 
 function bootstrap() {
-  let vdom = patch(main as Element, Party.render())
+  let vdom = patch(elementToVNode(main as Element), party())
 
   autorun(() => {
-    vdom = patch(vdom, Party.render())
+    vdom = patch(vdom, party())
   })
 }

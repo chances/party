@@ -1,7 +1,5 @@
 TSC = ./node_modules/.bin/tsc
 WEBPACK = ./node_modules/.bin/webpack
-BROWSERIFY = ./node_modules/.bin/browserify
-UGLIFY = ./node_modules/.bin/uglifyjs
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
 TS_NODE = ./node_modules/.bin/ts-node
@@ -15,7 +13,7 @@ CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.tsx
 JS_ENTRY_POINT := ./js/main.js
-BROWSERIFY_TARGET := ../assets/javascript/party.js
+WEBPACK_TARGET := ../assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
 TS_TEST_SOURCES := ./ts/test/*.ts
@@ -23,19 +21,20 @@ JS_TEST_SOURCES := ./js/test/*.js
 
 all: build
 
-build: css browserify
+build: css js
 .PHONY: build
 
 css:
 	@cp -r scss/* ../assets/scss/.
 .PHONY: css
 
-browserify:
+js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${JS_ENTRY_POINT}"
-	@echo "Browserify target: ${BROWSERIFY_TARGET}"
-	@${BROWSERIFY} --debug -t [ envify purge --NODE_ENV production ] -t uglifyify -p [tsify] ${TS_ENTRY_POINT} | ${UGLIFY} > ${BROWSERIFY_TARGET}
-.PHONY: browserify
+	@echo "Webpack target: ${WEBPACK_TARGET}"
+	@${TSC}
+	@NODE_ENV=production PARTY_API='https://party.chancesnow.me' ${WEBPACK}
+.PHONY: js
 
 lint:
 	@${TS_LINT} -c ./tslint.json ${TS_SOURCES}
@@ -48,6 +47,7 @@ test: lint
 cover:
 	@rm -rf coverage
 	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}
+	@xdg-open ./coverage/index.html
 .PHONY: cover
 
 test-ci: lint
@@ -58,11 +58,11 @@ test-ci: lint
 
 watch:
 	@echo "Entry point: ${JS_ENTRY_POINT}"
-	@echo "Browserify target: ${BROWSERIFY_TARGET}"
+	@echo "Browserify target: ${WEBPACK_TARGET}"
 	@${CONCURRENTLY} --kill-others \
 		"${TSC} -w 1> /dev/null" \
 		"cd ../..; make --quiet watch &> /dev/null" \
-		"make --quiet browser-sync" \
+		"make --quiet browser-sync &> /dev/null" \
 		"make --quiet watch-scss" \
 		"make --quiet watch-js"
 .PHONY: watch
@@ -86,5 +86,5 @@ watch-tests: test
 
 clean:
 	rm -rf ./js
-	rm -f ${BROWSERIFY_TARGET}
+	rm -f ${WEBPACK_TARGET}
 .PHONY: clean

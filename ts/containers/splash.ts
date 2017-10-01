@@ -4,7 +4,7 @@ import { Request } from '../api'
 import { JoinParty } from '../models'
 import State from '../state'
 
-import JoinForm from '../components/join-form'
+import joinForm from '../components/join-form'
 
 interface SplashProps {
   partyCode: Maybe<string>
@@ -12,18 +12,14 @@ interface SplashProps {
   error: Maybe<string>
 }
 
-export default class Splash {
-  static render() {
-    const {isJoining, partyCode, error} = stateProps(State)
-    const joinForm = new JoinForm()
+export default function render() {
+  const {isJoining, partyCode, error} = stateProps(State)
 
-    return joinForm.render({
-      onJoinSubmitted: State.joinParty,
-      isJoining,
-      partyCode,
-      error,
-    })
-  }
+  return joinForm({
+    isJoining,
+    partyCode,
+    error,
+  })
 }
 
 function stateProps(state: typeof State): SplashProps {

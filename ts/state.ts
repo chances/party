@@ -24,6 +24,10 @@ export class State {
     this.joining = Maybe.Just(joinPartyRequest)
   }
 
+  @action joinPartyResponse(response: JoinParty) {
+    this.joining = Maybe.Just(response)
+  }
+
   @action showParty(party: Maybe<Party>) {
     this.party = party
   }

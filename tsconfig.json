@@ -3,6 +3,8 @@
   "compilerOptions": {
       "target": "ES5",
       "module": "commonjs",
+      "moduleResolution": "node",
+      "baseUrl": "./node_modules",
       "strict": true,
       "strictNullChecks": true,
       "removeComments": false,
@@ -16,9 +18,6 @@
         "es2015.symbol",
         "dom"
       ],
-
-      "jsx": "react",
-      "jsxFactory": "Snabbdom.createElement",
 
       "experimentalDecorators": true
   },
