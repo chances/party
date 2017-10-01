@@ -15,7 +15,7 @@ interface Props {
 export default function render(props: Props) {
   const isSubmitHiding = props.isJoining || props.partyCode.cata(
     () => true,
-    partyCode => partyCode.length === 0,
+    currentPartyCode => currentPartyCode.length === 0,
   )
 
   return form({
@@ -65,13 +65,13 @@ export default function render(props: Props) {
 
 let partyCode = ''
 function partyCodeInputChange(e: Event) {
-  const input = e.currentTarget as HTMLInputElement
-  const submit = input.nextSibling as HTMLInputElement
-  const pillGroup = input.parentElement as HTMLElement
+  const partyCodeInput = e.currentTarget as HTMLInputElement
+  const submit = partyCodeInput.nextSibling as HTMLInputElement
+  const pillGroup = partyCodeInput.parentElement as HTMLElement
   const value = stripNonAlphaNumeric(
-    input.value.trim().replace(whitespace, ''),
+    partyCodeInput.value.trim().replace(whitespace, ''),
   )
-  input.value = value
+  partyCodeInput.value = value
   partyCode = value
 
   const submitVisible = value.length > 0
@@ -95,8 +95,8 @@ function stripNonAlphaNumeric(s: string) {
 }
 
 function focusBlurJoinForm(e: Event) {
-  const input = e.currentTarget as HTMLInputElement
-  const pillGroup = input.parentElement as HTMLElement
+  const joinInput = e.currentTarget as HTMLInputElement
+  const pillGroup = joinInput.parentElement as HTMLElement
 
   if (e.type === 'focus') {
     pillGroup.classList.add('focus')
