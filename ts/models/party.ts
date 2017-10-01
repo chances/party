@@ -31,33 +31,24 @@ export function getParty(partyCode: string): ResponsePromise<Party> {
 let joinPartyPromise: ResponsePromise<Party>
 
 export function joinParty(payload: JoinParty) {
-  payload.response.cata(
-    () => {
-      if (joinPartyPromise != null) {
-        joinPartyPromise.cancel()
-      }
+  if (joinPartyPromise != null && joinPartyPromise.isPending()) {
+    joinPartyPromise.cancel()
+  }
 
-      joinPartyPromise = getParty(payload.partyCode)
-      joinPartyPromise.then(eitherParty => {
-        State.joinPartyResponse(new JoinParty(
-          payload.partyCode,
-          eitherParty.leftMap(errors => {
-            // Friendly Party not found error message
-            if (errors.responseStatus === 404) {
-              errors.errors = [Errors.create(
-                'Not Found',
-                `Party ${payload.partyCode} not found`,
-              )]
-            }
-            return errors
-          }),
-        ))
-      })
-    },
-    eitherParty => {
-      State.showParty(
-        eitherParty.toMaybe().map(party => party.attributes),
-      )
-    },
-  )
+  joinPartyPromise = getParty(payload.partyCode)
+  joinPartyPromise.then(eitherParty => {
+    State.showParty(new JoinParty(
+      payload.partyCode,
+      eitherParty.leftMap(errors => {
+        // Friendly Party not found error message
+        if (errors.responseStatus === 404) {
+          errors.errors = [Errors.create(
+            'Not Found',
+            `Party ${payload.partyCode} not found`,
+          )]
+        }
+        return errors
+      }),
+    ))
+  })
 }
