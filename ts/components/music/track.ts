@@ -52,9 +52,7 @@ export default function track(type: 'div' | 'li', t: models.Track, id?: string, 
     class: { track: true },
   }
   if (id) {
-    trackElemProps.attrs = {
-      id,
-    }
+    trackElemProps.attrs = { id }
   }
   if (type === 'li') {
     trackElemProps.key = t.id

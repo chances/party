@@ -19,3 +19,17 @@ export const log = _curry((message: string, value: any) => {
   }
   return value
 })
+
+interface ClassObject {
+  [name: string]: boolean
+}
+
+export function klass(classes: ClassObject) {
+  const filteredClasses: ClassObject = {}
+  for (const name in classes) {
+    if (classes[name]) {
+      filteredClasses[name] = true
+    }
+  }
+  return filteredClasses
+}

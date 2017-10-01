@@ -3,6 +3,7 @@ import { a, div, h, li, main, nav, p, ul, VNode } from 'mostly-dom'
 
 import * as api from '../api'
 import State from '../state'
+import * as util from '../util'
 
 import header from '../components/logo'
 import nowPlaying from '../components/now-playing'
@@ -44,13 +45,13 @@ function mainMenu() {
 }
 
 function menu(id: string, secondary: boolean, items: VNode[]) {
-  return nav({ key: id, attrs: { id }, class: { menu: true, secondary } }, [
+  return nav({ key: id, attrs: { id }, class: util.klass({ menu: true, secondary }) }, [
     ul(items),
   ])
 }
 
 function menuItem(hash: string, label: string, selected: boolean = false) {
-  return li({ attrs: { id: hash + 'MenuItem' }, class: { selected } }, [
+  return li({ attrs: { id: hash + 'MenuItem' }, class: util.klass({ selected }) }, [
     a({ attrs: { href: '#' + hash } }, label),
   ])
 }

@@ -2,6 +2,7 @@ import { Maybe } from 'monet'
 import { div, form, h1, input, label, p } from 'mostly-dom'
 
 import State from '../state'
+import * as util from '../util'
 
 import header from './logo'
 import spinner from './spinner'
@@ -45,7 +46,7 @@ export default function render(props: Props) {
           },
         }),
         input({
-          class: { hiding: isSubmitHiding },
+          class: util.klass({ hiding: isSubmitHiding }),
           attrs: {
             type: 'submit',
             value: 'Join',
