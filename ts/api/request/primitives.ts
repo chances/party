@@ -35,6 +35,10 @@ export class Request<T> {
     })
     .flatMap(nullErrorToNothing)
   }
+
+  get result(): Maybe<T> {
+    return this.response.flatMap(eitherData => eitherData.toMaybe().map(data => data.attributes))
+  }
 }
 
 export type ApiResponse<T> = DataResponse<T> | ErrorResponse
