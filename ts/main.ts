@@ -1,4 +1,3 @@
-// import localForage = require('localforage')
 import { autorun } from 'mobx'
 import {
   createAttributesModule,
@@ -9,6 +8,7 @@ import {
 // import { persistStore } from 'redux-persist'
 
 import * as api from './api'
+import State from './state'
 import * as util from './util'
 
 import party from './containers/party'
@@ -35,11 +35,13 @@ const patch = init([
 ])
 
 const main = document.querySelector('main')
-if (main !== null) {
-  main.classList.add('hiding')
+State.rehydrate().then(rehydrated => {
+  if (main !== null) {
+    main.classList.add('hiding')
 
-  setTimeout(bootstrap, 300)
-}
+    setTimeout(bootstrap, 300)
+  }
+})
 
 function bootstrap() {
   if (main != null) {
@@ -51,5 +53,7 @@ function bootstrap() {
 
   autorun(() => {
     vdom = patch(vdom, party())
+
+    State.persist()
   })
 }
