@@ -5,7 +5,6 @@ import {
   createEventsModule,
   createStylesModule,
   elementToVNode, h, init } from 'mostly-dom'
-// import { persistStore } from 'redux-persist'
 
 import * as api from './api'
 import State from './state'
@@ -18,11 +17,6 @@ import party from './containers/party'
 // const augmentedMiddleware = process.env.NODE_ENV === 'development'
 //   ? //do this
 //   : //or that=
-
-// persistStore(store, {
-//   storage: localForage,
-//   transforms: [persistTransform],
-// })
 
 const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
 api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
