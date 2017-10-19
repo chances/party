@@ -38,9 +38,9 @@ function musicMenu() {
 
 function mainMenu() {
   return menu('mainMenu', false, [
-    menuItem('games', 'Games'),
     menuItem('music', 'Music', true),
     menuItem('guests', 'Guests'),
+    menuItem('games', 'Games'),
   ])
 }
 
