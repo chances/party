@@ -19,6 +19,10 @@ export function setPartyApiHost(host: string) {
     : host + '/'
 }
 
+export function getPartyApiHost() {
+  return partyApiHost
+}
+
 const defaultOptions: RequestInit = {
   credentials: 'include',
 }
