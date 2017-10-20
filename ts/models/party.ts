@@ -1,6 +1,7 @@
 import { Either, Maybe } from 'monet'
 
-import { Errors, post, Request, Response, ResponsePromise } from '../api'
+import { Errors, get, post, Request, Response, ResponsePromise } from '../api'
+import Source from '../api/event'
 import State from '../state'
 import { Track } from './track'
 
@@ -22,7 +23,15 @@ export class JoinParty extends Request<Party> {
   }
 }
 
-export function getParty(partyCode: string): ResponsePromise<Party> {
+export function getParty(): ResponsePromise<Party> {
+  return get<Party>('party')
+}
+
+export function getPartyStream(): Source<Party> {
+  return new Source('events/party', 'party')
+}
+
+export function postJoinParty(partyCode: string): ResponsePromise<Party> {
   return post<Party>('party/join', {
     data: {room_code: partyCode},
   })
@@ -35,7 +44,7 @@ export function joinParty(payload: JoinParty) {
     joinPartyPromise.cancel()
   }
 
-  joinPartyPromise = getParty(payload.partyCode)
+  joinPartyPromise = postJoinParty(payload.partyCode)
   joinPartyPromise.then(eitherParty => {
     // TODO: Only show party if party response is not ended
     State.showParty(new JoinParty(
