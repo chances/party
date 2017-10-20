@@ -38,7 +38,7 @@ export default class Source<T> {
   }
 
   get messages() {
-    return this.on(this.messageName).map((e: MessageEvent) => Source.parseMessage<T>(e))
+    return this.on(this.messageName).map(e => Source.parseMessage<T>(e as MessageEvent))
   }
 
   on(eventType: 'open' | 'message' | string) {
