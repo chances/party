@@ -13,7 +13,7 @@ h1, h2 {
 }
 
 #musicMenu {
-  margin: 1.5rem 0 1rem;
+  margin: 1rem 0;
 }
 
 #content {
@@ -31,6 +31,10 @@ main.splash > #content {
 #content[data-show="contribute"] {
   flex-direction: row;
   justify-content: center;
+}
+#content.no-music {
+  flex-direction: column;
+  margin-bottom: 3rem;
 }
 
 #nowPlaying {

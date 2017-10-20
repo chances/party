@@ -18,8 +18,8 @@ export default function render() {
           p('Made with love in PDX.'),
         ]),
       ],
-      _ => [
-        musicMenu(),
+      party => [
+        party.current_track ? musicMenu() : div(),
         nowPlaying(),
         mainMenu(),
       ],

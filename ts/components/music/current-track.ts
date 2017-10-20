@@ -25,6 +25,6 @@ const defaultState = {
   },
 }
 
-export default function render(track: Maybe<models.Track>) {
-  return Track.block('nowPlaying', 'Now Playing', track.orJust(defaultState.track))
+export default function render(track: models.Track) {
+  return Track.block('nowPlaying', 'Now Playing', track)
 }
