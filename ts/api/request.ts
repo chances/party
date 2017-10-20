@@ -39,7 +39,7 @@ export function post<T>(path: string, body?: {data: any},
 function request<T>(method: 'get' | 'post', path: string, body?: {data: any},
                     params?: RequestParam[]): ResponsePromise<T> {
   const url = partyApiHost + path +
-    (params ? joinParams(params) : '')
+    (params ? `?${joinParams(params)}` : '')
   const headers = new Headers()
   if (body != null) {
     headers.append('Content-Type', 'application/json')
