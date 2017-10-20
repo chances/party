@@ -28,7 +28,7 @@ export default function track(type: 'div' | 'li', t: models.Track, id?: string, 
 
   const requestedBy = contributor
       ? span({ class: { 'requested-by': true } }, [ 'Added by ', contributor ])
-      : null
+      : span()
 
   const content: VNode[] = [
     div({ class: { 'song-info': true } }, [

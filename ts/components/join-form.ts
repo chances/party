@@ -60,7 +60,7 @@ export default function render(props: Props) {
       ]),
       spinner(!props.isJoining),
     ]),
-    props.error.isJust() ? p({ class: { error: true } }, props.error.just()) : null,
+    props.error.isJust() ? p({ class: { error: true } }, props.error.just()) : p(),
   ])
 }
 
