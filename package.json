@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "JavaScript assets for https://chancesnow.me/party",
   "scripts": {
-    "pretest": "make lint",
-    "test": "tsc -p . --noStrictGenericChecks"
+    "test": "make lint"
   },
   "repository": "git+https://github.com/chances/party.git",
   "author": "Chance Snow <git@chancesnow.me>",
