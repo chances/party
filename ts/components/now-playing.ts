@@ -3,6 +3,7 @@ import { div, h1, p } from 'mostly-dom'
 
 import { Party, Track } from '../models'
 import State from '../state'
+import * as util from '../util'
 
 import header from './logo'
 import currentTrack from './music/current-track'
