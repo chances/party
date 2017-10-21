@@ -44,16 +44,14 @@
   },
   "nyc": {
     "include": [
-      "ts/**/*.ts",
-      "ts/**/*.tsx"
+      "ts/**/*.ts"
     ],
     "exclude": [
       "ts/**/*.d.ts",
       "ts/test"
     ],
     "extension": [
-      ".ts",
-      ".tsx"
+      ".ts"
     ],
     "require": [
       "ts-node/register"
