@@ -42,12 +42,6 @@ export function searchTracks(
       const results = spotify.searchTracks(query)
         .then(data => resolve(Either.Right(data)))
         .catch(error => resolve(Either.Left(error) as EitherTrackResults))
-
-      // const results = spotify.searchTracks(query)
-      //   .then(data => resolve(Either.Right<any, SpotifyApi.TrackSearchResponse>(data)))
-      //   .catch(error: any => resolve(Either.Left<any, SpotifyApi.TrackSearchResponse>(error)))
-
-      resolve(results as PromiseLike<EitherTrackResults>)
     }
   })
 }

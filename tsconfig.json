@@ -3,6 +3,8 @@
   "compilerOptions": {
       "target": "ES5",
       "module": "commonjs",
+      "moduleResolution": "node",
+      "baseUrl": "./node_modules",
       "strict": true,
       "strictNullChecks": true,
       "removeComments": false,
@@ -17,8 +19,7 @@
         "dom"
       ],
 
-      "jsx": "React",
-      "jsxFactory": "h"
+      "experimentalDecorators": true
   },
   "include": [
       "ts/**/*"

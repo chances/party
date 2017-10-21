@@ -1,6 +1,6 @@
-import { Either } from 'monet'
 import Promise = require('bluebird')
 import fetch = require('isomorphic-fetch')
+import { Either } from 'monet'
 
 import Errors from './request/errors'
 import { ErrorType } from './request/errors'
@@ -19,6 +19,10 @@ export function setPartyApiHost(host: string) {
     : host + '/'
 }
 
+export function getPartyApiHost() {
+  return partyApiHost
+}
+
 const defaultOptions: RequestInit = {
   credentials: 'include',
 }
@@ -35,10 +39,11 @@ export function post<T>(path: string, body?: {data: any},
 function request<T>(method: 'get' | 'post', path: string, body?: {data: any},
                     params?: RequestParam[]): ResponsePromise<T> {
   const url = partyApiHost + path +
-    (params ? joinParams(params) : '')
-  const headers = body != null
-    ? {'Content-Type': 'application/json'}
-    : undefined
+    (params ? `?${joinParams(params)}` : '')
+  const headers = new Headers()
+  if (body != null) {
+    headers.append('Content-Type', 'application/json')
+  }
   const options: RequestInit = {
     ...defaultOptions,
     method,

@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:latest", "tslint-react"],
+  "extends": ["tslint:latest"],
   "rules": {
     "max-line-length": [true, 100],
     "quotemark": [
@@ -24,7 +24,11 @@
     "object-literal-sort-keys": false,
     "member-access": [true, "no-public"],
     "ban-types": [false],
+    "no-duplicate-imports": false,
+    "no-submodule-imports": false,
 
-    "jsx-wrap-multiline": false
+    "jsx-wrap-multiline": false,
+
+    "jsx-curly-spacing": ["always"]
   }
 }

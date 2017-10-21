@@ -1,6 +1,6 @@
-import 'preact'
+import { VNode } from 'mostly-dom'
 
 export interface TabProps {
   id?: string
-  heading?: JSX.Element
+  heading?: VNode
 }

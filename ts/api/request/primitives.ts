@@ -1,5 +1,5 @@
-import { Either, Maybe } from 'monet'
 import Promise = require('bluebird')
+import { Either, Maybe } from 'monet'
 
 import Errors from './errors'
 import { Error, nullErrorToNothing } from './errors'
@@ -34,6 +34,10 @@ export class Request<T> {
       )
     })
     .flatMap(nullErrorToNothing)
+  }
+
+  get result(): Maybe<T> {
+    return this.response.flatMap(eitherData => eitherData.toMaybe().map(data => data.attributes))
   }
 }
 

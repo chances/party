@@ -28,6 +28,18 @@ export default class Errors {
   static nullError = nullError
 
   constructor(public responseStatus: ErrorType | number, public errors: Error[]) {}
+
+  get isBadRequest() {
+    return this.responseStatus === 400
+  }
+
+  get isUnauthorized() {
+    return this.responseStatus === 401
+  }
+
+  get isNotFound() {
+    return this.responseStatus === 404
+  }
 }
 
 export function nullErrorToNothing(err: Error): Maybe<Error> {
