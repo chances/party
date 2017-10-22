@@ -1,5 +1,9 @@
 import { Maybe } from 'monet'
 
+import { PartyError } from './party-error'
+
+export { PartyError } from './party-error'
+
 export enum ErrorType {
   UNKNOWN_ERROR,
   NULL_ERROR,
@@ -29,6 +33,10 @@ export default class Errors {
 
   constructor(public responseStatus: ErrorType | number, public errors: Error[]) {}
 
+  get isRequestError() {
+    return this.responseStatus === 1
+  }
+
   get isBadRequest() {
     return this.responseStatus === 400
   }
@@ -39,6 +47,10 @@ export default class Errors {
 
   get isNotFound() {
     return this.responseStatus === 404
+  }
+
+  toError() {
+    return new PartyError(this)
   }
 }
 
