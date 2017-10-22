@@ -99,25 +99,27 @@ export class State {
   }
 
   private listenForPartyUpdates() {
-    this.party.map(party => {
-      const stream = getPartyStream()
-      stream.messages.recoverWith(err => {
-        if (stream.isClosed) {
-          throw err
-        }
+    this.partyStream = Maybe.fromNull(
+      this.party.cata(() => null, party => {
+        const stream = getPartyStream()
+        stream.messages.recoverWith(err => {
+          if (stream.isClosed) {
+            throw err
+          }
 
-        // TODO: Send an event to Sentry? (with the current state)
-        util.log('Party stream error: ', err)
+          // TODO: Send an event to Sentry? (with the current state)
+          util.log('Party stream error: ', err)
 
-        return stream.messages
-      }).observe(updatedParty => this.updateParty(updatedParty)).catch(err => {
-        util.log('Party stream closed: ', err)
+          return stream.messages
+        }).observe(updatedParty => this.updateParty(updatedParty)).catch(err => {
+          util.log('Party stream closed: ', err)
 
-        this.logout()
-      })
+          this.logout()
+        })
 
-      this.partyStream = Maybe.Just(stream)
-    })
+        return stream
+      }),
+    )
   }
 
   private toJs(): any {
