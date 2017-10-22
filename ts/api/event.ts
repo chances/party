@@ -29,6 +29,10 @@ export default class Source<T> {
     return JSON.parse(e.data) as T
   }
 
+  get isClosed() {
+    return this.eventSource.readyState === 2 /* sse.ReadyState.CLOSED */
+  }
+
   get opened() {
     return this.on('open').map(e => {
       // tslint:disable-next-line:no-console

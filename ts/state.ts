@@ -4,6 +4,7 @@ import { Either, Maybe } from 'monet'
 
 import Source from './api/event'
 import Errors from './api/request/errors'
+import { PartyError } from './api/request/errors'
 import { getParty, getPartyStream, JoinParty, joinParty, Party } from './models/party'
 import * as util from './util'
 
@@ -16,13 +17,14 @@ export class State {
   @observable tvMode: boolean
   @observable joining: Maybe<JoinParty>
   @observable party: Maybe<Party>
-  partyStream: Source<Party>
+  partyStream: Maybe<Source<Party>>
 
   constructor() {
     this.firstLaunch = true
     this.tvMode = false
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()
+    this.partyStream = Maybe.Nothing()
   }
 
   @action joinParty(partyCode: string) {
@@ -33,6 +35,8 @@ export class State {
 
   @action logout() {
     this.party = Maybe.Nothing()
+    this.partyStream.map(stream => stream.close())
+    this.partyStream = Maybe.Nothing()
   }
 
   @action showParty(joinPartyResponse: JoinParty) {
@@ -59,14 +63,14 @@ export class State {
 
       this.firstLaunch = restoredState.firstLaunch
       this.tvMode = restoredState.tvMode
-      this.party = Maybe.Just(restoredState.party)
+      this.party = Maybe.fromNull(restoredState.party)
 
-      this.ping().then(() => {
-        this.listenForPartyUpdates()
-      }).catch((errors: Errors) => {
-        if (errors.isUnauthorized) {
+      this.party.map(() => {
+        this.ping().then(() => {
+          this.listenForPartyUpdates()
+        }).catch((err: PartyError) => {
           this.logout()
-        }
+        })
       })
 
       return true
@@ -87,7 +91,7 @@ export class State {
       eitherParty.cata(
         errors => {
           util.log('Error pinging party: ', errors)
-          throw errors
+          throw errors.toError()
         },
         response => this.updateParty(response.attributes),
       )
@@ -98,13 +102,21 @@ export class State {
     this.party.map(party => {
       const stream = getPartyStream()
       stream.messages.recoverWith(err => {
+        if (stream.isClosed) {
+          throw err
+        }
+
         // TODO: Send an event to Sentry? (with the current state)
         util.log('Party stream error: ', err)
 
         return stream.messages
-      }).observe(this.updateParty)
+      }).observe(updatedParty => this.updateParty(updatedParty)).catch(err => {
+        util.log('Party stream closed: ', err)
 
-      this.partyStream = stream
+        this.logout()
+      })
+
+      this.partyStream = Maybe.Just(stream)
     })
   }
 
