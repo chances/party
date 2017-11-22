@@ -30,7 +30,7 @@ export function firstArtistName(artists: TrackArtist[]) {
 }
 
 export function largestImage(images: Image[]): Maybe<Image> {
-  if (images.length === 0) {
+  if (images == null || images.length === 0) {
     return Maybe.Nothing<Image>()
   }
 

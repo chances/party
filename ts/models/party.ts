@@ -31,6 +31,22 @@ export function getPartyStream(): Source<Party> {
   return new Source('events/party', 'party')
 }
 
+export function getQueue(): ResponsePromise<Track[]> {
+  return get<Track[]>('party/queue')
+}
+
+export function getQueueStream(partyStream: Source<Party>): Source<Track[]> {
+  return new Source(partyStream, 'queue')
+}
+
+export function getHistory(): ResponsePromise<Track[]> {
+  return get<Track[]>('party/history')
+}
+
+export function getHistoryStream(partyStream: Source<Party>): Source<Track[]> {
+  return new Source(partyStream, 'history')
+}
+
 export function postJoinParty(partyCode: string): ResponsePromise<Party> {
   return post<Party>('party/join', {
     data: {room_code: partyCode},

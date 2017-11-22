@@ -13,14 +13,17 @@ export interface MessageEvent extends Event {
 export default class Source<T> {
   private eventSource: typeof EventSource
 
-  constructor(private url: string, private messageName: string) {
-    this.eventSource = new EventSource(
-      `${getPartyApiHost()}${url}`,
-      {
-        withCredentials: true,
-      },
-    )
-    const opening = this.opened
+  constructor(private urlOrExistingSource: string | Source<any>, private messageName: string) {
+    if (typeof urlOrExistingSource === 'string') {
+      this.eventSource = new EventSource(
+        `${getPartyApiHost()}${urlOrExistingSource}`,
+        {
+          withCredentials: true,
+        },
+      )
+    } else {
+      this.eventSource = urlOrExistingSource.eventSource
+    }
   }
 
   static parseMessage<T>(e: MessageEvent) {
