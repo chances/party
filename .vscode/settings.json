@@ -1,0 +1,24 @@
+{
+    "search.exclude": {
+        "# Node": true,
+        "node_modules/": true,
+        "npm-debug.log": true,
+        "# Code coverage": true,
+        ".nyc_output/": true,
+        "# Intermediate build files": true,
+        "js/": true,
+        "coverage/": true,
+        "graph.svg": true
+    },
+    "files.exclude": {
+        "# Node": true,
+        "node_modules/": true,
+        "npm-debug.log": true,
+        "# Code coverage": true,
+        ".nyc_output/": true,
+        "# Intermediate build files": true,
+        "js/": true,
+        "coverage/": true,
+        "graph.svg": true
+    }
+}
