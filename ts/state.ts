@@ -23,6 +23,7 @@ localForage.config({ name: 'party' })
 export class State {
   firstLaunch: boolean
   @observable tvMode: boolean
+  @observable partyCode: Maybe<string>
   @observable joining: Maybe<JoinParty>
   @observable party: Maybe<Party>
   @observable queue: Maybe<Track[]>
@@ -33,7 +34,8 @@ export class State {
 
   constructor() {
     this.firstLaunch = true
-    this.tvMode = false
+    this.tvMode = util.queryParams.tvMode != null
+    this.partyCode = Maybe.Nothing()
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()
     this.queue = Maybe.Nothing()
@@ -41,6 +43,7 @@ export class State {
   }
 
   @action joinParty(partyCode: string) {
+    this.partyCode = Maybe.Just(partyCode)
     const joinPartyRequest = new JoinParty(partyCode)
     joinParty(joinPartyRequest)
     this.joining = Maybe.Just(joinPartyRequest)
@@ -202,7 +205,7 @@ export class State {
   private toJs(): any {
     return {
       firstLaunch: this.firstLaunch,
-      tvMode: this.tvMode,
+      partyCode: this.partyCode.orNull(),
       party: this.party.orNull(),
     }
   }
