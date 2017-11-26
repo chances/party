@@ -13,7 +13,10 @@ export default function render() {
   return main(header(State.party.isNothing(), State.tvMode).concat(
     State.party.cata(
       () => [
-        div({ attrs: { id: 'content' } }, [ splash() ]),
+        div(
+          { attrs: { id: 'content' }, class: util.klass({ 'tv-mode': State.tvMode }) },
+          [ splash() ],
+        ),
         div([
           p('Made with love in PDX.'),
         ]),

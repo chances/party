@@ -11,6 +11,9 @@ main {
 h1, h2 {
   margin: 0.75rem 0;
 }
+h2 > pre {
+  display: inline;
+}
 
 #musicMenu {
   margin: 1rem 0;
