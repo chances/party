@@ -62,12 +62,20 @@ export function joinParty(payload: JoinParty) {
 
   joinPartyPromise = postJoinParty(payload.partyCode)
   joinPartyPromise.then(eitherParty => {
-    // TODO: Only show party if party response is not ended
+    // Only show party if it is not ended
+    const maybeEnded = eitherParty.toMaybe().map(p => p.attributes.ended)
+    if (maybeEnded.isJust() && maybeEnded.just()) {
+      eitherParty = Either.Left(new Errors(401, [Errors.create(
+        'Bad Request',
+        `Party ${payload.partyCode} has ended`,
+      )]))
+    }
+    // Otherwise show the party or error
     State.showParty(new JoinParty(
       payload.partyCode,
       eitherParty.leftMap(errors => {
         // Friendly Party not found error message
-        if (errors.responseStatus === 404) {
+        if (errors.isNotFound) {
           errors.errors = [Errors.create(
             'Not Found',
             `Party ${payload.partyCode} not found`,
