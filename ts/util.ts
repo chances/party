@@ -24,6 +24,24 @@ interface ClassObject {
   [name: string]: boolean
 }
 
+export interface ParamMap {[index: string]: string}
+function getParams(query: string): ParamMap {
+  if (!query) {
+    return { }
+  }
+
+  return (/^[?#]/.test(query) ? query.slice(1) : query)
+    .split('&')
+    .reduce((params: ParamMap, param) => {
+      const [ key, value ] = param.split('=')
+      params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : ''
+      return params
+    }, { })
+}
+
+export const queryParams = getParams(window.location.search)
+log('Query params: ', queryParams)
+
 export function klass(classes: ClassObject) {
   const filteredClasses: ClassObject = {}
   for (const name in classes) {
