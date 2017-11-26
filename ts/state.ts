@@ -1,3 +1,4 @@
+import Promise = require('bluebird')
 import localForage = require('localforage')
 import { action, observable, useStrict } from 'mobx'
 import { Either, Maybe } from 'monet'
@@ -5,6 +6,7 @@ import { Either, Maybe } from 'monet'
 import Source from './api/event'
 import Errors from './api/request/errors'
 import { PartyError } from './api/request/errors'
+import { Data } from './api/request/primitives'
 import {
   getHistory, getHistoryStream,
   getParty, getPartyStream,
@@ -50,9 +52,12 @@ export class State {
     this.partyStream = Maybe.Nothing()
   }
 
-  @action showParty(joinPartyResponse: JoinParty) {
-    this.joining = Maybe.Just(joinPartyResponse)
-    this.party = joinPartyResponse.result
+  @action showParty(joinResponse: JoinParty) {
+    this.joining = Maybe.Just(joinResponse)
+    if (joinResponse.isErrored) {
+      return
+    }
+    this.party = joinResponse.result
 
     this.listenForUpdates().then(() => {
       // TODO: Preload all images; Or make images fade in somehow?
@@ -75,28 +80,37 @@ export class State {
 
   // Try to rehydrate state from cached storage
   rehydrate(): Promise<boolean> {
-    return localForage.ready().then(() => {
-      return localForage.getItem('state') as Promise<any>
-    }).then(restoredState => {
-      if (restoredState == null) {
-        return false
-      }
+    return new Promise(resolve => {
+      localForage.ready().then(() => {
+        return localForage.getItem('state')
+      }).then((restoredState: any) => {
+        if (restoredState == null) {
+          throw false
+        }
 
-      this.firstLaunch = restoredState.firstLaunch
-      this.tvMode = restoredState.tvMode
-      this.party = Maybe.fromNull(restoredState.party)
+        this.firstLaunch = false
+        this.partyCode = Maybe.fromFalsy(restoredState.partyCode)
+        this.party = Maybe.fromFalsy(restoredState.party)
 
-      this.party.map(() => {
-        this.ping()
-          .then(() => this.listenForUpdates())
-          .catch((err: PartyError) => {
+        return this.ping()
+      }).then((eitherParty: Either<PartyError, Data<Party>>) => {
+        eitherParty.cata(err => {
+          this.logout()
+        }, partyData => {
+          const party = partyData.attributes
+          if (party.ended) {
+            util.log('Party ended: ', party)
             this.logout()
-          })
-      })
+            return
+          }
+          this.updateParty(party)
+          this.listenForUpdates()
+        })
 
-      return true
-    }).catch(() => {
-      return false
+        resolve(true)
+      }).catch(() => {
+        resolve(false)
+      })
     })
   }
 
@@ -109,13 +123,9 @@ export class State {
 
   private ping() {
     return getParty().then(eitherParty => {
-      eitherParty.cata(
-        errors => {
-          util.log('Error pinging party: ', errors)
-          throw errors.toError()
-        },
-        response => this.updateParty(response.attributes),
-      )
+      return eitherParty.leftMap(errors => {
+        return errors.toError()
+      })
     })
   }
 
