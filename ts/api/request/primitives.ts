@@ -20,6 +20,10 @@ export class Request<T> {
     return this.response.isJust()
   }
 
+  get isErrored(): boolean {
+    return this.isCompleted && this.error.isJust()
+  }
+
   get error(): Maybe<Error> {
     return this.response
     .map(eitherResponse => {
