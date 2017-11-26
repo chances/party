@@ -18,6 +18,7 @@ export default function render(props: Props) {
     () => true,
     currentPartyCode => currentPartyCode.length === 0,
   )
+  props.partyCode.map(code => partyCode = code)
 
   return form({
     attrs: { id: 'join' },
