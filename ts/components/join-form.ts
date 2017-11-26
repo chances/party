@@ -70,7 +70,7 @@ function partyCodeInputChange(e: Event) {
   const submit = partyCodeInput.nextSibling as HTMLInputElement
   const pillGroup = partyCodeInput.parentElement as HTMLElement
   const value = stripNonAlphaNumeric(
-    partyCodeInput.value.trim().replace(whitespace, ''),
+    partyCodeInput.value.trim().toUpperCase().replace(whitespace, ''),
   )
   partyCodeInput.value = value
   partyCode = value
