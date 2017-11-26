@@ -23,13 +23,16 @@ export default function render() {
 }
 
 function stateProps(state: typeof State): SplashProps {
+  const partyCode = state.joining
+    .map(joinRequest => joinRequest.partyCode)
+    .cata(() => state.partyCode, code => Maybe.Just(code))
   const isJoining = state.joining.cata(() => false, request => request.isLoading)
   const maybeError = state.joining
     .flatMap(request => request.error)
     .map(err => err.detail)
 
   return {
-    partyCode: state.joining.map(joinRequest => joinRequest.partyCode),
+    partyCode,
     isJoining,
     error: maybeError,
   }
