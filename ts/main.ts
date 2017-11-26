@@ -50,4 +50,9 @@ function bootstrap() {
 
     State.persist()
   })
+
+  if (State.party.isNothing()) {
+    // Try to join party via hash
+    State.tryToJoinViaHash()
+  }
 }

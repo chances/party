@@ -81,6 +81,17 @@ export class State {
 
   // TODO: A leaveParty action; it should close the partyStream
 
+  // Try to join party via hash
+  tryToJoinViaHash() {
+    const hash = window.location.hash.replace('#', '').split('/')[0]
+    const maybePartyCode = Maybe.fromFalsy(hash)
+    maybePartyCode.map(partyCode => {
+      if (partyCode.match(/^[A-Z0-9]{4}$/i)) {
+        this.joinParty(partyCode)
+      }
+    })
+  }
+
   // Try to rehydrate state from cached storage
   rehydrate(): Promise<boolean> {
     return new Promise(resolve => {
