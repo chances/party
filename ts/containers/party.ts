@@ -1,33 +1,33 @@
+import { html, TemplateResult } from 'lit-html'
 import { Maybe } from 'monet'
-import { a, div, h, li, main, nav, p, ul, VNode } from 'mostly-dom'
 
 import * as api from '../api'
 import State from '../state'
 import * as util from '../util'
 
 import header from '../components/logo'
-import nowPlaying from '../components/now-playing'
+import nowPlaying from '../components/music/now-playing'
 import splash from './splash'
 
 export default function render() {
-  return main(header(State.party.isNothing(), State.tvMode).concat(
-    State.party.cata(
-      () => [
-        div(
-          { attrs: { id: 'content' }, class: util.klass({ 'tv-mode': State.tvMode }) },
-          [ splash() ],
-        ),
-        div([
-          p('Made with love in PDX.'),
-        ]),
-      ],
-      party => [
-        party.current_track ? musicMenu() : div(),
-        nowPlaying(),
-        mainMenu(),
-      ],
-    ),
-  ))
+  return html`<main>
+    ${header(State.party.isNothing(), State.tvMode)}
+    ${State.party.cata(
+      () => html`
+        <div id="content" class$="${util.klass({ 'tv-mode': State.tvMode })}">
+          ${splash()}
+        </div>
+        <div>
+          <p>Made with love in PDX.</p>
+        </div>
+      `,
+      party => html`
+        ${party.current_track ? musicMenu() : html`<div></div>`}
+        ${nowPlaying()}
+        ${mainMenu()}
+      `,
+    )}
+  </main>`
 }
 
 function musicMenu() {
@@ -47,14 +47,14 @@ function mainMenu() {
   ])
 }
 
-function menu(id: string, secondary: boolean, items: VNode[]) {
-  return nav({ key: id, attrs: { id }, class: util.klass({ menu: true, secondary }) }, [
-    ul(items),
-  ])
+function menu(id: string, secondary: boolean, items: TemplateResult[]) {
+  return html`<nav id=${id} class$="${util.klass({ menu: true, secondary })}">
+    <ul>${items}</ul>
+  </nav>`
 }
 
 function menuItem(hash: string, label: string, selected: boolean = false) {
-  return li({ attrs: { id: hash + 'MenuItem' }, class: util.klass({ selected }) }, [
-    a({ attrs: { href: '#' + hash } }, label),
-  ])
+  return html`<li id="${hash + 'MenuItem'}" class$="${util.klass({ selected })}">
+    <a href="${'#' + hash}">${label}</a>
+  </li>`
 }

@@ -39,15 +39,17 @@ function getParams(query: string): ParamMap {
     }, { })
 }
 
-export const queryParams = getParams(window.location.search)
-log('Query params: ', queryParams)
+export function queryParams(): ParamMap {
+  const params = getParams(window.location.search)
+  return log('Query params: ', params)
+}
 
 export function klass(classes: ClassObject) {
-  const filteredClasses: ClassObject = {}
+  const filteredClasses: string[] = []
   for (const name in classes) {
     if (classes[name]) {
-      filteredClasses[name] = true
+      filteredClasses.push(name)
     }
   }
-  return filteredClasses
+  return filteredClasses.length ? filteredClasses.join(' ') : ''
 }

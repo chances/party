@@ -1,5 +1,5 @@
+import { html } from 'lit-html/lib/lit-extended'
 import { Maybe } from 'monet'
-import { div, form, h1, input, label, p } from 'mostly-dom'
 
 import State from '../state'
 import * as util from '../util'
@@ -20,49 +20,34 @@ export default function render(props: Props) {
   )
   props.partyCode.map(code => partyCode = code)
 
-  return form({
-    attrs: { id: 'join' },
-    on: { submit: onJoinSubmitted },
-  }, [
-    h1('Join a Party'),
-    p('Help mix things up and join the fun!'),
-    div({ class: { 'form-group': true } }, [
-      label({ attrs: { for: 'partyCode' } }, 'Party code:'),
-      div({ class: { 'pill-group': true } }, [
-        input({
-          attrs: {
-            id: 'partyCode',
-            type: 'text',
-            value: props.partyCode.orJust(''),
-            placeholder: 'Ab7j',
-            autofocus: true,
-            autocomplete: 'off',
-            maxLength: 4,
-            disabled: props.isJoining,
-          },
-          on: {
-            input: partyCodeInputChange,
-            focus: focusBlurJoinForm,
-            blur: focusBlurJoinForm,
-          },
-        }),
-        input({
-          class: util.klass({ hiding: isSubmitHiding }),
-          attrs: {
-            type: 'submit',
-            value: 'Join',
-            title: 'Join the party',
-          },
-          on: {
-            focus: focusBlurJoinForm,
-            blur: focusBlurJoinForm,
-          },
-        }),
-      ]),
-      spinner(!props.isJoining),
-    ]),
-    props.error.isJust() ? p({ class: { error: true } }, props.error.just()) : p(),
-  ])
+  return html`<form id="join" onsubmit=${onJoinSubmitted}>
+    <h1>Join a Party</h1>
+    <p>Help mix things up and join the fun!</p>
+    <div class="form-group">
+      <label for="partyCode">Party code:</label>
+      <div class="pill-group">
+        <input
+          id="partyCode"
+          type="text"
+          value=${props.partyCode.orJust('')}
+          placeholder="Ab7j"
+          autofocus=${true} autocomplete="off"
+          maxLength="4" disabled=${props.isJoining}
+          oninput=${partyCodeInputChange}
+          onfocus=${focusBlurJoinForm}
+          onblur=${focusBlurJoinForm} />
+        <input
+          class$="${util.klass({ hiding: isSubmitHiding })}"
+          type="submit" value="Join" title="Join the party"
+          onfocus=${focusBlurJoinForm}
+          onblur=${focusBlurJoinForm} />
+      </div>
+      ${spinner(!props.isJoining)}
+    </div>
+    ${props.error.isJust() // Error message
+      ? html`<p class="error">${props.error.just()}</p>`
+      : html`<p></p>`}
+  </form>`
 }
 
 let partyCode = ''

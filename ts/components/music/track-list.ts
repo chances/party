@@ -1,4 +1,4 @@
-import { div, h2, ul } from 'mostly-dom'
+import { html } from 'lit-html/lib/lit-extended'
 
 import * as models from '../../models'
 import * as Track from './track'
@@ -57,8 +57,9 @@ export default function render(id: string, heading: string, tracks: models.Track
   tracks = tracks || placeholderTracks
   const trackListItems = tracks.map(t => Track.listItem(t))
 
-  return div({ attrs: { id } }, [
-    h2(heading),
-    ul({ class: { tracks: true } }, trackListItems),
-  ])
+  // TODO: Use lit-html's list helper directive for the track list items
+  return html`<div id="${id}">
+    <h2>${heading}</h2>
+    <ul class="tracks">${trackListItems}</ul>
+  </div>`
 }

@@ -34,7 +34,7 @@ export class State {
 
   constructor() {
     this.firstLaunch = true
-    this.tvMode = util.queryParams.tvMode != null
+    this.tvMode = util.queryParams().tvMode != null
     this.partyCode = Maybe.Nothing()
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()

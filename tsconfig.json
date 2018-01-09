@@ -5,6 +5,10 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "baseUrl": "./node_modules",
+      "typeRoots": [
+        "@types",
+        "ts/typings"
+      ],
       "strict": true,
       "strictNullChecks": true,
       "removeComments": false,

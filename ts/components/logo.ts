@@ -1,21 +1,20 @@
-import { div, h, h2, img, p, pre, VNode } from 'mostly-dom'
+import { html } from 'lit-html/lib/lit-extended'
 
 export default function header(isSplash: boolean, tvMode: boolean = false) {
-  const header: VNode[] = []
+  let header
 
   if (isSplash) {
-    header.push(
-      div({ attrs: { id: 'logo' } }, [
-        img({ attrs: { src: '/assets/images/party/Party-logo-invert.png', alt: 'Party' } }),
-        p({ style: { marginTop: 0 } }, 'Prototype'),
-      ]),
-    )
+    header = html`<div id="logo">
+      <img src="/assets/images/party/Party-logo-invert.png" alt="Party" />
+      <p style="margin-top: 0;">Prototype</p>
+    </div>`
   }
 
   if (tvMode) {
-    header.push(
-      h2(['Open ', pre('chances.party'), ' in your browser']),
-    )
+    header = html`
+      ${header}
+      <h2>Open <pre>chances.party</pre> in your browser
+    `
   }
 
   return header

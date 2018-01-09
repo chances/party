@@ -23,8 +23,8 @@ test('klass emits identity when all names are true', t => {
   const hiding = { hiding: true }
   const hidingAndSelected = { hiding: true, selected: true }
 
-  expect(that(klass(hiding)).is.deep.equal(hiding))
-  expect(that(klass(hidingAndSelected)).is.deep.equal(hidingAndSelected))
+  expect(that(klass(hiding)).equals('hiding'))
+  expect(that(klass(hidingAndSelected)).equals('hiding selected'))
 
   t.end()
 })
@@ -33,8 +33,8 @@ test('klass emits only true names', t => {
   const hiding = { hiding: false }
   const notHidingAndSelected = { hiding: false, selected: true }
 
-  expect(that(klass(hiding)).is.deep.equal({}))
-  expect(that(klass(notHidingAndSelected)).is.deep.equal({ selected: true }))
+  expect(that(klass(hiding)).equals(''))
+  expect(that(klass(notHidingAndSelected)).equals('selected'))
 
   t.end()
 })

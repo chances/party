@@ -1,10 +1,5 @@
+import { render } from 'lit-html/lib/lit-extended'
 import { autorun } from 'mobx'
-import {
-  createAttributesModule,
-  createClassModule,
-  createEventsModule,
-  createStylesModule,
-  elementToVNode, h, init } from 'mostly-dom'
 
 import * as api from './api'
 import State from './state'
@@ -21,13 +16,6 @@ import party from './containers/party'
 const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
 api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
 
-const patch = init([
-  createAttributesModule(),
-  createClassModule(),
-  createEventsModule(),
-  createStylesModule(),
-])
-
 const main = document.querySelector('main')
 State.rehydrate().then(rehydrated => {
   if (main !== null) {
@@ -38,21 +26,20 @@ State.rehydrate().then(rehydrated => {
 })
 
 function bootstrap() {
-  if (main != null) {
+  const body = main ? main.parentElement : null
+  if (main !== null && body !== null) {
     main.classList.remove('splash')
     main.classList.remove('hiding')
-  }
 
-  let vdom = patch(elementToVNode(main as Element), party())
+    autorun(() => {
+      render(party(), body)
 
-  autorun(() => {
-    vdom = patch(vdom, party())
+      State.persist()
+    })
 
-    State.persist()
-  })
-
-  if (State.party.isNothing()) {
-    // Try to join party via hash
-    State.tryToJoinViaHash()
+    if (State.party.isNothing()) {
+      // Try to join party via hash
+      State.tryToJoinViaHash()
+    }
   }
 }

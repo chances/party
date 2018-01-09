@@ -1,4 +1,7 @@
-import { span, svg } from 'mostly-dom'
+import { svg } from 'lit-html'
+import { html } from 'lit-html/lib/lit-extended'
+
+import * as util from '../util'
 
 export class Spinner {
   pHidden?: boolean
@@ -27,29 +30,22 @@ export class Spinner {
 export default function render(hidden: boolean) {
   const dur = '0.7s'
 
-  return span({ class: { spinner: true, hidden } }, [
-    svg({ attrs: {
-      x: '0px', y: '0px',
-      width: 40 + 'px', height: 40 + 'px',
-      viewBox: '0 0 50 50',
-    },    style: {
-      // 'enable-background': 'new 0 0 50 50',
-    }}, [
-      svg.path({ class: { spinner: true }, attrs: {
-        fill: '#FCFCFC',
+  return html`<span class$="${util.klass({ spinner: true, hidden })}">
+    <svg x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50">
+      ${svg
         // tslint:disable-next-line:max-line-length
-        d: 'M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z',
-      }}, [
-        svg.animateTransform({ attrs: {
-          attributeType: 'xml',
-          attributeName: 'transform',
-          type: 'rotate',
-          from: '0 25 25',
-          to: '360 25 25',
-          dur,
-          repeatCount: 'indefinite',
-        }}),
-      ]),
-    ]),
-  ])
+        `<path class="spinner" fill="#FCFCFC" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+          <animateTransform
+            attributeName="transform"
+            attributeType="xml"
+            type="rotate"
+            from="0 25 25"
+            to="360 25 25"
+            dur="0.7s"
+            repeatCount="indefinite"
+          />
+        </path>`
+      }
+    </svg>
+  </span>`
 }
