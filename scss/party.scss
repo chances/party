@@ -35,8 +35,9 @@ main.splash > #content {
   flex-direction: row;
   justify-content: center;
 }
-#content.no-music {
+#content.placeholder {
   flex-direction: column;
+  justify-content: center;
   margin-bottom: 3rem;
 }
 
@@ -233,6 +234,7 @@ $query-height: 2rem;
   }
 
   #nowPlaying > img {
+    min-width: 4.5rem;
     max-width: 30vw;
   }
 
@@ -302,6 +304,10 @@ $query-height: 2rem;
     & img {
       max-width: 6rem;
     }
+  }
+
+  #upNext {
+    max-width: 37.5vw;
   }
 }
 

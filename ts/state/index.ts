@@ -3,18 +3,22 @@ import localForage = require('localforage')
 import { action, observable, useStrict } from 'mobx'
 import { Either, Maybe } from 'monet'
 
-import Source from './api/event'
-import Errors from './api/request/errors'
-import { PartyError } from './api/request/errors'
-import { Data } from './api/request/primitives'
+import Source from '../api/event'
+import Errors from '../api/request/errors'
+import { PartyError } from '../api/request/errors'
+import { Data } from '../api/request/primitives'
 import {
   getHistory, getHistoryStream,
   getParty, getPartyStream,
   getQueue, getQueueStream,
   JoinParty, joinParty, Party,
-} from './models/party'
-import { Track } from './models/track'
-import * as util from './util'
+} from '../models/party'
+import { Track } from '../models/track'
+import * as util from '../util'
+
+import Menu, { MainTab, MusicTab, Route } from './menu'
+
+export { Route } from './menu'
 
 useStrict(true)
 
@@ -23,6 +27,8 @@ localForage.config({ name: 'party' })
 export class State {
   firstLaunch: boolean
   @observable tvMode: boolean
+  menu: Menu
+
   @observable partyCode: Maybe<string>
   @observable joining: Maybe<JoinParty>
   @observable party: Maybe<Party>
@@ -35,6 +41,7 @@ export class State {
   constructor() {
     this.firstLaunch = true
     this.tvMode = util.queryParams().tvMode != null
+    this.menu = new Menu()
     this.partyCode = Maybe.Nothing()
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()
@@ -61,6 +68,8 @@ export class State {
       return
     }
     this.party = joinResponse.result
+
+    window.history.replaceState('', '', '/party/music')
 
     this.listenForUpdates().then(() => {
       // TODO: Preload all images; Or make images fade in somehow?
