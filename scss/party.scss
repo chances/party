@@ -52,6 +52,10 @@ main.splash > #content {
   & > .song-info {
     margin-left: 1rem;
   }
+
+  & .song-info > .artist {
+    font-size: 0.9rem;
+  }
 }
 #content.tv-mode > #nowPlaying > h2 {
   display: block;
@@ -88,7 +92,7 @@ main.splash > #content {
   }
 
   & .song-info > span {
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     white-space: nowrap;
   }
   & .song-info > .title {
