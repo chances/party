@@ -69,7 +69,7 @@ export class State {
     }
     this.party = joinResponse.result
 
-    window.history.replaceState('', '', '/party/music')
+    window.history.replaceState('', '', '/party#music')
 
     this.listenForUpdates().then(() => {
       // TODO: Preload all images; Or make images fade in somehow?
