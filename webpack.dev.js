@@ -14,7 +14,7 @@ module.exports = merge(common, {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      PARTY_API: 'http://app.local:3005'
+      PARTY_API: 'http://10.0.0.20:3005'
     })
   ]
 })
