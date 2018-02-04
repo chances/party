@@ -22,14 +22,17 @@
     "codecov": "^2.2.0",
     "concurrently": "^3.5.0",
     "faucet": "^0.0.1",
+    "fork-ts-checker-webpack-plugin": "^0.3.0",
     "nyc": "^11.0.2",
     "sane": "^2.0.0",
     "tap-dot": "^1.0.5",
     "tape": "^4.6.3",
+    "ts-loader": "^3.4.0",
     "ts-node": "^3.1.0",
     "tslint": "^5.4.3",
     "typescript": "^2.6.0",
-    "webpack": "^3.5.6"
+    "webpack": "^3.5.6",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "@most/create": "^2.0.1",

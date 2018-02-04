@@ -11,7 +11,7 @@ CODECOV = ./node_modules/.bin/codecov
 SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
-TS_ENTRY_POINT := ./ts/main.tsx
+TS_ENTRY_POINT := ./ts/main.ts
 JS_ENTRY_POINT := ./js/main.js
 WEBPACK_TARGET := ../assets/javascript/party.js
 
@@ -30,10 +30,9 @@ css:
 
 js:
 	@echo "Building chances-party browser client..."
-	@echo "Entry point: ${JS_ENTRY_POINT}"
+	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Webpack target: ${WEBPACK_TARGET}"
-	@${TSC}
-	@NODE_ENV=production PARTY_API='https://party.chancesnow.me' ${WEBPACK}
+	@NODE_ENV=production ${WEBPACK} --config webpack.prod.js
 .PHONY: js
 
 lint:
@@ -58,10 +57,9 @@ test-ci: lint
 .PHONY: test-ci
 
 watch:
-	@echo "Entry point: ${JS_ENTRY_POINT}"
+	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Browserify target: ${WEBPACK_TARGET}"
 	@${CONCURRENTLY} --kill-others \
-		"${TSC} -w 1> /dev/null" \
 		"cd ../..; make --quiet watch &> /dev/null" \
 		"make --quiet browser-sync &> /dev/null" \
 		"make --quiet watch-scss" \
@@ -78,7 +76,7 @@ watch-scss:
 
 watch-js:
 	@export PARTY_API="http://10.0.0.20:3005"
-	@${WEBPACK} --watch
+	@${WEBPACK} --config webpack.dev.js --watch
 .PHONY: watch-js
 
 watch-tests: test
