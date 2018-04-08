@@ -34,12 +34,11 @@ export function largestImage(images: Image[]): Maybe<Image> {
     return Maybe.Nothing<Image>()
   }
 
-  let largestImage = images[0]
-  for (let imageIndex = 1; imageIndex < images.length; imageIndex++) {
-    const image = images[imageIndex]
-    if (image.width * image.height > largestImage.width * largestImage.height) {
-      largestImage = image
+  return Maybe.Just(images.reduce((largest, image) => {
+    if (image.width * image.height > largest.width * largest.height) {
+      return image
+    } else {
+      return largest
     }
-  }
-  return Maybe.Just(largestImage)
+  }))
 }
