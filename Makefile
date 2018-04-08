@@ -35,6 +35,13 @@ js:
 	@NODE_ENV=production ${WEBPACK} --config webpack.prod.js
 .PHONY: js
 
+js-dev:
+	@echo "Building chances-party browser client..."
+	@echo "Entry point: ${TS_ENTRY_POINT}"
+	@echo "Webpack target: ${WEBPACK_TARGET}"
+	@NODE_ENV=development ${WEBPACK} --config webpack.dev.js
+.PHONY: js-dev
+
 lint:
 	@${TS_LINT} -c ./tslint.json ${TS_SOURCES}
 .PHONY: lint
