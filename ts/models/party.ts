@@ -1,7 +1,8 @@
-import { Either, Maybe } from 'monet'
+import { Either } from 'monet'
 
 import { Errors, get, post, Request, Response, ResponsePromise } from '../api'
 import Source from '../api/event'
+import { reportErrors, setUserContext } from '../sentry'
 import State from '../state'
 import { Track } from './track'
 
@@ -81,7 +82,13 @@ export function joinParty(payload: JoinParty) {
             `Party ${payload.partyCode} not found`,
           )]
         }
+        reportErrors(errors)
         return errors
+      }).flatMap(party => {
+        setUserContext({
+          roomCode: party.attributes.room_code,
+        })
+        return Either.Right(party)
       }),
     ))
   })

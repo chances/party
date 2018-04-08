@@ -2,6 +2,7 @@ import { render } from 'lit-html/lib/lit-extended'
 import { autorun } from 'mobx'
 
 import * as api from './api'
+import { reportErrors } from './sentry'
 import State from './state'
 import * as util from './util'
 
@@ -17,12 +18,14 @@ const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
 api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
 
 const main = document.querySelector('main')
-State.rehydrate().then(rehydrated => {
-  if (main !== null) {
-    main.classList.add('hiding')
+reportErrors(() => {
+  State.rehydrate().then(_wasRehydrated => {
+    if (main !== null) {
+      main.classList.add('hiding')
 
-    setTimeout(bootstrap, 300)
-  }
+      setTimeout(bootstrap, 300)
+    }
+  })
 })
 
 function bootstrap() {

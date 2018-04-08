@@ -49,6 +49,16 @@ export default class Errors {
     return this.responseStatus === 404
   }
 
+  get type() {
+    switch (this.responseStatus) {
+      case 1: return 'request-error'
+      case 400: return 'bad-request'
+      case 401: return 'unauthorized'
+      case 404: return 'not-found'
+      default: return 'error'
+    }
+  }
+
   toError() {
     return new PartyError(this)
   }

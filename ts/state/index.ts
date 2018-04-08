@@ -14,6 +14,7 @@ import {
   JoinParty, joinParty, Party,
 } from '../models/party'
 import { Track } from '../models/track'
+import { captureBreadcrumb, setUserContext } from '../sentry'
 import * as util from '../util'
 
 import Menu, { MainTab, MusicTab, Route } from './menu'
@@ -60,6 +61,7 @@ export class State {
     this.party = Maybe.Nothing()
     this.partyStream.map(stream => stream.close())
     this.partyStream = Maybe.Nothing()
+    setUserContext()
   }
 
   @action showParty(joinResponse: JoinParty) {
@@ -138,10 +140,12 @@ export class State {
   }
 
   persist() {
+    const snapshot = this.toJs()
     localForage.setItem(
       'state',
-      util.log('State changed: ', this.toJs()),
+      util.log('State changed: ', snapshot),
     )
+    captureBreadcrumb('state', snapshot)
   }
 
   private ping() {
