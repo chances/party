@@ -1,6 +1,6 @@
 import { html } from 'lit-html/lib/lit-extended'
 
-export default function header(isSplash: boolean, tvMode: boolean = false) {
+export default function render(isSplash: boolean, tvMode: boolean = false) {
   let header
 
   if (isSplash) {

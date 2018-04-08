@@ -5,14 +5,14 @@ import State, { Route } from '../state'
 import Router from '../state/router'
 import * as util from '../util'
 
-import header from '../components/logo'
+import logoHeader from '../components/logo'
 import history from '../components/music/history'
 import nowPlaying from '../components/music/now-playing'
 import splash from './splash'
 
 export default function render() {
   return html`<main>
-    ${header(State.party.isNothing(), State.tvMode)}
+    ${logoHeader(State.party.isNothing(), State.tvMode)}
     ${State.party.cata(renderSplash, renderParty)}
   </main>`
 }
