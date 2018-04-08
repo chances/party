@@ -4,7 +4,6 @@ import { action, observable, useStrict } from 'mobx'
 import { Either, Maybe } from 'monet'
 
 import Source from '../api/event'
-import Errors from '../api/request/errors'
 import { PartyError } from '../api/request/errors'
 import { Data } from '../api/request/primitives'
 import {
@@ -47,7 +46,10 @@ export class State {
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()
     this.queue = Maybe.Nothing()
+    this.history = Maybe.Nothing()
     this.partyStream = Maybe.Nothing()
+    this.queueStream = Maybe.Nothing()
+    this.historyStream = Maybe.Nothing()
   }
 
   @action joinParty(partyCode: string) {
@@ -119,7 +121,7 @@ export class State {
 
         return this.ping()
       }).then((eitherParty: Either<PartyError, Data<Party>>) => {
-        eitherParty.cata(err => {
+        eitherParty.cata(_ => {
           this.logout()
         }, partyData => {
           const party = partyData.attributes
@@ -166,7 +168,7 @@ export class State {
 
   private listenForPartyUpdates() {
     this.partyStream = Maybe.fromNull(
-      this.party.cata(() => null, party => {
+      this.party.cata(() => null, _ => {
         const stream = getPartyStream()
         this.observeStream(stream, updatedParty => this.updateParty(updatedParty))
 

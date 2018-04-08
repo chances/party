@@ -1,17 +1,8 @@
 import { TemplateResult } from 'lit-html'
 import { html } from 'lit-html/lib/lit-extended'
-import { Maybe } from 'monet'
 
 import * as models from '../../models'
 import { firstArtistName, largestImage } from '../../models'
-import { TabProps } from '../tab'
-
-interface TrackProps {
-  value: models.Track
-  elemType: 'div' | 'li'
-}
-
-type Props = TrackProps & TabProps
 
 export function listItem(t: models.Track) {
   return track('li', t)

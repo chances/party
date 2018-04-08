@@ -73,7 +73,7 @@ function request<T>(method: 'get' | 'post', path: string, body?: {data: any},
           )) as p.Response<T>)
         }
       })
-    }).catch(e => {
+    }).catch(_ => {
       resolve(Either.Left(new Errors(
         ErrorType.NULL_ERROR,
         [ Errors.defaultError ],

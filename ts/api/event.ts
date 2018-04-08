@@ -2,8 +2,8 @@
 /// <reference path="../typings/sse.d.ts" />
 
 import { create } from '@most/create'
-import * as most from 'most'
 
+import * as util from '../util'
 import { getPartyApiHost } from './request'
 
 export interface MessageEvent extends Event {
@@ -13,7 +13,7 @@ export interface MessageEvent extends Event {
 export default class Source<T> {
   private eventSource: typeof EventSource
 
-  constructor(private urlOrExistingSource: string | Source<any>, private messageName: string) {
+  constructor(urlOrExistingSource: string | Source<any>, private messageName: string) {
     if (typeof urlOrExistingSource === 'string') {
       this.eventSource = new EventSource(
         `${getPartyApiHost()}${urlOrExistingSource}`,
@@ -27,8 +27,7 @@ export default class Source<T> {
   }
 
   static parseMessage<T>(e: MessageEvent) {
-    // tslint:disable-next-line:no-console
-    console.log('Received message: ', e.data)
+    util.log('Received message: ', e.data)
     return JSON.parse(e.data) as T
   }
 
@@ -57,7 +56,7 @@ export default class Source<T> {
           end()
         }
       }
-      const addError = (e: any) => error(new Error('EventSource failed.'))
+      const addError = (_: any) => error(new Error('EventSource failed.'))
 
       this.eventSource.addEventListener(eventType, addEvent)
       this.eventSource.addEventListener('error', addError)

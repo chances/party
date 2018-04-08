@@ -1,7 +1,5 @@
 import { Maybe } from 'monet'
 
-import { Request } from '../api'
-import { JoinParty } from '../models'
 import State from '../state'
 
 import joinForm from '../components/join-form'

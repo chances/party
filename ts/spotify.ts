@@ -3,8 +3,6 @@ import Spotify = require('spotify-web-api-js')
 
 import { Either, Maybe } from 'monet'
 
-import * as util from './util'
-
 const spotify = new Spotify()
 spotify.setPromiseImplementation(Promise)
 
@@ -21,13 +19,12 @@ export function updateAccessToken(maybeToken: Maybe<string>) {
 
 export type EitherTrackResults = Either<any, SpotifyApi.TrackSearchResponse>
 export interface Options {limit: Maybe<number>, offset: Maybe<number>}
-export type MaybeOptions = Maybe<Options>
 
 // String -> Maybe { limit: Maybe Number, offset: Maybe Number } ->
 //    Promise (Either SpotifyError (Paging Track))
 export function searchTracks(
   query: string,
-  maybeOptions: MaybeOptions,
+  maybeOptions: Maybe<Options>,
 ) {
   // TODO: Handle maybeOptions
   query = query.split(' ').join('%20')
@@ -39,7 +36,16 @@ export function searchTracks(
         error_description: 'No access token exists',
       }))
     } else {
-      const results = spotify.searchTracks(query)
+      const searchResult = spotify.searchTracks(query, maybeOptions.cata(
+        () => undefined,
+        options => {
+          return {
+            offset: options.offset.cata(() => undefined, offset => offset),
+            limit: options.limit.cata(() => undefined, limit => limit),
+          }
+        },
+      ))
+      searchResult
         .then(data => resolve(Either.Right(data)))
         .catch(error => resolve(Either.Left(error) as EitherTrackResults))
     }

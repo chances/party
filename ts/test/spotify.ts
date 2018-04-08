@@ -1,7 +1,7 @@
 import { expect, skip, test, that } from './lib/expect'
 
 import { Maybe } from 'monet'
-import { EitherTrackResults, Options, searchTracks, updateAccessToken } from '../spotify'
+import { Options, searchTracks, updateAccessToken } from '../spotify'
 
 test('searchTracks fails when access token is nothing', t => {
   searchTracks('Sugar Ray', Maybe.Nothing<Options>())

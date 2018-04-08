@@ -34,7 +34,7 @@ export class Request<T> {
             errorResponse.errors[errorResponse.errors.length - 1] ||
             Errors.defaultError
         },
-        response => Errors.nullError,
+        _response => Errors.nullError,
       )
     })
     .flatMap(nullErrorToNothing)

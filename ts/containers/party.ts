@@ -1,7 +1,5 @@
 import { html, TemplateResult } from 'lit-html'
-import { Maybe } from 'monet'
 
-import * as api from '../api'
 import { Party } from '../models/party'
 import State, { Route } from '../state'
 import Menu from '../state/menu'

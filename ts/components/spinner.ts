@@ -41,7 +41,7 @@ export default function render(hidden: boolean) {
             type="rotate"
             from="0 25 25"
             to="360 25 25"
-            dur="0.7s"
+            dur="${dur}"
             repeatCount="indefinite"
           />
         </path>`

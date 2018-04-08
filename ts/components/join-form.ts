@@ -4,7 +4,6 @@ import { Maybe } from 'monet'
 import State from '../state'
 import * as util from '../util'
 
-import header from './logo'
 import spinner from './spinner'
 
 interface Props {
@@ -54,7 +53,6 @@ let partyCode = ''
 function partyCodeInputChange(e: Event) {
   const partyCodeInput = e.currentTarget as HTMLInputElement
   const submit = partyCodeInput.nextSibling as HTMLInputElement
-  const pillGroup = partyCodeInput.parentElement as HTMLElement
   const value = stripNonAlphaNumeric(
     partyCodeInput.value.trim().toUpperCase().replace(whitespace, ''),
   )
