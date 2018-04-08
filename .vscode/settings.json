@@ -20,5 +20,6 @@
         "js/": true,
         "coverage/": true,
         "graph.svg": true
-    }
+    },
+    "eslint.enable": false
 }
