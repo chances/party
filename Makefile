@@ -75,7 +75,6 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	@export PARTY_API="http://10.0.0.20:3005"
 	@${WEBPACK} --config webpack.dev.js --watch
 .PHONY: watch-js
 
