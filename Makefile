@@ -59,7 +59,7 @@ cover:
 test-ci: lint
 	@rm -rf coverage
 	@${TSC}
-	@${NYC} ${TAPE} ${JS_TEST_SOURCES} | ${TAP_DOT}
+	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${TAP_DOT}
 	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci
 
