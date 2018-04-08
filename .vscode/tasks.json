@@ -31,6 +31,29 @@
       "problemMatcher": [
         "$tsc-watch"
       ]
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "make test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$tslint5"
+      ]
     }
   ]
 }
