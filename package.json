@@ -1,6 +1,6 @@
 {
   "name": "party",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "JavaScript assets for https://chancesnow.me/party",
   "private": true,
   "scripts": {
