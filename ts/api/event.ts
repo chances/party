@@ -1,17 +1,34 @@
-// tslint:disable-next-line:no-reference
-/// <reference path="../typings/sse.d.ts" />
-
 import { create } from '@most/create'
 
 import * as util from '../util'
 import { getPartyApiHost } from './request'
+
+enum ReadyState {
+
+  /**
+   * The connection has not yet been established, or it was closed and the user agent is
+   * reconnecting.
+   */
+  CONNECTING = 0,
+
+  /**
+   * The user agent has an open connection and is dispatching events as it receives them.
+   */
+  OPEN = 1,
+
+  /**
+   * The connection is not open, and the user agent is not trying to reconnect. Either there
+   * was a fatal error or the close() method was invoked.
+   */
+  CLOSED = 2,
+}
 
 export interface MessageEvent extends Event {
   data: string
 }
 
 export default class Source<T> {
-  private eventSource: typeof EventSource
+  private eventSource: EventSource
 
   constructor(urlOrExistingSource: string | Source<any>, private messageName: string) {
     if (typeof urlOrExistingSource === 'string') {
@@ -32,7 +49,7 @@ export default class Source<T> {
   }
 
   get isClosed() {
-    return this.eventSource.readyState === 2 /* sse.ReadyState.CLOSED */
+    return this.eventSource.readyState === ReadyState.CLOSED
   }
 
   get opened() {
@@ -50,7 +67,7 @@ export default class Source<T> {
   on(eventType: 'open' | 'message' | string) {
     return create((add, end, error) => {
       const addEvent = (e: any) => {
-        if (this.eventSource.readyState !== 2 /* sse.ReadyState.CLOSED */) {
+        if (this.eventSource.readyState !== ReadyState.CLOSED) {
           add(e)
         } else {
           end()
