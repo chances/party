@@ -2,7 +2,7 @@ import { html, TemplateResult } from 'lit-html'
 
 import { Party } from '../models/party'
 import State, { Route } from '../state'
-import Menu from '../state/menu'
+import Router from '../state/router'
 import * as util from '../util'
 
 import header from '../components/logo'
@@ -31,13 +31,13 @@ function renderSplash() {
 function renderParty(party: Party) {
   let content
 
-  if (State.menu.main === Menu.mainTabs.music) {
-    switch (State.menu.music) {
-      case Menu.musicTabs.nowPlaying:
+  if (State.router.main === Router.mainTabs.music) {
+    switch (State.router.music) {
+      case Router.musicTabs.nowPlaying:
         content = nowPlaying()
         break
 
-      case Menu.musicTabs.history:
+      case Router.musicTabs.history:
         content = history()
         break
 
@@ -66,18 +66,18 @@ function renderParty(party: Party) {
 
 function musicMenu() {
   return menu('musicMenu', true, [
-    menuItem('music/nowPlaying', 'Now Playing', State.menu.music === Menu.musicTabs.nowPlaying),
-    menuItem('music/history', 'History', State.menu.music === Menu.musicTabs.history),
-    menuItem('music/upNext', 'Up Next', State.menu.music === Menu.musicTabs.upNext),
-    menuItem('music/contribute', 'Contribute', State.menu.music === Menu.musicTabs.contribute),
+    menuItem('music/nowPlaying', 'Now Playing', State.router.music === Router.musicTabs.nowPlaying),
+    menuItem('music/history', 'History', State.router.music === Router.musicTabs.history),
+    menuItem('music/upNext', 'Up Next', State.router.music === Router.musicTabs.upNext),
+    menuItem('music/contribute', 'Contribute', State.router.music === Router.musicTabs.contribute),
   ])
 }
 
 function mainMenu() {
   return menu('mainMenu', false, [
-    menuItem('music', 'Music', State.menu.main === Menu.mainTabs.music),
-    menuItem('guests', 'Guests', State.menu.main === Menu.mainTabs.guests),
-    menuItem('games', 'Games', State.menu.main === Menu.mainTabs.games),
+    menuItem('music', 'Music', State.router.main === Router.mainTabs.music),
+    menuItem('guests', 'Guests', State.router.main === Router.mainTabs.guests),
+    menuItem('games', 'Games', State.router.main === Router.mainTabs.games),
   ])
 }
 
@@ -99,5 +99,5 @@ function menuItemClick(e: MouseEvent) {
   e.preventDefault()
 
   const target = e.target as HTMLAnchorElement
-  State.menu.navigate(target.hash.replace('#', '') as Route)
+  State.router.navigate(target.hash.replace('#', '') as Route)
 }

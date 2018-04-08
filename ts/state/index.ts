@@ -16,9 +16,9 @@ import { Track } from '../models/track'
 import { captureBreadcrumb, setUserContext } from '../sentry'
 import * as util from '../util'
 
-import Menu, { MainTab, MusicTab, Route } from './menu'
+import Router from './router'
 
-export { Route } from './menu'
+export { Route } from './router'
 
 useStrict(true)
 
@@ -27,7 +27,7 @@ localForage.config({ name: 'party' })
 export class State {
   firstLaunch: boolean
   @observable tvMode: boolean
-  menu: Menu
+  router: Router
 
   @observable partyCode: Maybe<string>
   @observable joining: Maybe<JoinParty>
@@ -41,7 +41,7 @@ export class State {
   constructor() {
     this.firstLaunch = true
     this.tvMode = util.queryParams().tvMode != null
-    this.menu = new Menu()
+    this.router = new Router()
     this.partyCode = Maybe.Nothing()
     this.joining = Maybe.Nothing()
     this.party = Maybe.Nothing()
@@ -73,7 +73,7 @@ export class State {
     }
     this.party = joinResponse.result
 
-    window.history.replaceState('', '', '/party#music')
+    this.router.navigate(Router.mainTabs.music)
 
     this.listenForUpdates().then(() => {
       // TODO: Preload all images; Or make images fade in somehow?

@@ -1,11 +1,10 @@
 import { action, observable } from 'mobx'
-import { Maybe } from 'monet'
 
 export type MainTab = 'music' | 'guests' | 'games'
 export type MusicTab = 'nowPlaying' | 'history' | 'upNext' | 'contribute'
 
 export type MusicRoute = 'music/nowPlaying' | 'music/history' | 'music/upNext' | 'music/contribute'
-export type Route = MainTab | MusicRoute
+export type Route = 'join' | MainTab | MusicRoute
 
 const mainTabs = ['music', 'guests', 'games']
 const musicTabs = ['nowPlaying' , 'history' , 'upNext' , 'contribute']
@@ -22,12 +21,13 @@ const music = {
   contribute: 'contribute' as MusicTab,
 }
 
-export default class Menu {
+export default class Router {
   static mainTabs = main
   static musicTabs = music
 
-  @observable main: MainTab = 'music'
-  @observable music: MusicTab = 'nowPlaying'
+  main: MainTab = 'music'
+  music: MusicTab = 'nowPlaying'
+  @observable currentRoute: Route = 'join'
 
   constructor() {
     // TODO: Add `hashchange` handler for external route changes
@@ -39,6 +39,14 @@ export default class Menu {
       return
     }
 
+    // Music tab routing
+    if (routePieces.length > 1 && routePieces[0] === main.music) {
+      if (this.isMusicTab(routePieces[1]) && this.music !== routePieces[1] as MusicTab) {
+        this.music = routePieces[1] as MusicTab
+      }
+    }
+
+    // Main tabs routing
     if (!this.isMainTab(routePieces[0])) {
       return
     }
@@ -46,13 +54,9 @@ export default class Menu {
       this.main = routePieces[0] as MainTab
     }
 
-    if (routePieces.length > 1 && routePieces[0] === main.music) {
-      if (this.isMusicTab(routePieces[1]) && this.music !== routePieces[1] as MusicTab) {
-        this.music = routePieces[1] as MusicTab
-      }
-    }
-
     window.history.replaceState(route, route, '/party#' + route)
+
+    this.currentRoute = route
   }
 
   get isUpNextVisible() {
