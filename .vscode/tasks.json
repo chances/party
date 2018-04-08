@@ -41,12 +41,24 @@
         "isDefault": true
       },
       "presentation": {
-        "reveal": "silent",
-        "panel": "shared"
+        "reveal": "always",
+        "panel": "dedicated"
       },
-      "problemMatcher": [
-        "$tsc"
-      ]
+      "problemMatcher": {
+        "owner": "Test",
+        "fileLocation": "absolute",
+        "pattern": [
+          {
+            "regexp": "^⨯\\s+(.*)",
+            "message": 1
+          },
+          {
+            "regexp": "^([^\\\\s].*)\\\\((\\\\d+,\\\\d+)\\\\):\\\\s*(.*)$",
+            "file": 1,
+            "location": 2
+          }
+        ]
+      }
     },
     {
       "type": "npm",
