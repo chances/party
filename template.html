@@ -19,42 +19,54 @@ stylesheet: /assets/stylesheets/party.css
     <p style="margin-top: 0;">Prototype</p>
   </div>
   <div id="content">
-    <span class="spinner">
-      <svg
-        x="0px"
-        y="0px"
-        width="60px"
-        height="60px"
-        viewBox="0 0 50 50"
-        style="enable-background:new 0 0 50 50;"
-      >
-        <path
-          class="spinner"
-          fill="#FCFCFC"
-          d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"
-        />
-      </svg>
+    <div class="spinner">
       <style>
-span.spinner svg > path.spinner {
-    -webkit-animation:spin 800ms linear infinite;
-    -moz-animation:spin 800ms linear infinite;
-    animation:spin 800ms linear infinite;
-    -webkit-transform-origin: bottom right;
-    -moz-transform-origin: bottom right;
-    transform-origin: bottom right;
+.spinner,
+.spinner:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
 }
-main.splash svg {
+.spinner {
+  font-size: 6px;
+  position: relative;
+  align-self: center;
+  border-top: 1em solid rgba(255, 255, 255, 0.1);
+  border-right: 1em solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1em solid rgba(255, 255, 255, 0.1);
+  border-left: 1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transform-origin: center;
+  -moz-transform-origin: center;
+  transform-origin: center;
+  -moz-animation: spin 950ms linear infinite;
+  -webkit-animation: spin 950ms linear infinite;
+  animation: spin 950ms linear infinite;
+}
+@-moz-keyframes spin {
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+main.splash .spinner {
   opacity: 1;
   transition: 300ms opacity ease-out;
 }
-main.splash.hiding svg {
+main.splash.hiding .spinner {
   opacity: 0;
 }
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
       </style>
-    </span>
+    </div>
   </div>
   <div>
     <p>Made with love in PDX.</p>
