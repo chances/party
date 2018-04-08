@@ -1,6 +1,6 @@
 import Promise = require('bluebird')
 import localForage = require('localforage')
-import { action, observable, useStrict } from 'mobx'
+import { action, configure, observable } from 'mobx'
 import { Either, Maybe } from 'monet'
 
 import Source from '../api/event'
@@ -20,7 +20,7 @@ import Router from './router'
 
 export { Route } from './router'
 
-useStrict(true)
+configure({ enforceActions: true })
 
 localForage.config({ name: 'party' })
 
