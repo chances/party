@@ -1,5 +1,5 @@
-import tape = require('tape')
 import * as chai from 'chai'
+import tape = require('tape')
 
 let topic: tape.Test
 
