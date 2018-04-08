@@ -1,10 +1,29 @@
+const path = require('path')
 const webpack = require('webpack')
+
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
+
+// TODO: Investigate Code Splitting
+// https://webpack.js.org/guides/code-splitting/
 
 module.exports = {
   entry: './ts/main.ts',
   output: {
-    filename: '../assets/javascript/party.js'
+    filename: 'party.js',
+    path: path.resolve(__dirname, '../assets/javascript'),
+    publicPath: '/assets/javascript/',
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: '../../party/index.html',
+      template: 'template.html',
+      minify: false,
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer',
+    })
+  ],
   resolve: {
     extensions: ['.ts', '.js']
   },
@@ -12,11 +31,18 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true
-        }
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true
+            }
+          }
+        ]
       }
     ]
+  },
+  resolve: {
+    extensions: [ '.ts', '.js' ]
   }
 }
