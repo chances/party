@@ -13,6 +13,8 @@
       "strictNullChecks": true,
       "removeComments": false,
       "preserveConstEnums": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
       "inlineSourceMap": true,
       "inlineSources": true,
       "noEmitOnError": true,
