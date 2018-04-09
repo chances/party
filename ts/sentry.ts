@@ -35,17 +35,13 @@ export function reportErrors(funcOrErrors: Function | Errors) {
 }
 
 export function setUserContext(context?: any) {
-  if (maybeRaven != null) {
-    maybeRaven.map(raven => raven.setUserContext(context))
-  }
+  maybeRaven.map(raven => raven.setUserContext(context))
 }
 
 export function captureBreadcrumb(category: string, data?: any) {
-  if (maybeRaven != null) {
-    maybeRaven.map(raven => raven.captureBreadcrumb({
-      category,
-      level: 'debug',
-      data,
-    }))
-  }
+  maybeRaven.map(raven => raven.captureBreadcrumb({
+    category,
+    level: 'debug',
+    data,
+  }))
 }
