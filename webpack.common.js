@@ -19,6 +19,7 @@ module.exports = {
       filename: '../../party/index.html',
       template: 'template.html',
       minify: false,
+      showErrors: false,
     }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer',
