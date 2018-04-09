@@ -1,4 +1,5 @@
-import { html, TemplateResult } from 'lit-html'
+import { TemplateResult } from 'lit-html'
+import { html } from 'lit-html/lib/lit-extended'
 
 import { Party } from '../models/party'
 import State, { Route } from '../state'

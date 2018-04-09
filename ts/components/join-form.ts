@@ -32,9 +32,9 @@ export default function render(props: Props) {
           placeholder="Ab7j"
           autofocus=${true} autocomplete="off"
           maxLength="4" disabled=${props.isJoining}
-          oninput=${partyCodeInputChange}
-          onfocus=${focusBlurJoinForm}
-          onblur=${focusBlurJoinForm} />
+          on-input=${partyCodeInputChange}
+          on-focus=${focusBlurJoinForm}
+          on-blur=${focusBlurJoinForm} />
         <input
           class$="${util.klass({ hiding: isSubmitHiding })}"
           type="submit" value="Join" title="Join the party"
@@ -52,7 +52,7 @@ export default function render(props: Props) {
 let partyCode = ''
 function partyCodeInputChange(e: Event) {
   const partyCodeInput = e.currentTarget as HTMLInputElement
-  const submit = partyCodeInput.nextSibling as HTMLInputElement
+  const submit = partyCodeInput.nextElementSibling as HTMLInputElement
   const value = stripNonAlphaNumeric(
     partyCodeInput.value.trim().toUpperCase().replace(whitespace, ''),
   )
