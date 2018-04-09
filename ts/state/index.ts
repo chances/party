@@ -1,6 +1,6 @@
 import Promise = require('bluebird')
 import localForage = require('localforage')
-import { action, configure, observable } from 'mobx'
+import { configure, observable } from 'mobx'
 import { Either, Maybe } from 'monet'
 
 import Source from '../api/event'
@@ -16,6 +16,7 @@ import { Track } from '../models/track'
 import { captureBreadcrumb, setUserContext } from '../sentry'
 import * as util from '../util'
 
+import { action } from './action'
 import Router from './router'
 
 export { Route } from './router'

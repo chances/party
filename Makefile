@@ -16,8 +16,7 @@ JS_ENTRY_POINT := ./js/main.js
 WEBPACK_TARGET := ../assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
-TS_TEST_SOURCES := ./ts/test/*.ts
-JS_TEST_SOURCES := ./js/test/*.js
+TS_TEST_SOURCES := "./ts/test/**/*.spec.ts"
 
 all: build
 
@@ -47,19 +46,19 @@ lint:
 .PHONY: lint
 
 test: lint
-	@${TS_NODE} --fast ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}
+	@npm run test:ts --silent
 .PHONY: test
 
 cover:
 	@rm -rf coverage
-	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}
+	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
 	@xdg-open ./coverage/index.html
 .PHONY: cover
 
 test-ci: lint
 	@rm -rf coverage
 	@${TSC}
-	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${TAP_DOT}
+	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${TAP_DOT}
 	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci
 
@@ -85,8 +84,8 @@ watch-js:
 	@${WEBPACK} --config webpack.dev.js --watch
 .PHONY: watch-js
 
-watch-tests: test
-	@${SANE} "${TS_NODE} --fast ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}" ./ts/test --wait=2
+watch-tests:
+	@${SANE} "make test" --glob '**/*.spec.ts' --wait=2
 .PHONY: watch-tests
 
 clean:

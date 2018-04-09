@@ -31,8 +31,6 @@
       "ts/**/*"
   ],
   "exclude": [
-      "node_modules",
-      "**/*.spec.ts",
-      "ts/test/lib/**/*.ts"
+      "node_modules"
   ]
 }
