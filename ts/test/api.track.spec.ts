@@ -69,6 +69,11 @@ test('largestImage returns just the largest image', t => {
     artists: [{id: '', name: 'Submotion Orchestra'}],
     images: [
       {
+        width: 750,
+        height: 750,
+        url: 'https://ninjatune.net/images/releases/alium-main.jpg',
+      },
+      {
         width: 500,
         height: 500,
         url: 'https://ninjatune.net/images/releases/alium-main.jpg',
