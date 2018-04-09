@@ -30,7 +30,33 @@ export class Spinner {
 export default function render(hidden: boolean) {
   const dur = '0.7s'
 
+  // TODO: Switch to https://github.com/streamich/freestyler ?
   return html`<span class$="${util.klass({ spinner: true, hidden })}">
+    <style>
+.spinner > svg {
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transform-origin: center;
+  -moz-transform-origin: center;
+  transform-origin: center;
+  -moz-animation: spin 950ms linear infinite;
+  -webkit-animation: spin 950ms linear infinite;
+  animation: spin 950ms linear infinite;
+}
+@-moz-keyframes spin {
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    </style>
     <svg x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50">
       ${svg
         // tslint:disable-next-line:max-line-length
