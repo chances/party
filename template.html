@@ -1,74 +1,102 @@
----
-title: Chance's Party
-plain: true
-webapp: true
-webapp_name: Party
-webapp_manifest: /assets/party.webmanifest
-theme_color: #242424
-stylesheet: /assets/stylesheets/party.css
----
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <title>Chance's Party</title>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-<!-- TODO: Add support for https://developers.google.com/web/updates/2015/10/display-mode -->
+  <link rel="stylesheet" href="/assets/stylesheets/party.min.css">
 
-<main class="splash">
-  <div id="logo">
-    <img
-      src="/assets/images/party/Party-logo-invert.png"
-      alt="Party"
-    />
-    <p style="margin-top: 0;">Prototype</p>
-  </div>
-  <div id="content">
-    <div class="spinner">
-      <style>
-.spinner,
-.spinner:after {
-  border-radius: 50%;
-  width: 10em;
-  height: 10em;
-}
-.spinner {
-  font-size: 6px;
-  position: relative;
-  align-self: center;
-  border-top: 1em solid rgba(255, 255, 255, 0.1);
-  border-right: 1em solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1em solid rgba(255, 255, 255, 0.1);
-  border-left: 1em solid #ffffff;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-transform-origin: center;
-  -moz-transform-origin: center;
-  transform-origin: center;
-  -moz-animation: spin 950ms linear infinite;
-  -webkit-animation: spin 950ms linear infinite;
-  animation: spin 950ms linear infinite;
-}
-@-moz-keyframes spin {
-  0% { -moz-transform: rotate(0deg); }
-  100% { -moz-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+  <!-- Icons and Theme -->
+  <link rel="icon" sizes="32x32" href="/assets/images/party/Party-icon-32.png">
+  <link rel="icon" sizes="48x48" href="/assets/images/party/Party-icon-48.png">
+  <link rel="icon" sizes="96x96" href="/assets/images/party/Party-icon-96.png">
+  <link rel="icon" sizes="144x144" href="/assets/images/party/Party-icon-144.png">
+  <link rel="icon" sizes="192x192" href="/assets/images/party/Party-icon-192.png">
 
-main.splash .spinner {
-  opacity: 1;
-  transition: 225ms opacity ease-out;
-}
-main.splash.hiding .spinner {
-  opacity: 0;
-}
-      </style>
+  <meta name="apple-mobile-web-app-title" content="Party">
+  <meta name="application-name" content="Party">
+  <meta name="theme-color" content="#242424">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link rel="manifest" href="/assets/party.webmanifest">
+</head>
+<body>
+  <!-- TODO: Add support for https://developers.google.com/web/updates/2015/10/display-mode -->
+  <main class="splash">
+    <div id="logo">
+      <img src="/assets/images/party/Party-icon-152.png" alt="Party" />
+      <p style="margin-top: 0;">Prototype</p>
     </div>
-  </div>
-  <div>
-    <p>Made with love in PDX.</p>
-  </div>
-</main>
+    <div id="content">
+      <div class="spinner">
+        <style>
+          .spinner,
+          .spinner:after {
+            border-radius: 50%;
+            width: 10em;
+            height: 10em;
+          }
+
+          .spinner {
+            font-size: 6px;
+            position: relative;
+            align-self: center;
+            border-top: 1em solid rgba(255, 255, 255, 0.1);
+            border-right: 1em solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1em solid rgba(255, 255, 255, 0.1);
+            border-left: 1em solid #ffffff;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-transform-origin: center;
+            -moz-transform-origin: center;
+            transform-origin: center;
+            -moz-animation: spin 950ms linear infinite;
+            -webkit-animation: spin 950ms linear infinite;
+            animation: spin 950ms linear infinite;
+          }
+
+          @-moz-keyframes spin {
+            0% {
+              -moz-transform: rotate(0deg);
+            }
+            100% {
+              -moz-transform: rotate(360deg);
+            }
+          }
+          @-webkit-keyframes spin {
+            0% {
+              -webkit-transform: rotate(0deg);
+            }
+            100% {
+              -webkit-transform: rotate(360deg);
+            }
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+
+          main.splash .spinner {
+            opacity: 1;
+            transition: 225ms opacity ease-out;
+          }
+          main.splash.hiding .spinner {
+            opacity: 0;
+          }
+        </style>
+      </div>
+    </div>
+    <div>
+      <p>Made with love in PDX.</p>
+    </div>
+  </main>
+</body>
+</html>
