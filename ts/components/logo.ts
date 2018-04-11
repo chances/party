@@ -5,7 +5,7 @@ export default function render(isSplash: boolean, tvMode: boolean = false) {
 
   if (isSplash) {
     header = html`<div id="logo">
-      <img src="/assets/images/party/Party-logo-invert.png" alt="Party" />
+      <img src="/assets/images/party/Party-icon-152.png" alt="Party" />
       <p style="margin-top: 0;">Prototype</p>
     </div>`
   }
