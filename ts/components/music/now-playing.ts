@@ -11,7 +11,7 @@ import trackList from './track-list'
 export default function render() {
   const party = State.party.just()
   const maybeTrack = Maybe.fromNull<Track>(party.current_track)
-  const maybeQueue = State.queue.map(queue => queue.slice(0, 5))
+  const maybeQueue = State.queue.map(queue => queue.slice(0, 3))
 
   return html`<div id="content" class$="${util.klass({
     'tv-mode': State.tvMode,

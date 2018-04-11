@@ -16,7 +16,7 @@ h2 > pre {
 }
 
 #musicMenu {
-  margin: 1rem 0;
+  margin: 1rem 0 0.5rem;
 }
 
 #content {
@@ -42,7 +42,9 @@ main.splash > #content {
 }
 
 #nowPlaying {
+  flex-direction: column;
   flex: 1;
+  justify-content: center;
   align-self: center;
 
   & > h2 {
@@ -50,7 +52,8 @@ main.splash > #content {
   }
 
   & > .song-info {
-    margin-left: 1rem;
+    align-items: center;
+    margin: 0.5rem 0 0;
   }
 
   & .song-info > .artist {
@@ -59,6 +62,13 @@ main.splash > #content {
 }
 #content.tv-mode > #nowPlaying > h2 {
   display: block;
+}
+
+#upNext {
+  & > h2 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
 }
 
 #upNext, #history, #results {
@@ -160,10 +170,6 @@ $query-height: 2rem;
 }
 
 #mainMenu {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   margin-bottom: 1rem;
   //border-top: solid 1px #6a6a6a;
 
@@ -269,15 +275,6 @@ $query-height: 2rem;
 @media (min-width: 56rem) and (orientation: landscape), (min-width: 56rem) {
   #content {
     flex-direction: row;
-  }
-
-  #nowPlaying {
-    flex-direction: column;
-
-    & > .song-info {
-      align-items: center;
-      margin-left: 0;
-    }
   }
 
   .song-info {
