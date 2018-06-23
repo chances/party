@@ -1,5 +1,5 @@
 TSC = ./node_modules/.bin/tsc
-WEBPACK = ./node_modules/.bin/webpack
+PARCEL = npx parcel
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
 TS_NODE = ./node_modules/.bin/ts-node
@@ -13,15 +13,26 @@ CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.ts
 JS_ENTRY_POINT := ./js/main.js
-WEBPACK_TARGET := ../assets/javascript/party.js
+PARCEL_TARGET := ../assets/javascript/party.js
+PARCEL_TARGET_MAP := ../assets/javascript/party.map
+PARCEL_TARGET_FILE := party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
 TS_TEST_SOURCES := "./ts/test/**/*.spec.ts"
 
 all: build
 
-build: css js
+bootstrap: node_modules
+.PHONY: bootstrap
+
+node_modules:
+	@npm install
+
+build: bootstrap css js
 .PHONY: build
+
+build-dev: bootstrap css js-dev
+.PHONY: build-dev
 
 css:
 	@cp -r scss/* ../assets/scss/.
@@ -30,15 +41,15 @@ css:
 js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Webpack target: ${WEBPACK_TARGET}"
-	@NODE_ENV=production ${WEBPACK} --config webpack.prod.js
+	@echo "Parcel target: ${PARCEL_TARGET}"
+	@${PARCEL} build ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --no-source-maps
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Webpack target: ${WEBPACK_TARGET}"
-	@NODE_ENV=development ${WEBPACK} --config webpack.dev.js
+	@echo "Parcel target: ${PARCEL_TARGET}"
+	@NODE_ENV=development ${PARCEL} build ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --no-minify
 .PHONY: js-dev
 
 lint:
@@ -64,7 +75,8 @@ test-ci: lint
 
 watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Browserify target: ${WEBPACK_TARGET}"
+	@echo "Parcel target: ${PARCEL_TARGET}"
+	@make --quiet clean
 	@${CONCURRENTLY} --kill-others \
 		"cd ../..; make --quiet watch &> /dev/null" \
 		"make --quiet browser-sync &> /dev/null" \
@@ -81,7 +93,7 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	@${WEBPACK} --config webpack.dev.js --watch
+	${PARCEL} watch ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --log-level 2
 .PHONY: watch-js
 
 watch-tests:
@@ -90,5 +102,6 @@ watch-tests:
 
 clean:
 	rm -rf ./js
-	rm -f ${WEBPACK_TARGET}
+	rm -f ${PARCEL_TARGET}
+	rm -f ${PARCEL_TARGET_MAP}
 .PHONY: clean

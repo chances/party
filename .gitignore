@@ -6,8 +6,7 @@ npm-debug.log
 .nyc_output/
 
 # Intermediate build files
-.cache-loader/
-index.html
+.cache/
 js/
 
 # Code coverage
