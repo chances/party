@@ -15,6 +15,7 @@ TS_ENTRY_POINT := ./ts/main.ts
 JS_ENTRY_POINT := ./js/main.js
 PARCEL_TARGET := ../assets/javascript/party.js
 PARCEL_TARGET_MAP := ../assets/javascript/party.map
+PARCEL_TARGET_DIR := ../assets/javascript
 PARCEL_TARGET_FILE := party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
@@ -42,14 +43,14 @@ js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Parcel target: ${PARCEL_TARGET}"
-	@${PARCEL} build ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --no-source-maps
+	@${PARCEL} build ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --no-source-maps
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Parcel target: ${PARCEL_TARGET}"
-	@NODE_ENV=development ${PARCEL} build ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --no-minify
+	@NODE_ENV=development ${PARCEL} build ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --no-minify
 .PHONY: js-dev
 
 lint:
@@ -93,7 +94,7 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	${PARCEL} watch ${TS_ENTRY_POINT} -d ../assets/javascript --out-file party.js --log-level 2
+	${PARCEL} watch ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --log-level 2
 .PHONY: watch-js
 
 watch-tests:
