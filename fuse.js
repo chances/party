@@ -28,13 +28,14 @@ if (isWatchMode) {
 }
 
 const PARTY_BUNDLE = 'party';
+const PARTY_API = isDevelopment ? 'http://localhost:3005' : 'https://party.chancesnow.me'
 
 const app = fuse
   .bundle(PARTY_BUNDLE)
   .instructions("> main.ts")
   .plugin(ReplacePlugin({
     'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
-    'process.env.PARTY_API': `'${process.env.PARTY_API || 'https://party.chancesnow.me'}'`
+    'process.env.PARTY_API': `'${process.env.PARTY_API || PARTY_API}'`
   }))
 
 if (isProduction) {
