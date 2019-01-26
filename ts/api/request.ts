@@ -3,7 +3,7 @@ import fetch = require('isomorphic-fetch')
 import { Either } from 'monet'
 
 import Errors from './request/errors'
-import { ErrorType } from './request/errors'
+import { Error, ErrorType } from './request/errors'
 import { ApiResponse, joinParams, RequestParam, ResponsePromise } from './request/primitives'
 import * as p from './request/primitives'
 
@@ -52,33 +52,62 @@ function request<T>(method: 'get' | 'post', path: string, body?: {data: any},
   }
 
   const ok = (data: p.DataResponse<T>) => Either.Right(data.data) as Either<Errors, p.Data<T>>
+  const error = (responseStatus: number, errors: Error[]) =>
+    Either.Left(new Errors(responseStatus, errors)) as Either<Errors, p.Data<T>>
 
   return new Promise<p.Response<T>>(resolve => {
     fetch(new Request(url, options)).then(response => {
-      response.json().then((data: ApiResponse<T>) => {
-        if (response.ok && !isErrorResponse(data)) {
-          resolve(ok(data))
-        } else if (isErrorResponse(data)) {
-          resolve(Either.Left(new Errors(
-            response.status,
-            data.errors,
-          )) as p.Response<T>)
-        } else {
-          resolve(Either.Left(new Errors(
-            response.status,
-            [ Errors.create(
-              'Request Error',
-              'Party received an invalid response',
-            ) ],
-          )) as p.Response<T>)
-        }
+      return isResponseEmpty(response)
+        .then(
+          isEmpty => isEmpty
+            ? Either.Left<Response, Response>(response)
+            : Either.Right<Response, Response>(response),
+        )
+    }).then(eitherResponse => {
+      eitherResponse.cata(emptyResponse => {
+        resolve(error(
+          emptyResponse.status,
+          [ Errors.requestError ],
+        ))
+      }, response => {
+        response.json().then((data: ApiResponse<T>) => {
+          if (response.ok && !isErrorResponse(data)) {
+            resolve(ok(data))
+          } else if (isErrorResponse(data)) {
+            resolve(error(
+              response.status,
+              data.errors,
+            ))
+          } else {
+            resolve(error(
+              response.status,
+              [ Errors.requestError ],
+            ))
+          }
+        })
       })
     }).catch(_ => {
-      resolve(Either.Left(new Errors(
+      resolve(error(
         ErrorType.NULL_ERROR,
         [ Errors.defaultError ],
-      )) as p.Response<T>)
+      ))
     })
+  })
+}
+
+function isResponseEmpty(response: Response): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    const contentLengthZero = response.headers.has('Content-Length') &&
+      response.headers.get('Content-Length') === '0'
+    if (contentLengthZero) { resolve(true) }
+
+    const isBodyLengthNonZero = response.clone().text()
+      .then(body => body.length > 0)
+    isBodyLengthNonZero.catch(error => {
+      reject(error)
+    })
+
+    resolve(isBodyLengthNonZero)
   })
 }
 
