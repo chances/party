@@ -33,9 +33,9 @@
     "sane": "^4.0.2",
     "tap-dot": "^2.0.0",
     "tape": "^4.9.2",
-    "ts-node": "^5.0.0",
+    "ts-node": "^6.0.0",
     "tslint": "^5.12.1",
-    "typescript": "^2.9.2",
+    "typescript": "^3.1.0",
     "uglify-js": "^3.4.9"
   },
   "dependencies": {

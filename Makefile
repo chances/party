@@ -60,6 +60,7 @@ test: lint
 
 cover:
 	@rm -rf coverage
+	@${TSC}
 	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
 	@xdg-open ./coverage/index.html
 .PHONY: cover
