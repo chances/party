@@ -6,7 +6,7 @@ npm-debug.log
 .nyc_output/
 
 # Intermediate build files
-.cache/
+.fusebox/
 js/
 
 # Code coverage

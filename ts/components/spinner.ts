@@ -1,5 +1,5 @@
 import { svg } from 'lit-html'
-import { html } from 'lit-html/lib/lit-extended'
+import { html } from 'lit-html'
 
 import * as util from '../util'
 

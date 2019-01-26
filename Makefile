@@ -1,8 +1,8 @@
 TSC = ./node_modules/.bin/tsc
+FUSE = node fuse.js
 PARCEL = npx parcel
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
-TS_NODE = ./node_modules/.bin/ts-node
 TAPE = ./node_modules/.bin/tape
 FAUCET = ./node_modules/.bin/faucet
 TAP_DOT = ./node_modules/.bin/tap-dot
@@ -12,14 +12,11 @@ SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.ts
-JS_ENTRY_POINT := ./js/main.js
-PARCEL_TARGET := ../assets/javascript/party.js
-PARCEL_TARGET_MAP := ../assets/javascript/party.map
-PARCEL_TARGET_DIR := ../assets/javascript
-PARCEL_TARGET_FILE := party.js
+FUSE_TARGET := ../../site/assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
-TS_TEST_SOURCES := "./ts/test/**/*.spec.ts"
+TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
+TS_TEST_SOURCES_DIR := ./ts/test
 
 all: build
 
@@ -42,15 +39,15 @@ css:
 js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Parcel target: ${PARCEL_TARGET}"
-	@${PARCEL} build ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --no-source-maps
+	@echo "Bundle target: ${FUSE_TARGET}"
+	@${FUSE}
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Parcel target: ${PARCEL_TARGET}"
-	@NODE_ENV=development ${PARCEL} build ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --no-minify
+	@echo "Bundle target: ${FUSE_TARGET}"
+	@NODE_ENV=development ${FUSE}
 .PHONY: js-dev
 
 lint:
@@ -76,11 +73,10 @@ test-ci: lint
 
 watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Parcel target: ${PARCEL_TARGET}"
+	@echo "Bundle target: ${FUSE_TARGET}"
 	@make --quiet clean
-	@${CONCURRENTLY} --kill-others \
-		"cd ../..; make --quiet watch &> /dev/null" \
-		"make --quiet browser-sync &> /dev/null" \
+	@${CONCURRENTLY} -n "css,sass,js" -c "gray.dim,magenta,red" --kill-others \
+		"cd ../..; make --quiet watch-css &> /dev/null" \
 		"make --quiet watch-scss" \
 		"make --quiet watch-js"
 .PHONY: watch
@@ -94,15 +90,15 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	${PARCEL} watch ${TS_ENTRY_POINT} -d ${PARCEL_TARGET_DIR} --out-file ${PARCEL_TARGET_FILE} --log-level 2
+	NODE_ENV=development WATCH='' ${FUSE}
 .PHONY: watch-js
 
 watch-tests:
-	@${SANE} "make test" --glob '**/*.spec.ts' --wait=2
+	@make test
+	@fswatch -or --latency=2 ${TS_TEST_SOURCES_DIR} | xargs -n1 -I {} \
+	make test
 .PHONY: watch-tests
 
 clean:
-	rm -rf ./js
-	rm -f ${PARCEL_TARGET}
-	rm -f ${PARCEL_TARGET_MAP}
+	rm -f ${FUSE_TARGET}
 .PHONY: clean

@@ -1,4 +1,4 @@
-import { html } from 'lit-html/lib/lit-extended'
+import { html } from 'lit-html'
 
 export default function render(isSplash: boolean, tvMode: boolean = false) {
   let header

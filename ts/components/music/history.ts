@@ -1,4 +1,4 @@
-import { html } from 'lit-html/lib/lit-extended'
+import { html } from 'lit-html'
 
 import State from '../../state'
 import * as util from '../../util'
