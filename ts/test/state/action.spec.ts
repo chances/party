@@ -1,4 +1,5 @@
 import { observable } from 'mobx'
+// tslint:disable-next-line:no-implicit-dependencies
 import proxyquire = require('proxyquire')
 import { expect, test, that } from '../lib/expect'
 

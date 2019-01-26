@@ -1,4 +1,6 @@
+// tslint:disable-next-line:no-implicit-dependencies
 import * as chai from 'chai'
+// tslint:disable-next-line:no-implicit-dependencies
 import tape = require('tape')
 
 let topic: tape.Test
