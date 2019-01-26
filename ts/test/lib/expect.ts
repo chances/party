@@ -5,6 +5,13 @@ import tape = require('tape')
 
 let topic: tape.Test
 
+// Mock window.location.search for usages of ts/util.ts
+global.window = {
+  location: {
+    search: '',
+  },
+}
+
 export function test(name: string, cb: tape.TestCase) {
   tape(name, t => {
     try {
