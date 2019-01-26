@@ -62,7 +62,7 @@ export class State {
 
   @action logout() {
     this.party = Maybe.Nothing()
-    this.partyStream.map(stream => stream.close())
+    this.partyStream.forEach(stream => stream.close())
     this.partyStream = Maybe.Nothing()
     setUserContext()
   }
@@ -99,7 +99,7 @@ export class State {
   tryToJoinViaHash() {
     const hash = window.location.hash.replace('#', '').split('/')[0]
     const maybePartyCode = Maybe.fromFalsy(hash)
-    maybePartyCode.map(partyCode => {
+    maybePartyCode.forEach(partyCode => {
       if (partyCode.match(/^[A-Z0-9]{4}$/i)) {
         this.joinParty(partyCode)
       }

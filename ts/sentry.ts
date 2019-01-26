@@ -18,7 +18,7 @@ export function reportErrors(funcOrErrors: Function | Errors) {
       raven => raven.context(funcOrErrors),
     )
   } else {
-    maybeRaven.map(raven => {
+    maybeRaven.forEach(raven => {
       // Map the Errors instance to a JS Error with Sentry extra metadata
       funcOrErrors.errors.forEach(err => {
         raven.captureException(new Error(err.title), {
