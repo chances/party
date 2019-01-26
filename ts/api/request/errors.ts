@@ -10,7 +10,9 @@ export enum ErrorType {
   ERROR,
 }
 
-const defaultError = createError('Request Error', 'Party could not complete the request')
+const defaultError = createError(
+  'Request Error', 'Could not complete the request. Please check your internet connection.',
+)
 const nullError: Error = {
   ...defaultError,
   status: ErrorType.NULL_ERROR,
