@@ -20,7 +20,7 @@ export default function render() {
 
 function renderSplash() {
   return html`
-    <div id="content" class$="${util.klass({ 'tv-mode': State.tvMode })}">
+    <div id="content" class="${util.klass({ 'tv-mode': State.tvMode })}">
       ${splash()}
     </div>
     <div>
@@ -83,7 +83,7 @@ function mainMenu() {
 }
 
 function menu(id: string, secondary: boolean, items: TemplateResult[]) {
-  return html`<nav id=${id} class$="${util.klass({ menu: true, secondary })}">
+  return html`<nav id=${id} class="${util.klass({ menu: true, secondary })}">
     <ul>${items}</ul>
   </nav>`
 }
@@ -91,8 +91,8 @@ function menu(id: string, secondary: boolean, items: TemplateResult[]) {
 function menuItem(hash: string, label: string, selected: boolean = false) {
   const hashSegments = hash.split('/')
   const id = hashSegments[hashSegments.length - 1]
-  return html`<li id="${id + 'MenuItem'}" class$="${util.klass({ selected })}" data-for$="${id}">
-    <a href="${'#' + hash}" on-click=${menuItemClick}>${label}</a>
+  return html`<li id="${id + 'MenuItem'}" class="${util.klass({ selected })}" data-for$="${id}">
+    <a href="${'#' + hash}" @click=${menuItemClick}>${label}</a>
   </li>`
 }
 

@@ -31,7 +31,7 @@ export default function render(hidden: boolean) {
   const dur = '0.7s'
 
   // TODO: Switch to https://github.com/streamich/freestyler ?
-  return html`<span class$="${util.klass({ spinner: true, hidden })}">
+  return html`<span class="${util.klass({ spinner: true, hidden })}">
     <style>
 .spinner > svg {
   -webkit-transform: translateZ(0);

@@ -13,7 +13,7 @@ export default function render() {
   const maybeTrack = Maybe.fromNull<Track>(party.current_track)
   const maybeQueue = State.queue.map(queue => queue.slice(0, 3))
 
-  return html`<div id="content" class$="${util.klass({
+  return html`<div id="content" class="${util.klass({
     'tv-mode': State.tvMode,
     placeholder: maybeTrack.isNothing(),
   })}">

@@ -11,7 +11,7 @@ export default function render() {
 
   const noHistory = maybeHistory.isNothing() || maybeHistory.just().length === 0
 
-  return html`<div id="content" class$="${util.klass({
+  return html`<div id="content" class="${util.klass({
     'tv-mode': State.tvMode,
     placeholder: noHistory,
   })}">

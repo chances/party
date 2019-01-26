@@ -19,7 +19,7 @@ export default function render(props: Props) {
   )
   props.partyCode.map(code => partyCode = code)
 
-  return html`<form id="join" onsubmit=${onJoinSubmitted}>
+  return html`<form id="join" @submit=${onJoinSubmitted}>
     <h1>Join a Party</h1>
     <p>Help mix things up and join the fun!</p>
     <div class="form-group">
@@ -31,15 +31,15 @@ export default function render(props: Props) {
           value=${props.partyCode.orJust('')}
           placeholder="Ab7j"
           autofocus=${true} autocomplete="off"
-          maxLength="4" disabled=${props.isJoining}
-          on-input=${partyCodeInputChange}
-          on-focus=${focusBlurJoinForm}
-          on-blur=${focusBlurJoinForm} />
+          maxLength="4" ?disabled=${props.isJoining}
+          @input=${partyCodeInputChange}
+          @focus=${focusBlurJoinForm}
+          @blur=${focusBlurJoinForm} />
         <input
-          class$="${util.klass({ hiding: isSubmitHiding })}"
+          class="${util.klass({ hiding: isSubmitHiding })}"
           type="submit" value="Join" title="Join the party"
-          onfocus=${focusBlurJoinForm}
-          onblur=${focusBlurJoinForm} />
+          @focus=${focusBlurJoinForm}
+          @blur=${focusBlurJoinForm} />
       </div>
       ${spinner(!props.isJoining)}
     </div>
