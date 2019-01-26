@@ -12,6 +12,7 @@ import {
   getQueue, getQueueStream,
   JoinParty, joinParty, Party,
 } from '../models/party'
+import { getPing } from '../models/pong'
 import { Track } from '../models/track'
 import { captureBreadcrumb, setUserContext } from '../sentry'
 import * as util from '../util'
@@ -151,11 +152,10 @@ export class State {
     captureBreadcrumb('state', snapshot)
   }
 
-  private ping() {
-    return getParty().then(eitherParty => {
-      return eitherParty.leftMap(errors => {
-        return errors.toError()
-      })
+  private async ping() {
+    const eitherPong = await getPing()
+    return eitherPong.leftMap(errors => {
+      return errors.toError()
     })
   }
 
