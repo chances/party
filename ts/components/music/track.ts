@@ -1,5 +1,5 @@
 import { TemplateResult } from 'lit-html'
-import { html } from 'lit-html/lib/lit-extended'
+import { html } from 'lit-html'
 
 import * as models from '../../models'
 import { firstArtistName, largestImage } from '../../models'

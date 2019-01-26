@@ -1,8 +1,8 @@
 TSC = ./node_modules/.bin/tsc
-WEBPACK = ./node_modules/.bin/webpack
+FUSE = node fuse.js
+PARCEL = npx parcel
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
-TS_NODE = ./node_modules/.bin/ts-node
 TAPE = ./node_modules/.bin/tape
 FAUCET = ./node_modules/.bin/faucet
 TAP_DOT = ./node_modules/.bin/tap-dot
@@ -12,16 +12,25 @@ SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.ts
-JS_ENTRY_POINT := ./js/main.js
-WEBPACK_TARGET := ../assets/javascript/party.js
+FUSE_TARGET := ../../site/assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
-TS_TEST_SOURCES := "./ts/test/**/*.spec.ts"
+TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
+TS_TEST_SOURCES_DIR := ./ts/test
 
 all: build
 
-build: css js
+bootstrap: node_modules
+.PHONY: bootstrap
+
+node_modules:
+	@npm install
+
+build: bootstrap css js
 .PHONY: build
+
+build-dev: bootstrap css js-dev
+.PHONY: build-dev
 
 css:
 	@cp -r scss/* ../assets/scss/.
@@ -30,15 +39,15 @@ css:
 js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Webpack target: ${WEBPACK_TARGET}"
-	@NODE_ENV=production ${WEBPACK} --config webpack.prod.js
+	@echo "Bundle target: ${FUSE_TARGET}"
+	@${FUSE}
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Webpack target: ${WEBPACK_TARGET}"
-	@NODE_ENV=development ${WEBPACK} --config webpack.dev.js
+	@echo "Bundle target: ${FUSE_TARGET}"
+	@NODE_ENV=development ${FUSE}
 .PHONY: js-dev
 
 lint:
@@ -64,10 +73,10 @@ test-ci: lint
 
 watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Browserify target: ${WEBPACK_TARGET}"
-	@${CONCURRENTLY} --kill-others \
-		"cd ../..; make --quiet watch &> /dev/null" \
-		"make --quiet browser-sync &> /dev/null" \
+	@echo "Bundle target: ${FUSE_TARGET}"
+	@make --quiet clean
+	@${CONCURRENTLY} -n "css,sass,js" -c "gray.dim,magenta,red" --kill-others \
+		"cd ../..; make --quiet watch-css &> /dev/null" \
 		"make --quiet watch-scss" \
 		"make --quiet watch-js"
 .PHONY: watch
@@ -81,14 +90,15 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	@${WEBPACK} --config webpack.dev.js --watch
+	NODE_ENV=development WATCH='' ${FUSE}
 .PHONY: watch-js
 
 watch-tests:
-	@${SANE} "make test" --glob '**/*.spec.ts' --wait=2
+	@make test
+	@fswatch -or --latency=2 ${TS_TEST_SOURCES_DIR} | xargs -n1 -I {} \
+	make test
 .PHONY: watch-tests
 
 clean:
-	rm -rf ./js
-	rm -f ${WEBPACK_TARGET}
+	rm -f ${FUSE_TARGET}
 .PHONY: clean

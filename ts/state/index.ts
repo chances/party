@@ -21,7 +21,7 @@ import Router from './router'
 
 export { Route } from './router'
 
-configure({ enforceActions: true })
+configure({ enforceActions: 'observed' })
 
 localForage.config({ name: 'party' })
 

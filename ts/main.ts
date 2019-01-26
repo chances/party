@@ -1,4 +1,4 @@
-import { render } from 'lit-html/lib/lit-extended'
+import { render } from 'lit-html'
 import { autorun } from 'mobx'
 
 import * as api from './api'
