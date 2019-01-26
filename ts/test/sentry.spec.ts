@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-implicit-dependencies
-import Proxyquire from 'proxyquire'
-import { expect, test, that } from './lib/expect'
+import * as Proxyquire from 'proxyquire'
+import { test } from './lib/expect'
 
 import * as IRaven from 'raven-js'
 
@@ -11,16 +11,16 @@ const proxyquire: typeof Proxyquire = require('proxyquire').noPreserveCache();
 
 // tslint:disable-next-line:no-unused-expression no-angle-bracket-type-assertion
 <typeof IRaven> proxyquire('raven-js', {
-  config: (dsnUrl: string) => {
+  config: (_dsnUrl: string) => {
     return {
       install: () => {
         // tslint:disable-next-line:no-object-literal-type-assertion
         const raven = {
           VERSION: 'mock',
-          context: (fn: Function) => { return },
-          captureException: (err: Error) => { return },
-          setUserContext: (context?: any) => { return },
-          captureBreadcrumb: (crumb: IRaven.Breadcrumb) => { return },
+          context: (_fn: Function) => { return },
+          captureException: (_err: Error) => { return },
+          setUserContext: (_context?: any) => { return },
+          captureBreadcrumb: (_crumb: IRaven.Breadcrumb) => { return },
         } as IRaven.RavenStatic
         return raven
       },

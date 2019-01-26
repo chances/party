@@ -12,7 +12,6 @@ import {
   getQueue, getQueueStream,
   JoinParty, joinParty, Party,
 } from '../models/party'
-import { getPing } from '../models/pong'
 import { Track } from '../models/track'
 import { captureBreadcrumb, setUserContext } from '../sentry'
 import * as util from '../util'
@@ -121,7 +120,7 @@ export class State {
         this.partyCode = Maybe.fromFalsy(restoredState.partyCode)
         this.party = Maybe.fromFalsy(restoredState.party)
 
-        return this.ping()
+        return this.getParty()
       }).then((eitherParty: Either<PartyError, Data<Party>>) => {
         eitherParty.cata(_ => {
           this.logout()
@@ -152,10 +151,11 @@ export class State {
     captureBreadcrumb('state', snapshot)
   }
 
-  private async ping() {
-    const eitherPong = await getPing()
-    return eitherPong.leftMap(errors => {
-      return errors.toError()
+  private getParty() {
+    return getParty().then(eitherParty => {
+      return eitherParty.leftMap(errors => {
+        return errors.toError()
+      })
     })
   }
 
