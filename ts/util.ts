@@ -32,6 +32,7 @@ function getParams(query: string): ParamMap {
 
   return (/^[?#]/.test(query) ? query.slice(1) : query)
     .split('&')
+    .filter(pair => pair.trim().length > 0)
     .reduce((params: ParamMap, param) => {
       const [ key, value ] = param.split('=')
       params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : ''
