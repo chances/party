@@ -1,7 +1,9 @@
 import { Maybe } from 'monet'
 
+import { Error } from './../data'
 import { PartyError } from './party-error'
 
+export { Error } from './../data'
 export { PartyError } from './party-error'
 
 export enum ErrorType {
@@ -19,16 +21,6 @@ const requestError = createError(
 const nullError: Error = {
   ...defaultError,
   status: ErrorType.NULL_ERROR,
-}
-
-export interface Error {
-  status: number
-  title: string
-  detail: string
-  meta: {
-    cause: string | null,
-    details: string | null,
-  }
 }
 
 export default class Errors {

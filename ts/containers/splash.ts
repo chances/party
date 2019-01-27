@@ -27,7 +27,7 @@ function stateProps(state: typeof State): SplashProps {
   const isJoining = state.joining.cata(() => false, request => request.isLoading)
   const maybeError = state.joining
     .flatMap(request => request.error)
-    .map(err => err.detail)
+    .flatMap(err => Maybe.fromUndefined(err.detail))
 
   return {
     partyCode,

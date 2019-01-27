@@ -1,6 +1,8 @@
 import Promise = require('bluebird')
 import { Either, Maybe } from 'monet'
 
+import { Document, Resource, ResourceIdentifier } from '../data'
+import * as JsonApi from '../data/resources'
 import Errors from './errors'
 import { Error, nullErrorToNothing } from './errors'
 
@@ -45,24 +47,17 @@ export class Request<T> {
   }
 }
 
-export type ApiResponse<T> = DataResponse<T> | ErrorResponse
-// JSON API Specification - Document Structure
-// http://jsonapi.org/format/1.0/#document-structure
-export interface DataResponse<T> {
-  data: Data<T>
+export type ApiResponse<T> = Document<T> | JsonApi.ErrorDocument
+export type Data<T> = Resource<T> | ResourceIdentifier
+
+export function isResource<T>(data: Data<T>): data is Resource<T>
+export function isResource(data: any): data is JsonApi.Resource {
+  return data.attributes !== undefined && typeof data.attributes === 'object'
 }
-export interface Data<T> {
-  id: string
-  type: string
-  attributes: T
-  links: {
-    self: string,
-  }
-}
-// JSON API Specification - Errors
-// http://jsonapi.org/format/1.0/#errors
-export interface ErrorResponse {
-  errors: Error[]
+
+export function isErrorResponse<T>(response: ApiResponse<T>): response is JsonApi.ErrorDocument {
+  return (response as JsonApi.ErrorDocument).errors !== undefined &&
+    Array.isArray((response as JsonApi.ErrorDocument).errors)
 }
 
 export type Response<T> = Either<Errors, Data<T>>
