@@ -1,6 +1,6 @@
 import { expect, test, that } from './lib/expect'
 
-import { klass, log, queryParams } from '../util'
+import { klass, log, queryParams, toKebabCase } from '../util'
 
 test('log returns logged value', t => {
   const value = 'foobar'
@@ -15,6 +15,26 @@ test('log is curryable', t => {
 
   expect(that(fooLogger).is.an.instanceOf(Function))
   expect(that(fooLogger('foobar')).equals('foobar'))
+
+  t.end()
+})
+
+test('toKebabCase emits empty string for empty input', t => {
+  expect(that(toKebabCase('')).equals(''))
+
+  expect(that(toKebabCase('  ')).equals(''))
+
+  t.end()
+})
+
+test('toKebabCase emits expected kebab casing for given inputs', t => {
+  expect(that(toKebabCase('foobar')).equals('foobar'))
+
+  expect(that(toKebabCase('Foobar')).equals('foobar'))
+
+  expect(that(toKebabCase('FoobarFizzbuzz')).equals('foobar-fizzbuzz'))
+
+  expect(that(toKebabCase('Party')).equals('party'))
 
   t.end()
 })

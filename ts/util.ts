@@ -24,6 +24,10 @@ interface ClassObject {
   [name: string]: boolean
 }
 
+export function toKebabCase(input: string) {
+  return input.trim().split(/(?=[A-Z])/).join('-').toLowerCase()
+}
+
 export interface ParamMap {[index: string]: string}
 function getParams(query: string): ParamMap {
   if (!query) {
