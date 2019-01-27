@@ -25,11 +25,9 @@ class MockModel {
   }
 }
 
-test('action is wrapped with wrapBreadcrumb', t => {
+test('action is wrapped with wrapBreadcrumb', _t => {
   const model = new MockModel()
 
   model.mutateProperty('foo')
   expect(that(model.property).equals('foo'))
-
-  t.end()
 })

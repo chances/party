@@ -28,18 +28,15 @@ const proxyquire: typeof Proxyquire = require('proxyquire').noPreserveCache();
   },
 })
 
-test('can call captureBreadcrumb in development', t => {
+test('can call captureBreadcrumb in development', _t => {
   const { captureBreadcrumb } = require('../sentry')
   captureBreadcrumb('test')
-
-  t.end()
 })
 
-test('can call captureBreadcrumb in production', t => {
+test('can call captureBreadcrumb in production', _t => {
   const { captureBreadcrumb } = require('../sentry')
   process.env.NODE_ENV = 'production'
   captureBreadcrumb('test')
 
   process.env.NODE_ENV = 'development'
-  t.end()
 })
