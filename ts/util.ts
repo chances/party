@@ -1,4 +1,3 @@
-
 export default function _curry(f: (...args: any[]) => any) {
   return (...args: any[]) => {
     return args.length < f.length
@@ -20,8 +19,10 @@ export const log = _curry((message: string, value: any) => {
   return value
 })
 
-interface ClassObject {
-  [name: string]: boolean
+export function isPromise(thenable: PromiseLike<any> | any | void): thenable is Promise<void> {
+  return thenable !== undefined
+    ? typeof thenable.then === 'function'
+    : false
 }
 
 export function toKebabCase(input: string) {
@@ -47,6 +48,10 @@ function getParams(query: string): ParamMap {
 export function queryParams(): ParamMap {
   const params = getParams(window.location.search)
   return log('Query params: ', params)
+}
+
+interface ClassObject {
+  [name: string]: boolean
 }
 
 export function klass(classes: ClassObject) {

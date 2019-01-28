@@ -3,6 +3,8 @@ import * as chai from 'chai'
 // tslint:disable-next-line:no-implicit-dependencies
 import tape = require('tape')
 
+import * as util from '../../util'
+
 let topic: tape.Test
 
 // Mock window.location.search for usages of ts/util.ts
@@ -14,12 +16,6 @@ global.window = {
 
 type TestCase = (test: tape.Test) => PromiseLike<void> | void
 
-function isPromise(testCaseResult: ReturnType<TestCase>): testCaseResult is Promise<void> {
-  return testCaseResult !== undefined
-    ? typeof testCaseResult.then === 'function'
-    : false
-}
-
 export function test(name: string, cb: TestCase) {
   tape(name, t => {
     try {
@@ -28,7 +24,7 @@ export function test(name: string, cb: TestCase) {
 
       // Call Test.end when an asynchronous test resolves, otherwise
       //  end the test for a synchronous test
-      if (isPromise(ranTest)) {
+      if (util.isPromise(ranTest)) {
         ranTest.then(() => {
           t.end()
         }).catch(err => { throw err })
