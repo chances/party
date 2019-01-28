@@ -22,7 +22,7 @@ export interface Resource extends ResourceIdentifier {
 }
 
 export interface Document extends Metadata {
-  data: NewResourceIdentifier | ResourceIdentifier
+  data: NewResourceIdentifier | ResourceIdentifier | Resource
 }
 
 // JSON API Specification - Errors

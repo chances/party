@@ -1,7 +1,7 @@
 import { Maybe } from 'monet'
 import * as Raven from 'raven-js'
 
-import Errors from './api/request/errors'
+import Errors from './api/requests/primitives/errors'
 
 let maybeRaven: Maybe<Raven.RavenStatic> = Maybe.Nothing()
 

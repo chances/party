@@ -19,7 +19,7 @@ export const log = _curry((message: string, value: any) => {
   return value
 })
 
-export function isPromise(thenable: PromiseLike<any> | any | void): thenable is Promise<void> {
+export function isPromise(thenable: PromiseLike<any> | any | void): thenable is Promise<any> {
   return thenable !== undefined
     ? typeof thenable.then === 'function'
     : false

@@ -1,16 +1,15 @@
 import Promise = require('bluebird')
 import localForage = require('localforage')
 import { configure, observable } from 'mobx'
-import { Either, Maybe } from 'monet'
+import { Maybe } from 'monet'
 
 import Source from '../api/event'
-import { PartyError } from '../api/request/errors'
-import { Data } from '../api/request/primitives'
+import { isResource } from '../api/requests/primitives'
 import {
-  getHistory, getHistoryStream,
+  getHistory, // getHistoryStream,
   getParty, getPartyStream,
-  getQueue, getQueueStream,
-  JoinParty, joinParty, Party,
+  getQueue, // getQueueStream,
+  JoinParty, Party,
 } from '../models/party'
 import { Track } from '../models/track'
 import { captureBreadcrumb, setUserContext } from '../sentry'
@@ -55,9 +54,9 @@ export class State {
 
   @action joinParty(partyCode: string) {
     this.partyCode = Maybe.Just(partyCode)
-    const joinPartyRequest = new JoinParty(partyCode)
-    joinParty(joinPartyRequest)
-    this.joining = Maybe.Just(joinPartyRequest)
+    const request = new JoinParty(partyCode)
+    request.send()
+    this.joining = Maybe.Just(request)
   }
 
   @action logout() {
@@ -72,7 +71,7 @@ export class State {
     if (joinResponse.isErrored) {
       return
     }
-    this.party = joinResponse.result
+    this.party = joinResponse.responseData
 
     this.router.navigate(Router.mainTabs.music)
 
@@ -120,11 +119,16 @@ export class State {
         this.partyCode = Maybe.fromFalsy(restoredState.partyCode)
         this.party = Maybe.fromFalsy(restoredState.party)
 
-        return this.getParty()
-      }).then((eitherParty: Either<PartyError, Data<Party>>) => {
+        return getParty().promise
+      }).then(eitherParty => {
         eitherParty.cata(_ => {
           this.logout()
         }, partyData => {
+          if (!isResource(partyData)) {
+            this.logout()
+            return
+          }
+
           const party = partyData.attributes
           if (party.ended) {
             util.log('Party ended: ', party)
@@ -151,16 +155,9 @@ export class State {
     captureBreadcrumb('state', snapshot)
   }
 
-  private getParty() {
-    return getParty().then(eitherParty => {
-      return eitherParty.leftMap(errors => {
-        return errors.toError()
-      })
-    })
-  }
-
   private listenForUpdates() {
     this.listenForPartyUpdates()
+    // TODO: Add Queue and History event streams to server
     return Promise.all([
       this.listenForQueueUpdates(),
       this.listenForHistoryUpdates(),
@@ -179,37 +176,32 @@ export class State {
   }
 
   private listenForQueueUpdates() {
-    return getQueue().then(eitherQueue => {
-      return eitherQueue.toMaybe().flatMap(queue => {
-        this.updateQueue(queue.attributes)
-
-        return this.partyStream
-      })
-    }).then(maybePartyStream => {
-      this.queueStream = maybePartyStream.map(partyStream => {
-        const stream = getQueueStream(partyStream)
-        this.observeStream(stream, updatedQueue => this.updateQueue(updatedQueue))
-
-        return stream
-      })
-    })
+    const request = getQueue()
+    return request.promise.then(_ => {
+      request.responseData.forEach(this.updateQueue)
+      return this.partyStream
+    })/*.then(maybePartyStream => {
+      this.queueStream = maybePartyStream.map(partyStream => getQueueStream(partyStream))
+        .map(queueStream => {
+          this.observeStream(queueStream, updatedQueue => this.updateQueue(updatedQueue))
+          return queueStream
+        })
+    })*/
   }
 
   private listenForHistoryUpdates() {
-    return getHistory().then(eitherHistory => {
-      return eitherHistory.toMaybe().flatMap(history => {
-        this.updateHistory(history.attributes)
-
-        return this.partyStream
-      })
-    }).then(maybePartyStream => {
-      this.historyStream = maybePartyStream.map(partyStream => {
-        const stream = getHistoryStream(partyStream)
-        this.observeStream(stream, updatedHistory => this.updateHistory(updatedHistory))
-
-        return stream
-      })
-    })
+    const request = getHistory()
+    return request.promise.then(_ => {
+      request.responseData.forEach(this.updateHistory)
+      return this.partyStream
+    })/*.then(maybePartyStream => {
+      this.historyStream = maybePartyStream
+        .map(partyStream => getHistoryStream(partyStream))
+        .map(historyStream => {
+          this.observeStream(historyStream, updatedHistory => this.updateHistory(updatedHistory))
+          return historyStream
+        })
+    })*/
   }
 
   private observeStream<T>(stream: Source<T>, handler: (event: T) => void) {
@@ -219,11 +211,11 @@ export class State {
       }
 
       // TODO: Send an event to Sentry? (with the current state)
-      util.log('Party stream error: ', err)
+      util.log(`${stream.name} stream error: `, err)
 
       return stream.messages
-    }).observe(event => handler(event)).catch(err => {
-      util.log('Party stream closed: ', err)
+    }).observe(event => handler(event.data)).catch(err => {
+      util.log(`${stream.name} stream closed: `, err)
 
       this.logout()
     })

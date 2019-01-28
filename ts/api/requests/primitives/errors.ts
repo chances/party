@@ -1,9 +1,9 @@
 import { Maybe } from 'monet'
 
-import { Error } from './../data'
+import { Error } from '../../data'
 import { PartyError } from './party-error'
 
-export { Error } from './../data'
+export { Error } from '../../data'
 export { PartyError } from './party-error'
 
 export enum ErrorType {
@@ -55,6 +55,13 @@ export default class Errors {
       case 404: return 'not-found'
       default: return 'error'
     }
+  }
+
+  static fromError(error: Error) {
+    const errorStatus = typeof error.status === 'string'
+      ? Number.parseInt(error.status, 10)
+      : error.status || ErrorType.NULL_ERROR
+    return new Errors(errorStatus , [error])
   }
 
   toError() {
