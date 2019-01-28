@@ -107,12 +107,15 @@ function isResponseEmpty(response: Response): Promise<boolean> {
       response.headers.get('Content-Length') === '0'
     if (contentLengthZero) { resolve(true) }
 
-    const isBodyLengthNonZero = response.clone().text()
-      .then(body => body.length > 0)
-    isBodyLengthNonZero.catch(error => {
+    const isBodyLengthZero = response.clone().text()
+      .then(body => {
+        const isBodyLengthNonZero = body.trim().length > 0
+        return !isBodyLengthNonZero
+      })
+    isBodyLengthZero.catch(error => {
       reject(error)
     })
 
-    resolve(isBodyLengthNonZero)
+    resolve(isBodyLengthZero)
   })
 }
