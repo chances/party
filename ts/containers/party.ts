@@ -91,7 +91,7 @@ function menu(id: string, secondary: boolean, items: TemplateResult[]) {
 function menuItem(hash: string, label: string, selected: boolean = false) {
   const hashSegments = hash.split('/')
   const id = hashSegments[hashSegments.length - 1]
-  return html`<li id="${id + 'MenuItem'}" class="${util.klass({ selected })}" data-for$="${id}">
+  return html`<li id="${id + 'MenuItem'}" class="${util.klass({ selected })}" data-for="${id}">
     <a href="${'#' + hash}" @click=${menuItemClick}>${label}</a>
   </li>`
 }
