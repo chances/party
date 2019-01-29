@@ -1,4 +1,4 @@
-import Promise = require('bluebird')
+import * as Promise from 'bluebird'
 import localForage = require('localforage')
 import { configure, observable } from 'mobx'
 import { Maybe } from 'monet'
@@ -169,7 +169,13 @@ export class State {
     this.partyStream = Maybe.fromNull(
       this.party.cata(() => null, _ => {
         const stream = getPartyStream()
-        this.observeStream(stream, updatedParty => this.updateParty(updatedParty))
+        stream.open().then(__ => {
+          this.observeStream(stream, updatedParty => this.updateParty(updatedParty))
+        }).catch(err => {
+          const message = "Couldn't start party stream"
+          util.log(`${message}: `, err)
+          captureException(err, { message })
+        })
 
         return stream
       }),

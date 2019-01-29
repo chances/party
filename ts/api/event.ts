@@ -1,5 +1,9 @@
+import * as signalR from '@aspnet/signalr'
 import { create } from '@most/create'
+import * as Promise from 'bluebird'
+import { Stream } from 'most'
 
+import { captureException } from '../sentry'
 import * as util from '../util'
 import { getPartyApiHost } from './request'
 
@@ -23,69 +27,109 @@ enum ReadyState {
   CLOSED = 2,
 }
 
-export interface MessageEvent extends Event {
-  data: string
+interface EventStream {
+  name: string
+  isClosed: boolean
+  messages: Stream<any>
+  open(): Promise<void>
+  close(): Promise<void>
+  on(eventName: string): Stream<any>
 }
 
-export default class Source<T> {
-  private eventSource: EventSource
+interface MessageEvent<T> {
+  data: T
+  source: EventStream
+}
 
-  constructor(urlOrExistingSource: string | Source<any>, private messageName: string) {
+export default class Source<T> implements EventStream {
+  private connection: signalR.HubConnection
+  private readyState = ReadyState.CLOSED
+
+  constructor(urlOrExistingSource: string | Source<any>, private hubMethodName: string) {
+    // Convert hub method name to Pascal Case
+    this.hubMethodName = `${hubMethodName[0].toLocaleUpperCase()}${hubMethodName.substring(1)}`
+
     if (typeof urlOrExistingSource === 'string') {
-      this.eventSource = new EventSource(
-        `${getPartyApiHost()}${urlOrExistingSource}`,
-        {
-          withCredentials: true,
-        },
-      )
+      this.connection = new signalR.HubConnectionBuilder()
+        .withUrl(`${getPartyApiHost()}${urlOrExistingSource}`)
+        .build()
     } else {
-      this.eventSource = urlOrExistingSource.eventSource
+      this.connection = urlOrExistingSource.connection
     }
-  }
 
-  static parseMessage<T>(e: MessageEvent) {
-    util.log('Received message: ', e.data)
-    return JSON.parse(e.data) as T
-  }
-
-  get isClosed() {
-    return this.eventSource.readyState === ReadyState.CLOSED
-  }
-
-  get opened() {
-    return this.on('open').map(e => {
-      // tslint:disable-next-line:no-console
-      console.log('Opened event stream for ' + this.messageName)
-      return e
+    this.connection.onclose(err => {
+      if (err) {
+        const eventName = this.hubMethodName
+        captureException(err, { message: `${eventName} stream closed` })
+      }
+      this.readyState = ReadyState.CLOSED
     })
   }
 
-  get messages() {
-    return this.on(this.messageName).map(e => Source.parseMessage<T>(e as MessageEvent))
+  get name() {
+    return this.hubMethodName
   }
 
-  on(eventType: 'open' | 'message' | string) {
-    return create((add, end, error) => {
-      const addEvent = (e: any) => {
-        if (this.eventSource.readyState !== ReadyState.CLOSED) {
-          add(e)
+  get isClosed() {
+    return this.readyState === ReadyState.CLOSED
+  }
+
+  get messages() {
+    return this.on(this.hubMethodName)
+  }
+
+  open() {
+    if (this.readyState === ReadyState.CLOSED) {
+      this.readyState = ReadyState.CONNECTING
+
+      const connected = this.connection.start().then(() => {
+        const isConnected = this.connection.state === signalR.HubConnectionState.Connected
+        this.readyState = isConnected ? ReadyState.OPEN : ReadyState.CLOSED
+        if (!isConnected) {
+          throw new Error('EventStream connection failed.')
+        }
+      })
+
+      return Promise.resolve(connected)
+    }
+
+    return Promise.resolve()
+  }
+
+  on(eventName: string = this.hubMethodName) {
+    return create<MessageEvent<T>>((add, end, error) => {
+      const addEvent = (value: T, isClosed: boolean) => {
+        if (!isClosed || this.readyState !== ReadyState.CLOSED) {
+          util.log(`Received message on ${eventName} stream: `, value)
+          add({
+            data: value,
+            source: this,
+          })
         } else {
           end()
         }
       }
-      const addError = (_: any) => error(new Error('EventSource failed.'))
+      const addError = (_: any) => error(new Error('EventStream stream failed.'))
 
-      this.eventSource.addEventListener(eventType, addEvent)
-      this.eventSource.addEventListener('error', addError)
+      const stream = this.connection.stream<T>(eventName)
+      const observer = {
+        closed: false,
+        next: (value: T) => addEvent(value, observer.closed),
+        error: addError,
+        complete: end,
+      }
+      const subscription = stream.subscribe(observer)
 
       return () => {
-        this.eventSource.removeEventListener(eventType, addEvent)
-        this.eventSource.removeEventListener('error', addError)
+        subscription.dispose()
+        if (!observer.closed) {
+          end()
+        }
       }
     })
   }
 
   close() {
-    this.eventSource.close()
+    return Promise.resolve(this.connection.stop())
   }
 }
