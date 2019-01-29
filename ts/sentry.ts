@@ -45,3 +45,9 @@ export function captureBreadcrumb(category: string, data?: any) {
     data,
   }))
 }
+
+export function captureException(err: string | Error, extra?: any) {
+  maybeRaven.map(raven => raven.captureException(err, {
+    extra,
+  }))
+}

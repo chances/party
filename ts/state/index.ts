@@ -12,7 +12,7 @@ import {
   JoinParty, Party,
 } from '../models/party'
 import { Track } from '../models/track'
-import { captureBreadcrumb, setUserContext } from '../sentry'
+import { captureBreadcrumb, captureException, setUserContext } from '../sentry'
 import * as util from '../util'
 
 import { action } from './action'
@@ -121,8 +121,9 @@ export class State {
 
         return getParty().promise
       }).then(eitherParty => {
-        eitherParty.cata(_ => {
+        eitherParty.cata(errors => {
           this.logout()
+          captureException('Could not fetch party', { errors })
         }, partyData => {
           if (!isResource(partyData)) {
             this.logout()
@@ -216,6 +217,7 @@ export class State {
       return stream.messages
     }).observe(event => handler(event.data)).catch(err => {
       util.log(`${stream.name} stream closed: `, err)
+      captureException(err)
 
       this.logout()
     })
