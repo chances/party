@@ -1,4 +1,9 @@
-const { FuseBox, ReplacePlugin, UglifyJSPlugin, WebIndexPlugin } = require('fuse-box')
+const {
+  FuseBox,
+  ReplacePlugin,
+  UglifyJSPlugin,
+  WebIndexPlugin
+} = require('fuse-box')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -7,23 +12,23 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const fuse = FuseBox.init({
   homeDir: "ts",
-  output: "../../site/assets/javascript/$name.js",
+  output: "./public/assets/javascript/$name.js",
   debug: isDevelopment,
   cache: !isProduction,
   plugins: [
     WebIndexPlugin({
       template: 'index.html',
       path: '/assets/javascript/',
-      target: '../../party/index.html',
+      target: '../../index.html',
     })
   ]
 })
 
 if (isWatchMode) {
   fuse.dev({
-    root: '../../site',
+    root: './public',
     port: 3000,
-    open: 'http://localhost:3000/party'
+    open: 'http://localhost:3000/'
   })
 }
 

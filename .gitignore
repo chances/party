@@ -8,6 +8,9 @@ npm-debug.log
 # Intermediate build files
 .fusebox/
 js/
+public/assets/stylesheets/party.min.css
+public/assets/javascript/party.js
+public/index.html
 
 # Code coverage
 coverage/

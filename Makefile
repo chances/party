@@ -1,6 +1,6 @@
+NODE_SASS = ./node_modules/.bin/node-sass
 TSC = ./node_modules/.bin/tsc
 FUSE = node fuse.js
-PARCEL = npx parcel
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
 TAPE = ./node_modules/.bin/tape
@@ -12,7 +12,7 @@ SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.ts
-FUSE_TARGET := ../../site/assets/javascript/party.js
+FUSE_TARGET := ./public/assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
 TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
@@ -33,7 +33,7 @@ build-dev: bootstrap css js-dev
 .PHONY: build-dev
 
 css:
-	@cp -r scss/* ../assets/scss/.
+	@${NODE_SASS} ./scss/party.scss ./public/assets/stylesheets/party.min.css --output-style compressed
 .PHONY: css
 
 js:
@@ -76,8 +76,7 @@ watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Bundle target: ${FUSE_TARGET}"
 	@make --quiet clean
-	@${CONCURRENTLY} -n "css,sass,js" -c "gray.dim,magenta,red" --kill-others \
-		"cd ../..; make --quiet watch-css &> /dev/null" \
+	@${CONCURRENTLY} -n "sass,js" -c "magenta,red" --kill-others \
 		"make --quiet watch-scss" \
 		"make --quiet watch-js"
 .PHONY: watch
@@ -87,7 +86,7 @@ browser-sync:
 .PHONY: browser-sync
 
 watch-scss:
-	@${SANE} "cp -r scss/* ../assets/scss/. && cd ../..; make --quiet css" ./scss --wait=2
+	@${SANE} "make --quiet css" ./scss --wait=2
 .PHONY: watch-scss
 
 watch-js:
