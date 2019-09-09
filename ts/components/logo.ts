@@ -1,21 +1,16 @@
 import { html } from 'lit-html'
 
-export default function render(isSplash: boolean, tvMode: boolean = false) {
-  let header
+export default function render(tvMode: boolean = false) {
+  const flexSpacer = html`<span style="flex: 1"></span>`
+  const tvModeBanner = html`
+    ${flexSpacer}
+    <h2>Open <pre>tunage.app</pre> in your browser</h2>
+    ${flexSpacer}
+  `
 
-  if (isSplash) {
-    header = html`<div id="logo">
+  return html`<div id="logo">
       <img src="/assets/images/party/Party-icon-72.png" alt="Party" />
       <span>Tunage</span>
+      ${tvMode ? tvModeBanner : null}
     </div>`
-  }
-
-  if (tvMode) {
-    header = html`
-      ${header}
-      <h2>Open <pre>chances.party</pre> in your browser
-    `
-  }
-
-  return header
 }

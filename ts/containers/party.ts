@@ -13,7 +13,7 @@ import splash from './splash'
 
 export default function render() {
   return html`<main>
-    ${logoHeader(State.party.isNothing(), State.tvMode)}
+    ${logoHeader(State.tvMode)}
     ${State.party.cata(renderSplash, renderParty)}
   </main>`
 }
