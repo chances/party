@@ -5,8 +5,8 @@ export default function render(isSplash: boolean, tvMode: boolean = false) {
 
   if (isSplash) {
     header = html`<div id="logo">
-      <img src="/assets/images/party/Party-icon-152.png" alt="Party" />
-      <p style="margin-top: 0;">Tunage</p>
+      <img src="/assets/images/party/Party-icon-72.png" alt="Party" />
+      <span>Tunage</span>
     </div>`
   }
 

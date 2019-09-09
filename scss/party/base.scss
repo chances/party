@@ -59,13 +59,13 @@ input[type=text]:not(:disabled) {
 
 #logo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  margin-top: 1rem;
+  margin: 1rem 0 0 1rem;
 
   & > img {
     margin-bottom: 0;
-    max-width: 300px;
+    margin-right: 0.625rem;
+    max-width: 48px;
   }
 }
