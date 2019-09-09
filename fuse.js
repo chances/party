@@ -33,7 +33,7 @@ if (isWatchMode) {
 }
 
 const PARTY_BUNDLE = 'party';
-const PARTY_API = isDevelopment ? 'http://localhost:3005' : 'https://party.chancesnow.me'
+const PARTY_API = isDevelopment ? 'http://localhost:3005' : 'https://api.tunage.app'
 
 const app = fuse
   .bundle(PARTY_BUNDLE)
