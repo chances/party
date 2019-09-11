@@ -15,6 +15,22 @@ h2 > pre {
   display: inline;
 }
 
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 1rem;
+  font-size: 0.75rem;
+
+  p {
+    opacity: 0.75;
+  }
+
+  a, a:active, a:focus, a:visited {
+    color: $color;
+  }
+}
+
 #musicMenu {
   margin: 1rem 0 0.5rem;
 }

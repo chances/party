@@ -23,9 +23,10 @@ function renderSplash() {
     <div id="content" class="${util.klass({ 'tv-mode': State.tvMode })}">
       ${splash()}
     </div>
-    <div>
-      <p>Made with love in PDX.</p>
-    </div>
+    <footer>
+      <p><a href="https://chancesnow.me/about" target="_blank">&copy; Chance Snow</a></p>
+      <p>Made with love in PDX</p>
+    </footer>
   `
 }
 

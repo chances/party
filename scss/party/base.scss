@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
 
 * {
@@ -18,7 +20,7 @@ html, body, main {
 main {
   font-family: proxima_nova, "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12pt;
-  color: #fcfcfc;
+  color: $color;
   text-align: center;
   letter-spacing: 0;
   background: #242424 linear-gradient(#242424, #0e0e0e 80%, #0a0a0a);
@@ -45,6 +47,15 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 1.625rem;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover, &:active, &:focus {
+    text-decoration: underline;
+  }
 }
 
 img {
