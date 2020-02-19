@@ -23,7 +23,7 @@
     "@types/tape": "^4.2.33",
     "browser-sync": "^2.26.7",
     "chai": "^4.2.0",
-    "codecov": "^3.5.0",
+    "codecov": "^3.6.5",
     "concurrently": "^4.1.0",
     "faucet": "^0.0.1",
     "fuse-box": "^3.7.1",
