@@ -39,3 +39,12 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_DIR: public
+    - name: Tag Release on Sentry
+      if: success() && github.ref == 'refs/heads/master'
+      run: |
+        echo $(npx sentry-cli releases propose-version) > SENTRY_RELEASE_VERSION
+        npx sentry-cli releases new -p party $(cat SENTRY_RELEASE_VERSION)
+        npx sentry-cli releases set-commits --auto $(cat SENTRY_RELEASE_VERSION)
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}

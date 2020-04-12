@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/chances/party",
   "devDependencies": {
+    "@sentry/cli": "^1.52.1",
     "@types/bluebird": "^3.5.25",
     "@types/chai": "^4.1.7",
     "@types/isomorphic-fetch": "^0.0.34",
