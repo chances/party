@@ -1,6 +1,6 @@
 # [Party](http://chancesnow.me/party)
 
-[![Build Status](https://travis-ci.org/chances/party.svg)](https://travis-ci.org/chances/party)
+[![Build Status](https://img.shields.io/github/workflow/status/chances/party/Tunage%20CI)](https://github.com/chances/party/actions)
 [![Dependency Status](https://david-dm.org/chances/party.svg)](https://david-dm.org/chances/party)
 [![Test Coverage](https://img.shields.io/codecov/c/github/chances/party/master.svg)](https://codecov.io/gh/chances/party/branch/master)
 
