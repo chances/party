@@ -43,7 +43,7 @@ jobs:
       if: success() && github.ref == 'refs/heads/master'
       run: |
         echo $(npx sentry-cli releases propose-version) > SENTRY_RELEASE_VERSION
-        npx sentry-cli releases new -p party $(cat SENTRY_RELEASE_VERSION)
+        npx sentry-cli releases new -p party --finalize $(cat SENTRY_RELEASE_VERSION)
         npx sentry-cli releases set-commits --auto $(cat SENTRY_RELEASE_VERSION)
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
