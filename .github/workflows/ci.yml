@@ -25,7 +25,7 @@ jobs:
       env:
         CI: true
     - name: Build Site
-      if: success() && github.ref == 'refs/heads/master'
+      if: success()
       run: |
         make
       env:
