@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/github/workflow/status/chances/party/Tunage%20CI)](https://github.com/chances/party/actions)
 [![Dependency Status](https://david-dm.org/chances/party.svg)](https://david-dm.org/chances/party)
 [![Test Coverage](https://img.shields.io/codecov/c/github/chances/party/master.svg)](https://codecov.io/gh/chances/party/branch/master)
+[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchances%2Fparty.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchances%2Fparty?ref=badge_shield)
 
 A [Progressive Web App](https://developers.google.com/web/progressive-web-apps/) to facilitate guest interaction at your parties.

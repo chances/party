@@ -25,12 +25,18 @@ jobs:
       env:
         CI: true
     - name: Build Site
-      if: success() && github.ref == 'refs/heads/master'
+      if: success()
       run: |
         make
       env:
         CI: true
         NODE_ENV: production
+    - name: Visual Diff with Percy
+      if: success()
+      run: |
+        npx percy snapshot public/
+      env:
+        PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
     - name: Publish on Netlify
       if: success() && github.ref == 'refs/heads/master'
       run: |
