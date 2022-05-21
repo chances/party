@@ -1,4 +1,4 @@
-NODE_SASS = ./node_modules/.bin/node-sass
+SASS = ./node_modules/.bin/sass
 TSC = ./node_modules/.bin/tsc
 FUSE = node fuse.js
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
@@ -33,7 +33,7 @@ build-dev: bootstrap css js-dev
 .PHONY: build-dev
 
 css:
-	@${NODE_SASS} ./scss/party.scss ./public/assets/stylesheets/party.min.css --output-style compressed
+	@${SASS} ./scss/party.scss ./public/assets/stylesheets/party.min.css --style compressed
 .PHONY: css
 
 js:

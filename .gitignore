@@ -9,6 +9,7 @@ npm-debug.log
 .fusebox/
 js/
 public/assets/stylesheets/party.min.css
+public/assets/stylesheets/party.min.css.map
 public/assets/javascript/party.js
 public/index.html
 
