@@ -27,7 +27,7 @@
     "chai": "^4.2.0",
     "codecov": "^3.7.1",
     "concurrently": "^5.2.0",
-    "faucet": "^0.0.1",
+    "faucet": "^0.0.4",
     "fuse-box": "^3.7.1",
     "netlify-cli": "^2.48.0",
     "node-sass": "^4.14.1",
