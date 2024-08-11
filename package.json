@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "make test",
-    "test:ts": "ts-node ./node_modules/.bin/tape 'ts/test/**/*.spec.ts' | faucet",
+    "test:ts": "ts-node node_modules/tape/bin/tape ts/test/**/*.spec.ts | faucet",
     "lint": "tslint --project ."
   },
   "repository": "git+https://github.com/chances/party.git",
@@ -35,7 +35,7 @@
     "sane": "^4.1.0",
     "sass": "^1.77.8",
     "tap-dot": "^2.0.0",
-    "tape": "^5.0.0",
+    "tape": "^5.8.0",
     "ts-node": "^6.0.0",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3",
