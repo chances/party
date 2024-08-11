@@ -1,5 +1,4 @@
 SASS = ./node_modules/.bin/sass
-TSC = ./node_modules/.bin/tsc
 FUSE = node fuse.js
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
@@ -60,14 +59,14 @@ test: lint
 
 cover:
 	@rm -rf coverage
-	@${TSC}
+	@npx tsc
 	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
 	@xdg-open ./coverage/index.html
 .PHONY: cover
 
 test-ci: lint
 	@rm -rf coverage
-	@${TSC}
+	@npx tsc
 	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${TAP_DOT}
 	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci
