@@ -1,6 +1,6 @@
 SASS = ./node_modules/.bin/sass
-FUSE = node fuse.js
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
+ESBUILD = node bundle.mjs
 TS_LINT = ./node_modules/.bin/tslint
 TAPE = ./node_modules/tape/bin/tape
 FAUCET = ./node_modules/.bin/faucet
@@ -11,7 +11,7 @@ SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
 TS_ENTRY_POINT := ./ts/main.ts
-FUSE_TARGET := ./public/assets/javascript/party.js
+BUNDLE_TARGET := ./public/assets/javascript/party.js
 
 TS_SOURCES := ./ts/**.ts ./ts/**.tsx
 TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
@@ -39,15 +39,15 @@ css:
 js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
-	@${FUSE}
+	@echo "Bundle target: ${BUNDLE_TARGET}"
+	@${ESBUILD}
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
-	@NODE_ENV=development ${FUSE}
+	@echo "Bundle target: ${BUNDLE_TARGET}"
+	@NODE_ENV=development ${ESBUILD}
 .PHONY: js-dev
 
 lint:
@@ -74,7 +74,7 @@ test-ci: lint
 
 watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
+	@echo "Bundle target: ${BUNDLE_TARGET}"
 	@make --quiet clean
 	@${CONCURRENTLY} -n "sass,js" -c "magenta,red" --kill-others \
 		"make --quiet watch-scss" \
@@ -90,7 +90,7 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	NODE_ENV=development WATCH='' ${FUSE}
+	NODE_ENV=development WATCH='' ${ESBUILD}
 .PHONY: watch-js
 
 watch-tests:
@@ -100,5 +100,5 @@ watch-tests:
 .PHONY: watch-tests
 
 clean:
-	rm -f ${FUSE_TARGET}
+	rm -f ${BUNDLE_TARGET}
 .PHONY: clean
