@@ -44,7 +44,7 @@
     "@aspnet/signalr": "^1.1.4",
     "@most/create": "^2.0.1",
     "bluebird": "^3.7.2",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "lit-html": "^1.0.0-rc.2",
     "localforage": "^1.7.3",
     "mobx": "^4.9.2",
