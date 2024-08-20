@@ -18,7 +18,7 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install
-        npm install --global @percy/cli
+        npm install --global @percy/cli netlify-cli@^4
     - name: Test
       if: success()
       run: make test-ci

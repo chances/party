@@ -32,7 +32,7 @@ build-dev: bootstrap css js-dev
 .PHONY: build-dev
 
 css:
-	mkdir ./public/assets/stylesheets
+	@mkdir -p ./public/assets/stylesheets
 	@${SASS} ./scss/party.scss --style=compressed > ./public/assets/stylesheets/party.min.css
 .PHONY: css
 
