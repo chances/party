@@ -1,9 +1,8 @@
-NODE_SASS = ./node_modules/.bin/node-sass
-TSC = ./node_modules/.bin/tsc
+SASS = ./node_modules/.bin/sass
 FUSE = node fuse.js
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
 TS_LINT = ./node_modules/.bin/tslint
-TAPE = ./node_modules/.bin/tape
+TAPE = ./node_modules/tape/bin/tape
 FAUCET = ./node_modules/.bin/faucet
 TAP_DOT = ./node_modules/.bin/tap-dot
 NYC = ./node_modules/.bin/nyc
@@ -33,7 +32,8 @@ build-dev: bootstrap css js-dev
 .PHONY: build-dev
 
 css:
-	@${NODE_SASS} ./scss/party.scss ./public/assets/stylesheets/party.min.css --output-style compressed
+	@mkdir -p ./public/assets/stylesheets
+	@${SASS} ./scss/party.scss --style=compressed > ./public/assets/stylesheets/party.min.css
 .PHONY: css
 
 js:
@@ -60,14 +60,14 @@ test: lint
 
 cover:
 	@rm -rf coverage
-	@${TSC}
+	@npx tsc
 	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
 	@xdg-open ./coverage/index.html
 .PHONY: cover
 
 test-ci: lint
 	@rm -rf coverage
-	@${TSC}
+	@npx tsc
 	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${TAP_DOT}
 	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci

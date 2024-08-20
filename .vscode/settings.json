@@ -26,5 +26,6 @@
     "cSpell.words": [
         "Tunage",
         "klass"
-    ]
+    ],
+    "terminal.integrated.defaultProfile.windows": "Git Bash"
 }

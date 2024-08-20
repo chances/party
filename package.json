@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "make test",
-    "test:ts": "ts-node ./node_modules/.bin/tape 'ts/test/**/*.spec.ts' | faucet",
+    "test:ts": "ts-node node_modules/tape/bin/tape ts/test/**/*.spec.ts | faucet",
     "lint": "tslint --project ."
   },
   "repository": "git+https://github.com/chances/party.git",
@@ -29,16 +29,15 @@
     "concurrently": "^5.2.0",
     "faucet": "^0.0.1",
     "fuse-box": "^3.7.1",
-    "netlify-cli": "^2.48.0",
-    "node-sass": "^4.14.1",
     "nyc": "^15.0.1",
     "proxyquire": "^2.1.3",
     "sane": "^4.1.0",
+    "sass": "^1.77.8",
     "tap-dot": "^2.0.0",
-    "tape": "^5.0.0",
-    "ts-node": "^6.0.0",
+    "tape": "^5.8.0",
+    "ts-node": "^6.2.0",
     "tslint": "^6.1.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.10",
     "uglify-js": "^3.9.1"
   },
   "dependencies": {
