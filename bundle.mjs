@@ -7,6 +7,8 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 const isWatchMode = isDevelopment && process.env.WATCH !== undefined
 const isProduction = process.env.NODE_ENV === 'production'
 
+// TODO: Bundle index.html' to '/assets/javascript/index.html'
+
 console.log(process.env.WATCH);
 
 const PARTY_BUNDLE = 'party';
