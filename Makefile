@@ -1,6 +1,6 @@
 SASS = ./node_modules/.bin/sass
-FUSE = node fuse.js
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
+ESBUILD = node bundle.mjs
 TS_LINT = ./node_modules/.bin/tslint
 TAPE = ./node_modules/tape/bin/tape
 FAUCET = ./node_modules/.bin/faucet
@@ -10,12 +10,12 @@ CODECOV = ./node_modules/.bin/codecov
 SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
-TS_ENTRY_POINT := ./ts/main.ts
-FUSE_TARGET := ./public/assets/javascript/party.js
+TS_ENTRY_POINT := ts/main.ts
+BUNDLE_TARGET := public/assets/javascript/party.js
 
-TS_SOURCES := ./ts/**.ts ./ts/**.tsx
-TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
-TS_TEST_SOURCES_DIR := ./ts/test
+TS_SOURCES := ts/**.ts ts/**.tsx
+TS_TEST_SOURCES := 'ts/test/**/*.spec.ts'
+TS_TEST_SOURCES_DIR := ts/test
 
 all: build
 
@@ -39,19 +39,19 @@ css:
 js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
-	@${FUSE}
+	@echo "Bundle target: ${BUNDLE_TARGET}"
+	@${ESBUILD}
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
-	@NODE_ENV=development ${FUSE}
+	@echo "Bundle target: ${BUNDLE_TARGET}"
+	@NODE_ENV=development ${ESBUILD}
 .PHONY: js-dev
 
 lint:
-	@${TS_LINT} -c ./tslint.json ${TS_SOURCES}
+	@${TS_LINT} -c tslint.json ${TS_SOURCES}
 .PHONY: lint
 
 test: lint
@@ -61,36 +61,37 @@ test: lint
 cover:
 	@rm -rf coverage
 	@npx tsc
-	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
-	@xdg-open ./coverage/index.html
+	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}
+	@xdg-open coverage/index.html 2> /dev/null || open coverage/index.html
 .PHONY: cover
 
 test-ci: lint
 	@rm -rf coverage
 	@npx tsc
-	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${TAP_DOT}
-	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
+	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${TAP_DOT}
+	@${CODECOV} -f coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci
 
 watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
-	@echo "Bundle target: ${FUSE_TARGET}"
+	@echo "Bundle target: ${BUNDLE_TARGET}"
 	@make --quiet clean
-	@${CONCURRENTLY} -n "sass,js" -c "magenta,red" --kill-others \
+	@${CONCURRENTLY} -n "js,sass,sync" -c "red,magenta,gray" --group --kill-others \
+		"make --quiet watch-js" \
 		"make --quiet watch-scss" \
-		"make --quiet watch-js"
+		"make --quiet browser-sync"
 .PHONY: watch
 
 browser-sync:
-	@${BROWSER_SYNC} start -s "../../site" -f "../../site" --open "ui" --startPath "/party"
+	@${BROWSER_SYNC} start -s public -f public --open ui
 .PHONY: browser-sync
 
 watch-scss:
-	@${SANE} "make --quiet css" ./scss --wait=2
+	@${SANE} "make --quiet css" scss --wait=2
 .PHONY: watch-scss
 
 watch-js:
-	NODE_ENV=development WATCH='' ${FUSE}
+	@NODE_ENV=development WATCH='' ${ESBUILD}
 .PHONY: watch-js
 
 watch-tests:
@@ -100,5 +101,6 @@ watch-tests:
 .PHONY: watch-tests
 
 clean:
-	rm -f ${FUSE_TARGET}
+	rm -f public/index.html
+	rm -f ${BUNDLE_TARGET}
 .PHONY: clean
