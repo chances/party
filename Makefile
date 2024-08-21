@@ -76,13 +76,14 @@ watch:
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Bundle target: ${BUNDLE_TARGET}"
 	@make --quiet clean
-	@${CONCURRENTLY} -n "sass,js" -c "magenta,red" --kill-others \
+	@${CONCURRENTLY} -n "js,sass,sync" -c "red,magenta,gray" --group --kill-others \
+		"make --quiet watch-js" \
 		"make --quiet watch-scss" \
-		"make --quiet watch-js"
+		"make --quiet browser-sync"
 .PHONY: watch
 
 browser-sync:
-	@${BROWSER_SYNC} start -s "../../site" -f "../../site" --open "ui" --startPath "/party"
+	@${BROWSER_SYNC} start -s public -f public --open ui
 .PHONY: browser-sync
 
 watch-scss:
@@ -90,7 +91,7 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	NODE_ENV=development WATCH='' ${ESBUILD}
+	@NODE_ENV=development WATCH='' ${ESBUILD}
 .PHONY: watch-js
 
 watch-tests:
