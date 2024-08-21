@@ -10,12 +10,12 @@ CODECOV = ./node_modules/.bin/codecov
 SANE = ./node_modules/.bin/sane
 CONCURRENTLY = ./node_modules/.bin/concurrently
 
-TS_ENTRY_POINT := ./ts/main.ts
-BUNDLE_TARGET := ./public/assets/javascript/party.js
+TS_ENTRY_POINT := ts/main.ts
+BUNDLE_TARGET := public/assets/javascript/party.js
 
-TS_SOURCES := ./ts/**.ts ./ts/**.tsx
-TS_TEST_SOURCES := './ts/test/**/*.spec.ts'
-TS_TEST_SOURCES_DIR := ./ts/test
+TS_SOURCES := ts/**.ts ts/**.tsx
+TS_TEST_SOURCES := 'ts/test/**/*.spec.ts'
+TS_TEST_SOURCES_DIR := ts/test
 
 all: build
 
@@ -51,7 +51,7 @@ js-dev:
 .PHONY: js-dev
 
 lint:
-	@${TS_LINT} -c ./tslint.json ${TS_SOURCES}
+	@${TS_LINT} -c tslint.json ${TS_SOURCES}
 .PHONY: lint
 
 test: lint
@@ -61,15 +61,15 @@ test: lint
 cover:
 	@rm -rf coverage
 	@npx tsc
-	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${FAUCET}
-	@xdg-open ./coverage/index.html
+	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${FAUCET}
+	@xdg-open coverage/index.html 2> /dev/null || open coverage/index.html
 .PHONY: cover
 
 test-ci: lint
 	@rm -rf coverage
 	@npx tsc
-	@${NYC} ${TAPE} './ts/test/**/*.spec.ts' | ${TAP_DOT}
-	@${CODECOV} -f ./coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
+	@${NYC} ${TAPE} ${TS_TEST_SOURCES} | ${TAP_DOT}
+	@${CODECOV} -f coverage/*.json -t 3a8a22dc-d6c4-4c57-b7e8-edfa34ea9b85
 .PHONY: test-ci
 
 watch:
@@ -87,7 +87,7 @@ browser-sync:
 .PHONY: browser-sync
 
 watch-scss:
-	@${SANE} "make --quiet css" ./scss --wait=2
+	@${SANE} "make --quiet css" scss --wait=2
 .PHONY: watch-scss
 
 watch-js:
@@ -101,5 +101,6 @@ watch-tests:
 .PHONY: watch-tests
 
 clean:
+	rm -f public/index.html
 	rm -f ${BUNDLE_TARGET}
 .PHONY: clean
