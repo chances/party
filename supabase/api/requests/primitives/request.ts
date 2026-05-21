@@ -1,8 +1,8 @@
-import Promise = require("bluebird");
+import Promise from "bluebird";
 import { Either, Maybe } from "monet";
 
 import { Data, isResource, Response } from ".";
-import * as util from "../../../util";
+import * as util from "../../../lib/util";
 import { ResourceIdentifier } from "../../data";
 import Errors from "./errors";
 import { Error, nullErrorToNothing } from "./errors";

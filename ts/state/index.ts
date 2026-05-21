@@ -3,8 +3,8 @@ import localForage = require("localforage");
 import { configure, observable } from "mobx";
 import { Maybe } from "monet";
 
-import Source from "../api/event";
-import { isResource } from "../api/requests/primitives";
+import Source from "../../supabase/api/event";
+import { isResource } from "../../supabase/api/requests/primitives";
 import {
   getHistory, // getHistoryStream,
   getParty, getPartyStream,

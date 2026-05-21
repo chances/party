@@ -1,7 +1,8 @@
 import { render } from "lit-html";
 import { autorun } from "mobx";
 
-import * as api from "./api";
+// TODO: Refactor to jsr:@tunage/api
+import * as api from "../supabase/api";
 import { reportErrors } from "./sentry";
 import State from "./state";
 import * as util from "./util";

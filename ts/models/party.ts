@@ -1,8 +1,8 @@
 import { Either, Maybe } from "monet";
 
-import { Errors, get, isResource, post, Request, Response, ResponsePromise } from "../api";
-import { Document } from "../api/data";
-import Source from "../api/event";
+import { Errors, get, isResource, post, Request, Response, ResponsePromise } from "../../supabase/api";
+import { Document } from "../../supabase/api/data";
+import Source from "../../supabase/api/event";
 import { reportErrors, setUserContext } from "../sentry";
 import State from "../state";
 import { Track } from "./track";

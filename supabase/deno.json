@@ -1,10 +1,16 @@
 {
   "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
-  "name": "@tunage/server",
+  "name": "@tunage/api",
   "version": "0.1.0",
   "imports": {
-    "supabase": "jsr:@supabase/supabase-js",
-    "denorm": "@dancaldera/denorm"
+    "@most/create": "npm:@most/create@^2.0.1",
+    "bluebird": "npm:bluebird@^3.7.2",
+    "denorm": "jsr:@dancaldera/denorm@^0.1.0",
+    "mobx": "npm:mobx@^4.15.7",
+    "monet": "npm:monet@^0.9.3",
+    "most": "npm:most@^1.7.3",
+    "raven-js": "npm:raven-js@^3.27.2",
+    "supabase": "jsr:@supabase/supabase-js@^2.105.4"
   },
   "exports": {
     ".": "./lib/index.ts"

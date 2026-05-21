@@ -1,4 +1,4 @@
-import { get, ResponsePromise } from "../api";
+import { get, ResponsePromise } from "../../supabase/api";
 
 // tslint:disable-next-line:no-empty-interface
 export interface Pong {}

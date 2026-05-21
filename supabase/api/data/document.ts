@@ -5,7 +5,7 @@ import {
   ResourceIdentifier,
   ResourceIdentifierDocument,
 } from ".";
-import * as util from "../../util";
+import * as util from "../../lib/util";
 import * as JsonApi from "./json-api";
 
 // JSON API Specification - Document Structure

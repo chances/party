@@ -4,7 +4,7 @@ import * as Promise from "bluebird";
 import { Stream } from "most";
 
 import { captureException } from "../sentry";
-import * as util from "../util";
+import * as util from "../lib/util";
 import { getPartyApiHost } from "./request";
 
 enum ReadyState {

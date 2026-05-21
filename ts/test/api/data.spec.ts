@@ -1,7 +1,7 @@
 import { expect, test, that } from "../lib/expect";
 
-import { Errors } from "../../api";
-import { Document } from "../../api/data";
+import { Errors } from "../../../supabase/api";
+import { Document } from "../../../supabase/api/data";
 import { Party as PartyModel } from "../../models";
 import Models from "../../models";
 

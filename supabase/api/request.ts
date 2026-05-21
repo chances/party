@@ -1,5 +1,4 @@
-import Promise = require("bluebird");
-import fetch = require("isomorphic-fetch");
+import Promise from "bluebird";
 import { Either } from "monet";
 
 import { Document, Error } from "./data";

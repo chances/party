@@ -11,7 +11,8 @@
     "npm:@sentry/cli@1.77.3",
     "npm:@sentry/cli@3.4.2",
     "npm:esbuild@0.23.1",
-    "npm:esbuild@0.24.0"
+    "npm:esbuild@0.24.0",
+    "npm:sqlite3@5.1.7"
   ],
   "fmt": {
     "indentWidth": 2,

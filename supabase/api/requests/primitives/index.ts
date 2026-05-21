@@ -1,4 +1,4 @@
-import Promise = require("bluebird");
+import Promise from "bluebird";
 import { Either } from "monet";
 
 import { Document, Resource, ResourceIdentifier } from "../../data";
