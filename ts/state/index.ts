@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import Promise from "bluebird";
 import localForage = require("localforage");
 import { configure, observable } from "mobx";
 import { Maybe } from "monet";

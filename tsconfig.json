@@ -5,6 +5,7 @@
       "target": "ES5",
       "module": "commonjs",
       "moduleResolution": "node",
+      "esModuleInterop": true,
       "baseUrl": "./node_modules",
       "typeRoots": [
         "@types",

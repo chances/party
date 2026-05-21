@@ -1,5 +1,3 @@
-import * as process from "node:process";
-
 export default function _curry(f: (...args: any[]) => any) {
   return (...args: any[]) => {
     return args.length < f.length
@@ -14,6 +12,7 @@ export default function _curry(f: (...args: any[]) => any) {
 }
 
 export const log = _curry((message: string, value: any) => {
+  // deno-lint-ignore no-process-global
   if (process.env.NODE_ENV === "development") {
     // tslint:disable-next-line:no-console
     console.log(message, value);

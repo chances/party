@@ -1,5 +1,4 @@
 SASS = ./node_modules/.bin/sass
-BROWSER_SYNC = ./node_modules/.bin/browser-sync
 ES_BUILD = node scripts/bundle.mjs
 TS_LINT = ./node_modules/.bin/tslint
 TAPE = ./node_modules/tape/bin/tape
@@ -83,7 +82,7 @@ watch:
 .PHONY: watch
 
 browser-sync:
-	@${BROWSER_SYNC} start -s public -f public --open ui
+	npx browser-sync start -s public -f public --open ui
 .PHONY: browser-sync
 
 watch-scss:

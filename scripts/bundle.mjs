@@ -1,28 +1,28 @@
-import * as esbuild from 'esbuild';
-import * as fs from 'node:fs/promises';
-import * as process from 'node:process';
-import { exec } from 'node:child_process';
+import * as esbuild from "esbuild";
+import * as fs from "node:fs/promises";
+import * as process from "node:process";
+import { exec } from "node:child_process";
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-const isDevelopment = process.env.NODE_ENV === 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || "production";
+const isDevelopment = process.env.NODE_ENV === "development";
 const isWatchMode = isDevelopment && process.env.WATCH !== undefined;
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
+
+const PARTY_BUNDLE = "party";
+const PARTY_API = isDevelopment ? "http://localhost:3005" : "https://api.tunage.app";
 
 if (isWatchMode) console.log(`Watching ${PARTY_BUNDLE}...`);
 
-const PARTY_BUNDLE = 'party';
-const PARTY_API = isDevelopment ? 'http://localhost:3005' : 'https://api.tunage.app'
-
 const ctx = await esbuild.context({
-  entryPoints: ['ts/main.ts'],
+  entryPoints: ["ts/main.ts"],
   bundle: true,
   outfile: `public/assets/javascript/${PARTY_BUNDLE}.js`,
   define: {
-    'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
-    'process.env.PARTY_API': `'${process.env.PARTY_API ?? PARTY_API}'`
+    "process.env.NODE_ENV": `'${process.env.NODE_ENV}'`,
+    "process.env.PARTY_API": `'${process.env.PARTY_API ?? PARTY_API}'`
   },
   minify: isProduction,
-  sourcemap: isProduction ? false : 'inline',
+  sourcemap: isProduction ? false : "inline",
 });
 
 if (isWatchMode) await buildIndex().then(() => ctx.watch());
@@ -33,7 +33,7 @@ else if (isDevelopment) await buildIndex().then(async () => {
 else await serveSite();
 
 async function buildIndex() {
-  await fs.copyFile('index.html', 'public/index.html');
+  await fs.copyFile("index.html", "public/index.html");
 }
 
 async function serveSite() {
@@ -42,9 +42,9 @@ async function serveSite() {
   await ctx.serve({
     port: 3000,
     servedir: "public",
-    onRequest: async (request) => {
+    onRequest: async request => {
       console.log(request.path);
-      if (request.path.endsWith('/index.html')) await buildIndex();
+      if (request.path.endsWith("/index.html")) await buildIndex();
     }
   });
   process.exit(0);
