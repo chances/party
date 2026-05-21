@@ -1,28 +1,24 @@
 // tslint:disable-next-line:no-implicit-dependencies
-import * as Proxyquire from "proxyquire";
+import Proxyquire from "proxyquire";
 import { test } from "./lib/expect";
-
-import * as IRaven from "raven-js";
 
 // TODO: Follow this tutorial: https://ponyfoo.com/articles/testing-javascript-modules-with-tape
 
-// tslint:disable-next-line:no-var-requires no-implicit-dependencies
-const proxyquire: typeof Proxyquire = require("proxyquire").noPreserveCache();
+const proxyquire = Proxyquire.noPreserveCache();
 
 // tslint:disable-next-line:no-unused-expression no-angle-bracket-type-assertion
-<typeof IRaven> proxyquire("raven-js", {
+proxyquire("@sentry/browser", {
   config: (_dsnUrl: string) => {
     return {
       install: () => {
         // tslint:disable-next-line:no-object-literal-type-assertion
-        const raven = {
+        return {
           VERSION: "mock",
-          context: (_fn: Function) => { return; },
+          setContext: (_context: any) => { return; },
           captureException: (_err: Error) => { return; },
-          setUserContext: (_context?: any) => { return; },
-          captureBreadcrumb: (_crumb: IRaven.Breadcrumb) => { return; },
-        } as IRaven.RavenStatic;
-        return raven;
+          setUser: (_context?: any) => { return; },
+          addBreadcrumb: (_crumb: any) => { return; },
+        } as any;
       },
     };
   },

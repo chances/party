@@ -23,7 +23,6 @@
     "npm:concurrently@8": "8.2.2",
     "npm:esbuild@0.24.0": "0.24.0",
     "npm:faucet@^0.0.4": "0.0.4",
-    "npm:isomorphic-fetch@3": "3.0.0",
     "npm:lit-html@^1.0.0-rc.2": "1.4.1",
     "npm:localforage@^1.7.3": "1.10.0",
     "npm:mobx@^4.15.7": "4.15.7",
@@ -2512,13 +2511,6 @@
     "isobject@3.0.1": {
       "integrity": "sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg=="
     },
-    "isomorphic-fetch@3.0.0": {
-      "integrity": "sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==",
-      "dependencies": [
-        "node-fetch",
-        "whatwg-fetch"
-      ]
-    },
     "isstream@0.1.2": {
       "integrity": "sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g=="
     },
@@ -2900,12 +2892,6 @@
         "es-errors",
         "object.entries",
         "semver@6.3.1"
-      ]
-    },
-    "node-fetch@2.7.0": {
-      "integrity": "sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==",
-      "dependencies": [
-        "whatwg-url"
       ]
     },
     "node-int64@0.4.0": {
@@ -4116,9 +4102,6 @@
         "punycode"
       ]
     },
-    "tr46@0.0.3": {
-      "integrity": "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw=="
-    },
     "tree-kill@1.2.2": {
       "integrity": "sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==",
       "bin": true
@@ -4341,19 +4324,6 @@
         "makeerror"
       ]
     },
-    "webidl-conversions@3.0.1": {
-      "integrity": "sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ=="
-    },
-    "whatwg-fetch@3.6.20": {
-      "integrity": "sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg=="
-    },
-    "whatwg-url@5.0.0": {
-      "integrity": "sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==",
-      "dependencies": [
-        "tr46",
-        "webidl-conversions"
-      ]
-    },
     "which-boxed-primitive@1.1.1": {
       "integrity": "sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==",
       "dependencies": [
@@ -4556,7 +4526,6 @@
         "npm:concurrently@8",
         "npm:esbuild@0.24.0",
         "npm:faucet@^0.0.4",
-        "npm:isomorphic-fetch@3",
         "npm:lit-html@^1.0.0-rc.2",
         "npm:localforage@^1.7.3",
         "npm:mobx@^4.9.2",
