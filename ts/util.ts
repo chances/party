@@ -1,13 +1,24 @@
+import * as process from "node:process";
+
 export default function _curry(f: (...args: any[]) => any) {
   return (...args: any[]) => {
     return args.length < f.length
       ? _curry(
         args.reduce(
-        (g: () => any, arg: any) => {
-          return g.bind(null, arg)
+          (g: () => any, arg: any) => {
+          return g.bind<null, typeof arg, any[], unknown>(null, arg)
         }, f),
       )
       : f.apply(null, args)
+  }
+}
+
+declare global {
+  // const process:
+  interface Process {
+    env: {
+      NODE_ENV: string
+    }
   }
 }
 
@@ -46,7 +57,7 @@ function getParams(query: string): ParamMap {
 }
 
 export function queryParams(): ParamMap {
-  const params = getParams(window.location.search)
+  const params = getParams(globalThis.location.search)
   return log('Query params: ', params)
 }
 

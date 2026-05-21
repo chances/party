@@ -8,11 +8,9 @@ import * as util from '../../util'
 let topic: tape.Test
 
 // Mock window.location.search for usages of ts/util.ts
-global.window = {
-  location: {
-    search: '',
-  },
-}
+if (typeof globalThis.location === "undefined")
+  globalThis.location = {} as unknown as Location;
+globalThis.location.search = '';
 
 type TestCase = (test: tape.Test) => PromiseLike<void> | void
 
@@ -20,19 +18,19 @@ export function test(name: string, cb: TestCase) {
   tape(name, t => {
     try {
       topic = t
-      const ranTest = cb(t)
+      const ranTest = cb(t) as Promise<void> | void;
 
       // Call Test.end when an asynchronous test resolves, otherwise
       //  end the test for a synchronous test
       if (util.isPromise(ranTest)) {
-        ranTest.then(() => {
+        ranTest?.then(() => {
           t.end()
         }).catch(err => { throw err })
       } else {
         t.end()
       }
     } catch (e) {
-      topic.fail(e.message)
+      topic.fail(e instanceof Error ? e.message : String(e))
     }
   })
 }
