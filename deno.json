@@ -1,5 +1,7 @@
 {
-  "workspace": ["./ts"],
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "nodeModulesDir": "auto",
+  "workspace": ["./supabase"],
   "compilerOptions": {
     "allowSloppyImport": true,
     "esModuleInterop": true
