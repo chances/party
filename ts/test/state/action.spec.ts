@@ -25,7 +25,7 @@ class MockModel {
   }
 }
 
-test("action is wrapped with wrapBreadcrumb", _t => {
+test("action is wrapped with wrapBreadcrumb", () => {
   const model = new MockModel();
 
   model.mutateProperty("foo");

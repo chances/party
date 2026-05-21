@@ -2,7 +2,7 @@ import { expect, test, that } from "./lib/expect";
 
 import { firstArtistName, largestImage, Track } from "../models";
 
-test("firstArtistName returns empty string with zero artists", _t => {
+test("firstArtistName returns empty string with zero artists", () => {
   expect(that(firstArtistName([])).equals(""));
 });
 
@@ -23,11 +23,11 @@ const track: Track = {
   contributor: "Jake Perkins",
 };
 
-test("firstArtistName returns first artist", _t => {
+test("firstArtistName returns first artist", () => {
   expect(that(firstArtistName(track.artists)).equals("Submotion Orchestra"));
 });
 
-test("largestImage returns nothing with zero images", _t => {
+test("largestImage returns nothing with zero images", () => {
   track.images = [];
 
   const image = largestImage(track.images);
@@ -35,7 +35,7 @@ test("largestImage returns nothing with zero images", _t => {
   expect(that(image.isNothing()).is.true);
 });
 
-test("largestImage returns just the largest image", _t => {
+test("largestImage returns just the largest image", () => {
   track.images = [
     {
       width: 750,

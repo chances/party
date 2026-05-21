@@ -62,7 +62,7 @@ test("Resource Identifier Document instances have expected type given class type
   }));
 });
 
-test("Error Document instances have given errors", _t => {
+test("Error Document instances have given errors", () => {
   const errorDoc = Document.Error(Errors.defaultError);
   expect(that(errorDoc.errors).has.ordered.members([
     Errors.defaultError,
