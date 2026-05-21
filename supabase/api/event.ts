@@ -1,6 +1,4 @@
-import * as signalR from "@aspnet/signalr";
 import { create } from "@most/create";
-import * as Promise from "bluebird";
 import { Stream } from "most";
 
 import { captureException } from "../sentry";
@@ -32,7 +30,7 @@ interface EventStream {
   isClosed: boolean;
   messages: Stream<any>;
   open(): Promise<void>;
-  close(): Promise<void>;
+  close(err: any): Promise<void>;
   on(eventName: string): Stream<any>;
 }
 
@@ -41,8 +39,17 @@ interface MessageEvent<T> {
   source: EventStream;
 }
 
+interface Connection {
+  new (url: string): Connection;
+  state: ReadyState;
+  start(): Promise<void>;
+  stream<T>(eventName: string): Stream<T>;
+  stop(): Promise<void>;
+  onClose(callback: (err: any | undefined) => void): void;
+}
+
 export default class Source<T> implements EventStream {
-  private connection: signalR.HubConnection;
+  private connection: Connection;
   private readyState = ReadyState.CLOSED;
 
   constructor(urlOrExistingSource: string | Source<any>, private hubMethodName: string) {
@@ -50,14 +57,15 @@ export default class Source<T> implements EventStream {
     this.hubMethodName = `${hubMethodName[0].toLocaleUpperCase()}${hubMethodName.substring(1)}`;
 
     if (typeof urlOrExistingSource === "string") {
-      this.connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${getPartyApiHost()}${urlOrExistingSource}`)
-        .build();
+      const eventSourceUrl = `${getPartyApiHost()}${urlOrExistingSource}`;
+      console.assert((eventSourceUrl?.length ?? 0) > 0, "eventSourceUrl is empty");
+      throw new Error("Unimplemented!");
+      this.connection.start();
     } else {
       this.connection = urlOrExistingSource.connection;
     }
 
-    this.connection.onclose(err => {
+    this.connection.onClose((err: any) => {
       if (err) {
         const eventName = this.hubMethodName;
         captureException(err, { message: `${eventName} stream closed` });
@@ -83,7 +91,7 @@ export default class Source<T> implements EventStream {
       this.readyState = ReadyState.CONNECTING;
 
       const connected = this.connection.start().then(() => {
-        const isConnected = this.connection.state === signalR.HubConnectionState.Connected;
+        const isConnected = this.connection.state === ReadyState.OPEN;
         this.readyState = isConnected ? ReadyState.OPEN : ReadyState.CLOSED;
         if (!isConnected) {
           throw new Error("EventStream connection failed.");
@@ -116,15 +124,14 @@ export default class Source<T> implements EventStream {
         closed: false,
         next: (value: T) => addEvent(value, observer.closed),
         error: addError,
-        complete: end,
+        complete: (value?: T | undefined) => end(value ? { data: value, source: this } : undefined),
       };
       const subscription = stream.subscribe(observer);
 
       return () => {
-        subscription.dispose();
-        if (!observer.closed) {
-          end();
-        }
+        console.assert(subscription != null);
+        // FIXME: subscription.dispose();
+        if (!observer.closed) end();
       };
     });
   }

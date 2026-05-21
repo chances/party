@@ -30,22 +30,6 @@ export function toKebabCase(input: string) {
   return input.trim().split(/(?=[A-Z])/).join("-").toLowerCase();
 }
 
-export interface ParamMap {[index: string]: string; }
-function getParams(query: string): ParamMap {
-  if (!query) {
-    return { };
-  }
-
-  return (/^[?#]/.test(query) ? query.slice(1) : query)
-    .split("&")
-    .filter(pair => pair.trim().length > 0)
-    .reduce((params: ParamMap, param) => {
-      const [ key, value ] = param.split("=");
-      params[key] = value ? decodeURIComponent(value.replace(/\+/g, " ")) : "";
-      return params;
-    }, { });
-}
-
 interface ClassObject {
   [name: string]: boolean;
 }
