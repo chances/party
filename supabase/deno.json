@@ -4,12 +4,12 @@
   "version": "0.1.0",
   "imports": {
     "@most/create": "npm:@most/create@^2.0.1",
+    "@sentry/deno": "npm:@sentry/deno@^10.53.1",
     "bluebird": "npm:bluebird@^3.7.2",
     "denorm": "jsr:@dancaldera/denorm@^0.1.0",
     "mobx": "npm:mobx@^4.15.7",
     "monet": "npm:monet@^0.9.3",
     "most": "npm:most@^1.7.3",
-    "raven-js": "npm:raven-js@^3.27.2",
     "supabase": "jsr:@supabase/supabase-js@^2.105.4"
   },
   "exports": {

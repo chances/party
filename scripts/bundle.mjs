@@ -1,4 +1,5 @@
 import * as esbuild from "esbuild";
+import { sentryEsbuildPlugin } from "@sentry/esbuild-plugin";
 import * as fs from "node:fs/promises";
 import * as process from "node:process";
 import { exec } from "node:child_process";
@@ -13,6 +14,15 @@ const PARTY_API = isDevelopment ? "http://localhost:3005" : "https://api.tunage.
 
 if (isWatchMode) console.log(`Watching ${PARTY_BUNDLE}...`);
 
+const plugins = [];
+
+// The Sentry esbuild plugin must be last
+if (isProduction) plugins.push(sentryEsbuildPlugin({
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  org: "chance-snow",
+  project: "party",
+}));
+
 const ctx = await esbuild.context({
   entryPoints: ["ts/main.ts"],
   bundle: true,
@@ -22,7 +32,8 @@ const ctx = await esbuild.context({
     "process.env.PARTY_API": `'${process.env.PARTY_API ?? PARTY_API}'`
   },
   minify: isProduction,
-  sourcemap: isProduction ? false : "inline",
+  sourcemap: isProduction ? false : true,
+  plugins,
 });
 
 if (isWatchMode) await buildIndex().then(() => ctx.watch());

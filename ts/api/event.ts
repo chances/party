@@ -2,8 +2,8 @@ import { create } from "@most/create";
 import { Stream } from "most";
 
 import { captureException } from "../sentry";
-import * as util from "../lib/util";
-import { getPartyApiHost } from "./request";
+import * as util from "../util";
+import { getPartyApiHost } from "../../supabase/api/request";
 
 enum ReadyState {
 
