@@ -1,5 +1,7 @@
 {
+  "workspace": ["./ts"],
   "compilerOptions": {
+    "allowSloppyImport": true,
     "esModuleInterop": true
   },
   "allowScripts": [
@@ -13,5 +15,10 @@
     "indentWidth": 2,
     "lineWidth": 128,
     "singleQuote": false
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-sloppy-imports"]
+    }
   }
 }
