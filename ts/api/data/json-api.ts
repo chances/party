@@ -1,44 +1,44 @@
 export interface Metadata {
-  meta?: {}
+  meta?: {};
 }
 
 export interface NewResourceIdentifier extends Metadata {
-  type: string
+  type: string;
 }
 
 export interface NewResource extends NewResourceIdentifier {
-  attributes?: {}
+  attributes?: {};
 }
 
 export interface ResourceIdentifier extends NewResourceIdentifier {
-  id: string
+  id: string;
 }
 
 export interface Resource extends ResourceIdentifier {
-  attributes?: {}
+  attributes?: {};
   links?: {
     self: string,
-  }
+  };
 }
 
 export interface Document extends Metadata {
-  data: NewResourceIdentifier | ResourceIdentifier | Resource
+  data: NewResourceIdentifier | ResourceIdentifier | Resource;
 }
 
 // JSON API Specification - Errors
 // http://jsonapi.org/format/1.0/#errors
 export interface Error {
-  id?: string
-  status?: number | string
-  code?: string
-  title?: string
-  detail?: string
+  id?: string;
+  status?: number | string;
+  code?: string;
+  title?: string;
+  detail?: string;
   meta?: {} | {
     cause: string | null,
     details: string | null,
-  }
+  };
 }
 
 export interface ErrorDocument extends Metadata {
-  errors: Error[]
+  errors: Error[];
 }

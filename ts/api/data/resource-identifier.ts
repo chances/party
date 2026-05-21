@@ -1,4 +1,4 @@
-import * as JsonApi from './json-api'
+import * as JsonApi from "./json-api";
 
 // tslint:disable-next-line:max-line-length
 export default class ResourceIdentifier implements JsonApi.ResourceIdentifier {

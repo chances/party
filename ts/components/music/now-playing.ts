@@ -1,20 +1,20 @@
-import { html } from 'lit-html'
-import { Maybe } from 'monet'
+import { html } from "lit-html";
+import { Maybe } from "monet";
 
-import { Track } from '../../models'
-import State from '../../state'
-import * as util from '../../util'
+import { Track } from "../../models";
+import State from "../../state";
+import * as util from "../../util";
 
-import currentTrack from './current-track'
-import trackList from './track-list'
+import currentTrack from "./current-track";
+import trackList from "./track-list";
 
 export default function render() {
-  const party = State.party.just()
-  const maybeTrack = Maybe.fromNull<Track>(party.current_track)
-  const maybeQueue = State.queue.map(queue => queue.slice(0, 3))
+  const party = State.party.just();
+  const maybeTrack = Maybe.fromNull<Track>(party.current_track);
+  const maybeQueue = State.queue.map(queue => queue.slice(0, 3));
 
   return html`<div id="content" class="${util.klass({
-    'tv-mode': State.tvMode,
+    "tv-mode": State.tvMode,
     placeholder: maybeTrack.isNothing(),
   })}">
     ${maybeTrack.cata(
@@ -25,8 +25,8 @@ export default function render() {
       `,
       track => html`
         ${currentTrack(track)}
-        ${trackList('upNext', 'Up Next', maybeQueue.cata(() => [], tracks => tracks))}
+        ${trackList("upNext", "Up Next", maybeQueue.cata(() => [], tracks => tracks))}
       `,
     )}
-  </div>`
+  </div>`;
 }

@@ -1,4 +1,4 @@
 export interface TabProps {
-  id?: string
-  heading?: string
+  id?: string;
+  heading?: string;
 }

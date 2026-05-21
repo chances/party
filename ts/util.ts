@@ -6,71 +6,62 @@ export default function _curry(f: (...args: any[]) => any) {
       ? _curry(
         args.reduce(
           (g: () => any, arg: any) => {
-          return g.bind<null, typeof arg, any[], unknown>(null, arg)
+          return g.bind<null, typeof arg, any[], unknown>(null, arg);
         }, f),
       )
-      : f.apply(null, args)
-  }
-}
-
-declare global {
-  // const process:
-  interface Process {
-    env: {
-      NODE_ENV: string
-    }
-  }
+      : f.apply(null, args);
+  };
 }
 
 export const log = _curry((message: string, value: any) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     // tslint:disable-next-line:no-console
-    console.log(message, value)
+    console.log(message, value);
   }
-  return value
-})
+  return value;
+});
 
 export function isPromise(thenable: PromiseLike<any> | any | void): thenable is Promise<any> {
   return thenable !== undefined
-    ? typeof thenable.then === 'function'
-    : false
+    ? typeof thenable.then === "function"
+    : false;
 }
 
 export function toKebabCase(input: string) {
-  return input.trim().split(/(?=[A-Z])/).join('-').toLowerCase()
+  return input.trim().split(/(?=[A-Z])/).join("-").toLowerCase();
 }
 
-export interface ParamMap {[index: string]: string}
+export interface ParamMap {[index: string]: string; }
 function getParams(query: string): ParamMap {
   if (!query) {
-    return { }
+    return { };
   }
 
   return (/^[?#]/.test(query) ? query.slice(1) : query)
-    .split('&')
+    .split("&")
     .filter(pair => pair.trim().length > 0)
     .reduce((params: ParamMap, param) => {
-      const [ key, value ] = param.split('=')
-      params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : ''
-      return params
-    }, { })
+      const [ key, value ] = param.split("=");
+      params[key] = value ? decodeURIComponent(value.replace(/\+/g, " ")) : "";
+      return params;
+    }, { });
 }
 
 export function queryParams(): ParamMap {
-  const params = getParams(globalThis.location.search)
-  return log('Query params: ', params)
+  const params = getParams(globalThis.location.search);
+  return log("Query params: ", params);
 }
 
 interface ClassObject {
-  [name: string]: boolean
+  [name: string]: boolean;
 }
 
 export function klass(classes: ClassObject) {
-  const filteredClasses: string[] = []
+  const filteredClasses: string[] = [];
   for (const name in classes) {
     if (classes[name]) {
-      filteredClasses.push(name)
+      filteredClasses.push(name);
     }
   }
-  return filteredClasses.length ? filteredClasses.join(' ') : ''
+  return filteredClasses.length ? filteredClasses.join(" ") : "";
 }

@@ -1,9 +1,9 @@
-import * as JsonApi from './json-api'
+import * as JsonApi from "./json-api";
 
 export default class NewResource<T> implements JsonApi.NewResource {
-  attributes?: T
+  attributes?: T;
 
   constructor(public type: string, data: T) {
-    this.attributes = data
+    this.attributes = data;
   }
 }

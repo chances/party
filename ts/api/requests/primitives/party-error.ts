@@ -1,23 +1,23 @@
-import Errors from './errors'
+import Errors from "./errors";
 
 export class PartyError extends Error {
   constructor(public errors: Errors) {
-    super('Party encountered an error')
+    super("Party encountered an error");
   }
 
   get isRequestError() {
-    return this.errors.isRequestError
+    return this.errors.isRequestError;
   }
 
   get isBadRequest() {
-    return this.errors.isBadRequest
+    return this.errors.isBadRequest;
   }
 
   get isUnauthorized() {
-    return this.errors.isUnauthorized
+    return this.errors.isUnauthorized;
   }
 
   get isNotFound() {
-    return this.errors.isNotFound
+    return this.errors.isNotFound;
   }
 }

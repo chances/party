@@ -1,12 +1,12 @@
-import { render } from 'lit-html'
-import { autorun } from 'mobx'
+import { render } from "lit-html";
+import { autorun } from "mobx";
 
-import * as api from './api'
-import { reportErrors } from './sentry'
-import State from './state'
-import * as util from './util'
+import * as api from "./api";
+import { reportErrors } from "./sentry";
+import State from "./state";
+import * as util from "./util";
 
-import party from './containers/party'
+import party from "./containers/party";
 
 /* tslint:disable:no-submodule-imports no-var-requires */
 
@@ -14,35 +14,35 @@ import party from './containers/party'
 //   ? //do this
 //   : //or that=
 
-const partyApiHost = process.env.PARTY_API || 'https://party.chancesnow.me'
-api.setPartyApiHost(util.log('Party API Host:', partyApiHost))
+const partyApiHost = process.env.PARTY_API || "https://party.chancesnow.me";
+api.setPartyApiHost(util.log("Party API Host:", partyApiHost));
 
-const main = document.querySelector('main')
+const main = document.querySelector("main");
 reportErrors(() => {
   State.rehydrate().then(_wasRehydrated => {
     if (main !== null) {
-      main.classList.add('hiding')
+      main.classList.add("hiding");
 
-      setTimeout(bootstrap, 300)
+      setTimeout(bootstrap, 300);
     }
-  })
-})
+  });
+});
 
 function bootstrap() {
-  const body = main ? main.parentElement : null
+  const body = main ? main.parentElement : null;
   if (main !== null && body !== null) {
-    main.classList.remove('splash')
-    main.classList.remove('hiding')
+    main.classList.remove("splash");
+    main.classList.remove("hiding");
 
     autorun(() => {
-      render(party(), body)
+      render(party(), body);
 
-      State.persist()
-    })
+      State.persist();
+    });
 
     if (State.party.isNothing()) {
       // Try to join party via hash
-      State.tryToJoinViaHash()
+      State.tryToJoinViaHash();
     }
   }
 }

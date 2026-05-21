@@ -1,34 +1,34 @@
-import { svg } from 'lit-html'
-import { html } from 'lit-html'
+import { svg } from "lit-html";
+import { html } from "lit-html";
 
-import * as util from '../util'
+import * as util from "../util";
 
 export class Spinner {
-  pHidden?: boolean
-  pColor?: string
-  pSize?: number
+  pHidden?: boolean;
+  pColor?: string;
+  pSize?: number;
 
   get hidden() {
     return this.pHidden != null
       ? this.pHidden
-      : true
+      : true;
   }
 
   get color() {
     return this.pColor != null
       ? this.pColor
-      : '#FCFCFC'
+      : "#FCFCFC";
   }
 
   get size() {
     return this.pSize != null
       ? this.pSize
-      : 40
+      : 40;
   }
 }
 
 export default function render(hidden: boolean) {
-  const dur = '0.7s'
+  const dur = "0.7s";
 
   // TODO: Switch to https://github.com/streamich/freestyler ?
   return html`<span class="${util.klass({ spinner: true, hidden })}">
@@ -73,5 +73,5 @@ export default function render(hidden: boolean) {
         </path>`
       }
     </svg>
-  </span>`
+  </span>`;
 }
