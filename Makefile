@@ -1,6 +1,6 @@
 SASS = ./node_modules/.bin/sass
 BROWSER_SYNC = ./node_modules/.bin/browser-sync
-ESBUILD = node bundle.mjs
+ES_BUILD = node scripts/bundle.mjs
 TS_LINT = ./node_modules/.bin/tslint
 TAPE = ./node_modules/tape/bin/tape
 FAUCET = ./node_modules/.bin/faucet
@@ -40,14 +40,14 @@ js:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Bundle target: ${BUNDLE_TARGET}"
-	@${ESBUILD}
+	@${ES_BUILD}
 .PHONY: js
 
 js-dev:
 	@echo "Building chances-party browser client..."
 	@echo "Entry point: ${TS_ENTRY_POINT}"
 	@echo "Bundle target: ${BUNDLE_TARGET}"
-	@NODE_ENV=development ${ESBUILD}
+	@NODE_ENV=development ${ES_BUILD}
 .PHONY: js-dev
 
 lint:
@@ -91,7 +91,7 @@ watch-scss:
 .PHONY: watch-scss
 
 watch-js:
-	@NODE_ENV=development WATCH='' ${ESBUILD}
+	@NODE_ENV=development WATCH='' ${ES_BUILD}
 .PHONY: watch-js
 
 watch-tests:

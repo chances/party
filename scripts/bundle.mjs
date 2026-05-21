@@ -1,19 +1,19 @@
 import * as esbuild from 'esbuild';
-import * as fs from 'fs/promises';
-import * as process from 'process';
-import { exec } from 'child_process';
+import * as fs from 'node:fs/promises';
+import * as process from 'node:process';
+import { exec } from 'node:child_process';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isWatchMode = isDevelopment && process.env.WATCH !== undefined;
 const isProduction = process.env.NODE_ENV === 'production';
 
-console.log(process.env.WATCH);
+if (isWatchMode) console.log(`Watching ${PARTY_BUNDLE}...`);
 
 const PARTY_BUNDLE = 'party';
 const PARTY_API = isDevelopment ? 'http://localhost:3005' : 'https://api.tunage.app'
 
-let ctx = await esbuild.context({
+const ctx = await esbuild.context({
   entryPoints: ['ts/main.ts'],
   bundle: true,
   outfile: `public/assets/javascript/${PARTY_BUNDLE}.js`,
@@ -25,7 +25,7 @@ let ctx = await esbuild.context({
   sourcemap: isProduction ? false : 'inline',
 });
 
-if (isWatchMode) await buildIndex().then(async () => ctx.watch());
+if (isWatchMode) await buildIndex().then(() => ctx.watch());
 else if (isDevelopment) await buildIndex().then(async () => {
   await ctx.rebuild();
   process.exit(0);
